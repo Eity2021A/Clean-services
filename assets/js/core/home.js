@@ -498,13 +498,20 @@ function initTrustedCarousels() {
       return;
     }
 
-    if (track.dataset.loopEnhanced !== "true") {
-      originalItems.forEach((item) => {
-        const clone = item.cloneNode(true);
-        clone.setAttribute("aria-hidden", "true");
-        track.appendChild(clone);
-      });
-      track.dataset.loopEnhanced = "true";
+    if (track.dataset.loopEnhanced !== "triple") {
+      track.innerHTML = "";
+
+      for (let copyIndex = 0; copyIndex < 3; copyIndex += 1) {
+        originalItems.forEach((item) => {
+          const clone = item.cloneNode(true);
+          if (copyIndex !== 1) {
+            clone.setAttribute("aria-hidden", "true");
+          }
+          track.appendChild(clone);
+        });
+      }
+
+      track.dataset.loopEnhanced = "triple";
     }
 
     slider.style.touchAction = "pan-x pan-y";
@@ -517,32 +524,32 @@ function initTrustedCarousels() {
     let startScrollLeft = 0;
     let itemWidth = 0;
     let snapTimerId = null;
-    let loopWidth = 0;
+    let singleSetWidth = 0;
 
     const measureItemWidth = () => {
       const firstItem = track.querySelector(".trusted-logo-item");
       if (!firstItem) return 0;
       itemWidth = firstItem.getBoundingClientRect().width;
-      loopWidth = track.scrollWidth / 2;
+      singleSetWidth = track.scrollWidth / 3;
       return itemWidth;
     };
 
     const normalizeLoopPosition = () => {
-      if (!loopWidth) return;
+      if (!singleSetWidth) return 0;
 
-      if (slider.scrollLeft < 1) {
-        slider.scrollLeft += loopWidth;
-        return;
+      let shift = 0;
+
+      if (slider.scrollLeft < singleSetWidth * 0.5) {
+        shift = singleSetWidth;
+      } else if (slider.scrollLeft > singleSetWidth * 1.5) {
+        shift = -singleSetWidth;
       }
 
-      if (slider.scrollLeft >= loopWidth * 2 - slider.clientWidth - 1) {
-        slider.scrollLeft -= loopWidth;
-        return;
+      if (shift !== 0) {
+        slider.scrollLeft += shift;
       }
 
-      if (slider.scrollLeft >= loopWidth) {
-        slider.scrollLeft -= loopWidth;
-      }
+      return shift;
     };
 
     const snapToNearest = (behavior = "smooth") => {
@@ -550,7 +557,9 @@ function initTrustedCarousels() {
       if (!width) return;
 
       normalizeLoopPosition();
-      const target = Math.round(slider.scrollLeft / width) * width;
+      const relativeOffset = slider.scrollLeft - singleSetWidth;
+      const target =
+        singleSetWidth + Math.round(relativeOffset / width) * width;
       slider.scrollTo({
         left: target,
         behavior,
@@ -583,7 +592,10 @@ function initTrustedCarousels() {
         event.preventDefault();
       }
 
-      normalizeLoopPosition();
+      const shift = normalizeLoopPosition();
+      if (shift !== 0) {
+        startScrollLeft += shift;
+      }
     });
 
     const endDrag = (event) => {
@@ -631,8 +643,8 @@ function initTrustedCarousels() {
     });
 
     measureItemWidth();
-    if (loopWidth) {
-      slider.scrollLeft = loopWidth;
+    if (singleSetWidth) {
+      slider.scrollLeft = singleSetWidth;
     }
     slider.dataset.initialized = "true";
     return;
