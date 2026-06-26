@@ -507,126 +507,133 @@ function initTrustedCarousels() {
       track.dataset.loopEnhanced = "true";
     }
 
+    slider.style.touchAction = "pan-x pan-y";
+    track.style.transform = "none";
+    track.style.transition = "none";
+
     let activePointerId = null;
-    let isDragging = false;
+    let isPointerDragging = false;
     let startX = 0;
-    let startOffset = 0;
-    let currentOffset = 0;
+    let startScrollLeft = 0;
     let itemWidth = 0;
+    let snapTimerId = null;
     let loopWidth = 0;
 
-    const normalizeOffset = (value) => {
-      if (!loopWidth) return 0;
-      return ((value % loopWidth) + loopWidth) % loopWidth;
-    };
-
-    const renderOffset = (value) => {
-      if (!loopWidth) return;
-      const wrappedOffset = normalizeOffset(value);
-      track.style.transform = `translate3d(-${wrappedOffset + loopWidth}px, 0, 0)`;
-    };
-
-    const measure = () => {
+    const measureItemWidth = () => {
       const firstItem = track.querySelector(".trusted-logo-item");
-      if (!firstItem) return false;
-
+      if (!firstItem) return 0;
       itemWidth = firstItem.getBoundingClientRect().width;
       loopWidth = track.scrollWidth / 2;
-
-      if (!itemWidth || !loopWidth) return false;
-
-      currentOffset = normalizeOffset(currentOffset);
-      track.style.transition = "none";
-      renderOffset(currentOffset);
-      return true;
+      return itemWidth;
     };
 
-    const snapToNearest = (duration = 420) => {
-      if (!measure()) return;
+    const normalizeLoopPosition = () => {
+      if (!loopWidth) return;
 
-      const targetIndex = Math.round(currentOffset / itemWidth);
-      currentOffset = normalizeOffset(targetIndex * itemWidth);
-      track.style.transition = `transform ${duration}ms cubic-bezier(0.22, 1, 0.36, 1)`;
-      renderOffset(currentOffset);
+      if (slider.scrollLeft < 1) {
+        slider.scrollLeft += loopWidth;
+        return;
+      }
+
+      if (slider.scrollLeft >= loopWidth * 2 - slider.clientWidth - 1) {
+        slider.scrollLeft -= loopWidth;
+        return;
+      }
+
+      if (slider.scrollLeft >= loopWidth) {
+        slider.scrollLeft -= loopWidth;
+      }
     };
 
-    const startDrag = (clientX, pointerId) => {
-      if (!measure()) return;
+    const snapToNearest = (behavior = "smooth") => {
+      const width = itemWidth || measureItemWidth();
+      if (!width) return;
 
-      activePointerId = pointerId;
-      isDragging = true;
-      startX = clientX;
-      startOffset = currentOffset;
-      track.style.transition = "none";
-      slider.classList.add("is-dragging");
-
-      try {
-        slider.setPointerCapture(pointerId);
-      } catch (_) {}
-    };
-
-    const moveDrag = (clientX) => {
-      if (!isDragging) return;
-      const deltaX = clientX - startX;
-      currentOffset = startOffset - deltaX;
-      renderOffset(currentOffset);
-    };
-
-    const endDrag = (pointerId) => {
-      if (!isDragging || pointerId !== activePointerId) return;
-
-      isDragging = false;
-      slider.classList.remove("is-dragging");
-
-      try {
-        slider.releasePointerCapture(pointerId);
-      } catch (_) {}
-
-      currentOffset = normalizeOffset(currentOffset);
-      snapToNearest();
-      activePointerId = null;
+      normalizeLoopPosition();
+      const target = Math.round(slider.scrollLeft / width) * width;
+      slider.scrollTo({
+        left: target,
+        behavior,
+      });
     };
 
     slider.addEventListener("pointerdown", (event) => {
       if (event.pointerType === "mouse" && event.button !== 0) return;
-      startDrag(event.clientX, event.pointerId);
+
+      measureItemWidth();
+      activePointerId = event.pointerId;
+      isPointerDragging = true;
+      startX = event.clientX;
+      startScrollLeft = slider.scrollLeft;
+      slider.style.scrollSnapType = "none";
+      slider.classList.add("is-dragging");
+
+      try {
+        slider.setPointerCapture(event.pointerId);
+      } catch (_) {}
     });
 
     slider.addEventListener("pointermove", (event) => {
-      if (event.pointerId !== activePointerId) return;
-      moveDrag(event.clientX);
+      if (!isPointerDragging || event.pointerId !== activePointerId) return;
+
+      const deltaX = event.clientX - startX;
+      slider.scrollLeft = startScrollLeft - deltaX;
+
       if (event.pointerType !== "mouse") {
         event.preventDefault();
       }
+
+      normalizeLoopPosition();
     });
 
-    slider.addEventListener("pointerup", (event) => {
-      endDrag(event.pointerId);
-    });
+    const endDrag = (event) => {
+      if (!isPointerDragging || event.pointerId !== activePointerId) return;
 
-    slider.addEventListener("pointercancel", (event) => {
-      endDrag(event.pointerId);
-    });
+      isPointerDragging = false;
+      slider.classList.remove("is-dragging");
+      slider.style.scrollSnapType = "";
 
-    slider.addEventListener("lostpointercapture", (event) => {
-      endDrag(event.pointerId);
-    });
+      try {
+        slider.releasePointerCapture(event.pointerId);
+      } catch (_) {}
+
+      normalizeLoopPosition();
+      snapToNearest();
+      activePointerId = null;
+    };
+
+    slider.addEventListener("pointerup", endDrag);
+    slider.addEventListener("pointercancel", endDrag);
+    slider.addEventListener("lostpointercapture", endDrag);
+
+    slider.addEventListener(
+      "scroll",
+      () => {
+        if (isPointerDragging) return;
+        window.clearTimeout(snapTimerId);
+        snapTimerId = window.setTimeout(() => {
+          normalizeLoopPosition();
+          snapToNearest();
+        }, 80);
+      },
+      { passive: true },
+    );
 
     window.addEventListener("resize", () => {
       if (!window.matchMedia("(max-width: 767.98px)").matches) return;
-      measure();
-      snapToNearest(0);
+      measureItemWidth();
+      normalizeLoopPosition();
+      snapToNearest("auto");
     });
 
     track.querySelectorAll("img").forEach((img) => {
       img.setAttribute("draggable", "false");
     });
 
-    if (measure()) {
-      currentOffset = 0;
-      renderOffset(currentOffset);
+    measureItemWidth();
+    if (loopWidth) {
+      slider.scrollLeft = loopWidth;
     }
-
     slider.dataset.initialized = "true";
     return;
   }
