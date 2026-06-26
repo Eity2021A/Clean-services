@@ -359,7 +359,7 @@ a {
     }
 
     .contact {
-        padding: 56px 0;
+        padding: 50px 0;
     }
 
     .contact-title {
@@ -369,9 +369,7 @@ a {
     .contact-info p {
         font-size: 18px;
     }
-}
-@media (max-width: 992px) {
-    .info-card-text {
+     .info-card-text {
         font-size: 14px;
         line-height: 1.45;
     }
@@ -379,7 +377,12 @@ a {
     .info-card-item .info-card-title+a .info-card-text {
         word-break: break-word;
     }
+    .contact-box {
+
+     margin-bottom: 0px;
 }
+}
+
 @media (max-width: 768px) {
     .contact-section {
         height: 150px;
