@@ -1151,6 +1151,30 @@ function createDrawerCartMarkup(item) {
   `;
 }
 
+function animateCartFabValue(element) {
+  if (!element) return;
+  element.classList.remove("is-updating");
+  void element.offsetWidth;
+  element.classList.add("is-updating");
+
+  window.setTimeout(() => {
+    element.classList.remove("is-updating");
+  }, 460);
+}
+
+function animateCartFabSurface() {
+  const fab = document.querySelector(".service-cart-fab");
+  if (!fab) return;
+
+  fab.classList.remove("is-updating");
+  void fab.offsetWidth;
+  fab.classList.add("is-updating");
+
+  window.setTimeout(() => {
+    fab.classList.remove("is-updating");
+  }, 430);
+}
+
 function renderGlobalCart() {
   const items = readCartItems();
   const summary = getCartSummary(items);
@@ -1159,13 +1183,15 @@ function renderGlobalCart() {
   const fabTotal = document.querySelector(".service-cart-fab-total");
   const drawerList = document.querySelector(".service-cart-list");
   const drawerTotal = document.querySelector(".service-cart-total strong");
+  const nextCountText =
+    summary.quantity === 1 ? "1 Item" : `${summary.quantity} Items`;
+  const nextTotalText = formatCartMoney(summary.total);
+  const shouldAnimateCount = fabCount && fabCount.textContent !== nextCountText;
+  const shouldAnimateTotal = fabTotal && fabTotal.textContent !== nextTotalText;
 
   if (headerCount) headerCount.textContent = String(summary.quantity);
-  if (fabCount) {
-    fabCount.textContent =
-      summary.quantity === 1 ? "1 Item" : `${summary.quantity} Items`;
-  }
-  if (fabTotal) fabTotal.textContent = formatCartMoney(summary.total);
+  if (fabCount) fabCount.textContent = nextCountText;
+  if (fabTotal) fabTotal.textContent = nextTotalText;
 
   if (drawerList) {
     drawerList.innerHTML = items.length
@@ -1182,6 +1208,10 @@ function renderGlobalCart() {
   }
 
   if (drawerTotal) drawerTotal.textContent = formatCartMoney(summary.total);
+
+  if (shouldAnimateCount) animateCartFabValue(fabCount);
+  if (shouldAnimateTotal) animateCartFabValue(fabTotal);
+  if (shouldAnimateCount || shouldAnimateTotal) animateCartFabSurface();
 }
 
 function renderAllCartUIs() {

@@ -29,9 +29,15 @@ body {
   padding: 0;
 }
 
-#header-placeholder:empty {
+#header-placeholder,
+#header-placeholder:empty,
+#header-placeholder:not(:empty) {
   display: block;
-  min-height: 64px;
+  min-height: 0;
+}
+
+#header-placeholder:not(:empty) {
+  min-height: 0;
 }
 
 #stats-component:empty {
@@ -1799,8 +1805,10 @@ h2 {
 }
 
 @media (max-width: 767.98px) {
-  #header-placeholder:empty {
-    min-height: 58px;
+  #header-placeholder,
+  #header-placeholder:empty,
+  #header-placeholder:not(:empty) {
+    min-height: 0;
   }
 
   #stats-component:empty {

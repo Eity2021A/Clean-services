@@ -885,6 +885,7 @@ body.mobile-keyboard-open .service-top-indicator {
   display: flex;
   flex-direction: column;
   background: var(--white);
+  overflow: hidden;
 }
 
 .service-cart-fab-btn {
@@ -910,6 +911,8 @@ body.mobile-keyboard-open .service-top-indicator {
   font-size: 10px;
   font-weight: 600;
   margin-top: 5px;
+  display: inline-block;
+  transform-origin: center;
 }
 
 .service-cart-fab-total-wrap {
@@ -926,6 +929,51 @@ body.mobile-keyboard-open .service-top-indicator {
   font-size: 12px;
   font-weight: 500;
   color: #005d66;
+  display: inline-block;
+  transform-origin: center;
+}
+
+.service-cart-fab.is-updating .service-cart-fab-btn {
+  animation: cart-fab-surface-slide 0.36s ease;
+}
+
+.service-cart-fab-count.is-updating,
+.service-cart-fab-total.is-updating {
+  animation: cart-fab-value-slide-down 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes cart-fab-value-slide-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translateY(2px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cart-fab-surface-slide {
+  0% {
+    transform: translateY(0);
+    filter: brightness(1);
+  }
+
+  50% {
+    transform: translateY(1px);
+    filter: brightness(1.03);
+  }
+
+  100% {
+    transform: translateY(0);
+    filter: brightness(1);
+  }
 }
 
 .service-cart-backdrop {
