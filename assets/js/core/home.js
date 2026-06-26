@@ -485,167 +485,12 @@ function initTrustedCarousels() {
   if (!slider || !track || slider.dataset.initialized === "true") return;
 
   slider.style.touchAction = "pan-y";
-  const isSmallScreen = window.matchMedia("(max-width: 767.98px)").matches;
   const dragCursor = slider.querySelector(".trusted-drag-cursor");
   const supportsHoverCursor =
     !!dragCursor &&
     window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-
-  if (isSmallScreen) {
-    const originalItems = Array.from(track.children);
-    if (!originalItems.length) {
-      slider.dataset.initialized = "true";
-      return;
-    }
-
-    if (track.dataset.loopEnhanced !== "triple") {
-      track.innerHTML = "";
-
-      for (let copyIndex = 0; copyIndex < 3; copyIndex += 1) {
-        originalItems.forEach((item) => {
-          const clone = item.cloneNode(true);
-          if (copyIndex !== 1) {
-            clone.setAttribute("aria-hidden", "true");
-          }
-          track.appendChild(clone);
-        });
-      }
-
-      track.dataset.loopEnhanced = "triple";
-    }
-
-    slider.style.touchAction = "pan-x pan-y";
-    track.style.transform = "none";
-    track.style.transition = "none";
-
-    let activePointerId = null;
-    let isPointerDragging = false;
-    let startX = 0;
-    let startScrollLeft = 0;
-    let itemWidth = 0;
-    let snapTimerId = null;
-    let singleSetWidth = 0;
-
-    const measureItemWidth = () => {
-      const firstItem = track.querySelector(".trusted-logo-item");
-      if (!firstItem) return 0;
-      itemWidth = firstItem.getBoundingClientRect().width;
-      singleSetWidth = track.scrollWidth / 3;
-      return itemWidth;
-    };
-
-    const normalizeLoopPosition = () => {
-      if (!singleSetWidth) return 0;
-
-      let shift = 0;
-
-      if (slider.scrollLeft < singleSetWidth * 0.5) {
-        shift = singleSetWidth;
-      } else if (slider.scrollLeft > singleSetWidth * 1.5) {
-        shift = -singleSetWidth;
-      }
-
-      if (shift !== 0) {
-        slider.scrollLeft += shift;
-      }
-
-      return shift;
-    };
-
-    const snapToNearest = (behavior = "smooth") => {
-      const width = itemWidth || measureItemWidth();
-      if (!width) return;
-
-      normalizeLoopPosition();
-      const relativeOffset = slider.scrollLeft - singleSetWidth;
-      const target =
-        singleSetWidth + Math.round(relativeOffset / width) * width;
-      slider.scrollTo({
-        left: target,
-        behavior,
-      });
-    };
-
-    slider.addEventListener("pointerdown", (event) => {
-      if (event.pointerType === "mouse" && event.button !== 0) return;
-
-      measureItemWidth();
-      activePointerId = event.pointerId;
-      isPointerDragging = true;
-      startX = event.clientX;
-      startScrollLeft = slider.scrollLeft;
-      slider.style.scrollSnapType = "none";
-      slider.classList.add("is-dragging");
-
-      try {
-        slider.setPointerCapture(event.pointerId);
-      } catch (_) {}
-    });
-
-    slider.addEventListener("pointermove", (event) => {
-      if (!isPointerDragging || event.pointerId !== activePointerId) return;
-
-      const deltaX = event.clientX - startX;
-      slider.scrollLeft = startScrollLeft - deltaX;
-
-      if (event.pointerType !== "mouse") {
-        event.preventDefault();
-      }
-
-      const shift = normalizeLoopPosition();
-      if (shift !== 0) {
-        startScrollLeft += shift;
-      }
-    });
-
-    const endDrag = (event) => {
-      if (!isPointerDragging || event.pointerId !== activePointerId) return;
-
-      isPointerDragging = false;
-      slider.classList.remove("is-dragging");
-      slider.style.scrollSnapType = "";
-
-      try {
-        slider.releasePointerCapture(event.pointerId);
-      } catch (_) {}
-
-      normalizeLoopPosition();
-      snapToNearest();
-      activePointerId = null;
-    };
-
-    slider.addEventListener("pointerup", endDrag);
-    slider.addEventListener("pointercancel", endDrag);
-    slider.addEventListener("lostpointercapture", endDrag);
-
-    slider.addEventListener(
-      "scroll",
-      () => {
-        if (isPointerDragging) return;
-        window.clearTimeout(snapTimerId);
-        snapTimerId = window.setTimeout(() => {
-          normalizeLoopPosition();
-          snapToNearest();
-        }, 80);
-      },
-      { passive: true },
-    );
-
-    window.addEventListener("resize", () => {
-      if (!window.matchMedia("(max-width: 767.98px)").matches) return;
-      measureItemWidth();
-      normalizeLoopPosition();
-      snapToNearest("auto");
-    });
-
-    track.querySelectorAll("img").forEach((img) => {
-      img.setAttribute("draggable", "false");
-    });
-
-    measureItemWidth();
-    if (singleSetWidth) {
-      slider.scrollLeft = singleSetWidth;
-    }
+  const originalItems = Array.from(track.children);
+  if (!originalItems.length) {
     slider.dataset.initialized = "true";
     return;
   }
@@ -667,181 +512,191 @@ function initTrustedCarousels() {
     slider.classList.remove("is-cursor-visible");
   };
 
-  let isAnimating = false;
-  let autoShiftId = null;
+  if (track.dataset.loopEnhanced !== "triple") {
+    track.innerHTML = "";
+
+    for (let copyIndex = 0; copyIndex < 3; copyIndex += 1) {
+      originalItems.forEach((item) => {
+        const clone = item.cloneNode(true);
+        if (copyIndex !== 1) {
+          clone.setAttribute("aria-hidden", "true");
+        }
+        track.appendChild(clone);
+      });
+    }
+
+    track.dataset.loopEnhanced = "triple";
+  }
+
+  track.style.transition = "none";
+  track.style.transform = "translate3d(0, 0, 0)";
+
+  let autoLoopFrameId = null;
+  let autoLoopResumeTimerId = null;
+  let lastFrameTime = 0;
+  let singleSetWidth = 0;
+  let currentOffset = 0;
   let isDragging = false;
+  let activePointerId = null;
   let dragStartX = 0;
-  let dragDeltaX = 0;
+  let dragStartOffset = 0;
   let wasDragged = false;
 
-  const getClientX = (event) => {
-    if (event.touches && event.touches.length) return event.touches[0].clientX;
-    if (event.changedTouches && event.changedTouches.length) {
-      return event.changedTouches[0].clientX;
-    }
-    return event.clientX;
-  };
-
-  const stepShift = (startOffset = null) => {
-    if (isAnimating) return;
+  const measureTrack = () => {
     const firstItem = track.querySelector(".trusted-logo-item");
-    if (!firstItem) return;
+    if (!firstItem) return false;
 
-    isAnimating = true;
-    const itemWidth = firstItem.getBoundingClientRect().width;
+    singleSetWidth = track.scrollWidth / 3;
+    if (!singleSetWidth) return false;
 
-    if (typeof startOffset === "number") {
-      track.style.transition = "none";
-      track.style.transform = `translateX(${startOffset}px)`;
-      void track.offsetWidth;
+    currentOffset = currentOffset
+      ? normalizeOffset(currentOffset)
+      : singleSetWidth;
+
+    return true;
+  };
+
+  const normalizeOffset = (value) => {
+    if (!singleSetWidth) return value;
+
+    if (value < singleSetWidth * 0.5) {
+      return value + singleSetWidth;
     }
 
-    track.style.transition = "transform 0.95s ease";
-    track.style.transform = `translateX(-${itemWidth}px)`;
-
-    const onDone = () => {
-      track.appendChild(firstItem);
-      track.style.transition = "none";
-      track.style.transform = "translateX(0)";
-      void track.offsetWidth;
-      track.style.transition = "transform 0.95s ease";
-      isAnimating = false;
-      track.removeEventListener("transitionend", onDone);
-    };
-
-    track.addEventListener("transitionend", onDone);
-  };
-
-  const stepShiftPrev = (startOffset = null) => {
-    if (isAnimating) return;
-    const items = track.querySelectorAll(".trusted-logo-item");
-    const lastItem = items[items.length - 1];
-    if (!lastItem) return;
-
-    isAnimating = true;
-    const itemWidth = lastItem.getBoundingClientRect().width;
-
-    track.style.transition = "none";
-    track.insertBefore(lastItem, track.firstChild);
-    track.style.transform = `translateX(${typeof startOffset === "number" ? startOffset - itemWidth : -itemWidth}px)`;
-    void track.offsetWidth;
-    track.style.transition = "transform 0.95s ease";
-    track.style.transform = "translateX(0)";
-
-    const onDone = () => {
-      isAnimating = false;
-      track.removeEventListener("transitionend", onDone);
-    };
-
-    track.addEventListener("transitionend", onDone);
-  };
-
-  const stopAutoShift = () => {
-    if (autoShiftId) {
-      window.clearInterval(autoShiftId);
-      autoShiftId = null;
+    if (value > singleSetWidth * 1.5) {
+      return value - singleSetWidth;
     }
+
+    return value;
   };
 
-  const startAutoShift = () => {
-    stopAutoShift();
-    autoShiftId = window.setInterval(stepShift, 2400);
+  const renderTrack = () => {
+    if (!singleSetWidth) return;
+    currentOffset = normalizeOffset(currentOffset);
+    track.style.transform = `translate3d(-${currentOffset}px, 0, 0)`;
   };
 
-  const startDrag = (clientX) => {
-    if (isAnimating) return;
+  const stopAutoLoop = () => {
+    if (autoLoopResumeTimerId !== null) {
+      window.clearTimeout(autoLoopResumeTimerId);
+      autoLoopResumeTimerId = null;
+    }
+    lastFrameTime = 0;
+  };
 
+  const scheduleAutoLoopResume = (delay = 700) => {
+    if (autoLoopResumeTimerId !== null) {
+      window.clearTimeout(autoLoopResumeTimerId);
+    }
+
+    autoLoopResumeTimerId = window.setTimeout(() => {
+      autoLoopResumeTimerId = null;
+      lastFrameTime = 0;
+    }, delay);
+  };
+
+  const stepAutoLoop = (timestamp) => {
+    if (autoLoopFrameId === null) return;
+
+    if (!measureTrack()) {
+      autoLoopFrameId = window.requestAnimationFrame(stepAutoLoop);
+      return;
+    }
+
+    if (document.hidden || isDragging || autoLoopResumeTimerId !== null) {
+      lastFrameTime = timestamp;
+      autoLoopFrameId = window.requestAnimationFrame(stepAutoLoop);
+      return;
+    }
+
+    if (!lastFrameTime) {
+      lastFrameTime = timestamp;
+    }
+
+    const delta = timestamp - lastFrameTime;
+    lastFrameTime = timestamp;
+    currentOffset += delta * 0.028;
+    renderTrack();
+    autoLoopFrameId = window.requestAnimationFrame(stepAutoLoop);
+  };
+
+  const startAutoLoop = () => {
+    if (autoLoopFrameId !== null) return;
+    lastFrameTime = 0;
+    autoLoopFrameId = window.requestAnimationFrame(stepAutoLoop);
+  };
+
+  const startDrag = (clientX, pointerId) => {
+    if (!measureTrack()) return;
+
+    stopAutoLoop();
     isDragging = true;
     wasDragged = false;
+    activePointerId = pointerId;
     dragStartX = clientX;
-    dragDeltaX = 0;
-    stopAutoShift();
+    dragStartOffset = currentOffset;
     slider.classList.add("is-dragging");
-    track.style.transition = "none";
+
+    try {
+      slider.setPointerCapture(pointerId);
+    } catch (_) {}
   };
 
   const moveDrag = (clientX) => {
     if (!isDragging) return;
 
-    dragDeltaX = clientX - dragStartX;
-    if (Math.abs(dragDeltaX) > 3) wasDragged = true;
-    track.style.transform = `translateX(${dragDeltaX}px)`;
+    const deltaX = clientX - dragStartX;
+    if (Math.abs(deltaX) > 6) {
+      wasDragged = true;
+    }
+    currentOffset = dragStartOffset - deltaX;
+    renderTrack();
   };
 
-  const endDrag = () => {
-    if (!isDragging) return;
+  const endDrag = (event) => {
+    if (!isDragging || event.pointerId !== activePointerId) return;
 
     isDragging = false;
+    activePointerId = null;
     slider.classList.remove("is-dragging");
+    scheduleAutoLoopResume();
 
-    const firstItem = track.querySelector(".trusted-logo-item");
-    const threshold = firstItem
-      ? firstItem.getBoundingClientRect().width * 0.28
-      : 40;
-
-    if (dragDeltaX <= -threshold) {
-      stepShift(dragDeltaX);
-    } else if (dragDeltaX >= threshold) {
-      stepShiftPrev(dragDeltaX);
-    } else {
-      track.style.transition = "transform 0.25s ease";
-      track.style.transform = "translateX(0)";
-    }
-
-    dragDeltaX = 0;
-    window.setTimeout(() => {
-      if (!slider.matches(":hover")) startAutoShift();
-    }, 180);
+    try {
+      slider.releasePointerCapture(event.pointerId);
+    } catch (_) {}
   };
 
-  startAutoShift();
-
   slider.addEventListener("mouseenter", () => {
-    stopAutoShift();
     showDragCursor();
   });
 
   slider.addEventListener("mouseleave", () => {
     hideDragCursor();
-    if (!isDragging) startAutoShift();
   });
 
-  slider.addEventListener("mousemove", (event) => {
-    updateDragCursor(event.clientX, event.clientY);
-  });
-
-  slider.addEventListener("mousedown", (event) => {
-    if (event.button !== 0) return;
+  slider.addEventListener("pointerdown", (event) => {
+    if (event.pointerType === "mouse" && event.button !== 0) return;
     updateDragCursor(event.clientX, event.clientY);
     showDragCursor();
-    startDrag(event.clientX);
+    startDrag(event.clientX, event.pointerId);
   });
 
-  window.addEventListener("mousemove", (event) => {
-    moveDrag(event.clientX);
-    if (isDragging) updateDragCursor(event.clientX, event.clientY);
+  slider.addEventListener("pointermove", (event) => {
+    if (isDragging && event.pointerId === activePointerId) {
+      moveDrag(event.clientX);
+      updateDragCursor(event.clientX, event.clientY);
+      if (event.pointerType !== "mouse") {
+        event.preventDefault();
+      }
+      return;
+    }
+
+    updateDragCursor(event.clientX, event.clientY);
   });
 
-  window.addEventListener("mouseup", endDrag);
-
-  slider.addEventListener(
-    "touchstart",
-    (event) => {
-      startDrag(getClientX(event));
-    },
-    { passive: true },
-  );
-
-  slider.addEventListener(
-    "touchmove",
-    (event) => {
-      moveDrag(getClientX(event));
-    },
-    { passive: true },
-  );
-
-  slider.addEventListener("touchend", endDrag);
-  slider.addEventListener("touchcancel", endDrag);
+  slider.addEventListener("pointerup", endDrag);
+  slider.addEventListener("pointercancel", endDrag);
+  slider.addEventListener("lostpointercapture", endDrag);
 
   slider.addEventListener("click", (event) => {
     if (!wasDragged) return;
@@ -855,10 +710,13 @@ function initTrustedCarousels() {
   });
 
   window.addEventListener("resize", () => {
-    track.style.transition = "none";
-    track.style.transform = "translateX(0)";
+    if (!measureTrack()) return;
+    renderTrack();
   });
 
+  measureTrack();
+  renderTrack();
+  startAutoLoop();
   slider.dataset.initialized = "true";
 }
 

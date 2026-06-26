@@ -132,16 +132,7 @@
     }
 
     .trusted-carousel {
-        overflow-x: auto;
-        overflow-y: hidden;
-        -webkit-overflow-scrolling: touch;
-        scroll-behavior: smooth;
-        scroll-snap-type: x proximity;
-        scrollbar-width: none;
-    }
-
-    .trusted-carousel::-webkit-scrollbar {
-        display: none;
+        overflow: hidden;
     }
 
     .trusted-logo-track {
@@ -151,10 +142,6 @@
         transition: none !important;
         will-change: transform;
         backface-visibility: hidden;
-    }
-
-    .trusted-logo-item {
-        scroll-snap-align: center;
     }
 
     .trusted-carousel,
