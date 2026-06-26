@@ -550,30 +550,40 @@ function initTrustedCarousels() {
     if (!singleSetWidth) return false;
 
     currentOffset = currentOffset
-      ? normalizeOffset(currentOffset)
+      ? normalizeOffset(currentOffset).value
       : singleSetWidth;
 
     return true;
   };
 
   const normalizeOffset = (value) => {
-    if (!singleSetWidth) return value;
+    if (!singleSetWidth) {
+      return { value, shift: 0 };
+    }
 
     if (value < singleSetWidth * 0.5) {
-      return value + singleSetWidth;
+      return {
+        value: value + singleSetWidth,
+        shift: singleSetWidth,
+      };
     }
 
     if (value > singleSetWidth * 1.5) {
-      return value - singleSetWidth;
+      return {
+        value: value - singleSetWidth,
+        shift: -singleSetWidth,
+      };
     }
 
-    return value;
+    return { value, shift: 0 };
   };
 
   const renderTrack = () => {
-    if (!singleSetWidth) return;
-    currentOffset = normalizeOffset(currentOffset);
+    if (!singleSetWidth) return 0;
+    const normalized = normalizeOffset(currentOffset);
+    currentOffset = normalized.value;
     track.style.transform = `translate3d(-${currentOffset}px, 0, 0)`;
+    return normalized.shift;
   };
 
   const stopAutoLoop = () => {
@@ -650,7 +660,10 @@ function initTrustedCarousels() {
       wasDragged = true;
     }
     currentOffset = dragStartOffset - deltaX;
-    renderTrack();
+    const shift = renderTrack();
+    if (shift !== 0) {
+      dragStartOffset += shift;
+    }
   };
 
   const endDrag = (event) => {
