@@ -330,6 +330,30 @@ h2 {
     color: var(--secondary-color);
 }
 
+/* ABOUT PAGE SCROLL REVEAL */
+.about-reveal {
+    opacity: 0;
+    transform: translate3d(0, 44px, 0);
+    transition:
+        opacity 0.95s ease,
+        transform 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--about-reveal-delay, 0ms);
+    will-change: opacity, transform;
+}
+
+.about-reveal.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .about-reveal {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+}
+
 @media (max-width: 1100px) {
     .best-cleaning {
         padding: 60px 0px 0px 0px
