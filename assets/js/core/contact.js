@@ -1,3 +1,34 @@
+function isElementInRevealViewport(element, offset = 0.9) {
+  if (!element) return false;
+  const rect = element.getBoundingClientRect();
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+  return rect.top < viewportHeight * offset && rect.bottom > 0;
+}
+
+function animateInitialReveal(element, delay = 0) {
+  if (!element || element.dataset.revealTriggered === "true") return;
+
+  const runReveal = () => {
+    if (element.dataset.revealTriggered === "true") return;
+    element.dataset.revealTriggered = "true";
+
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        window.setTimeout(() => {
+          element.classList.add("is-visible");
+        }, delay);
+      });
+    });
+  };
+
+  if (document.body?.dataset.revealReady === "true") {
+    runReveal();
+    return;
+  }
+
+  document.addEventListener("page:reveal-ready", runReveal, { once: true });
+}
+
 function initContactScrollReveal() {
   const prefersReducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
@@ -34,7 +65,10 @@ function initContactScrollReveal() {
     (entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
-        entry.target.classList.add("is-visible");
+        const delay = Number(
+          entry.target.style.getPropertyValue("--contact-reveal-delay").replace("ms", "") || 0,
+        );
+        animateInitialReveal(entry.target, delay);
         observer.unobserve(entry.target);
       });
     },
@@ -46,7 +80,14 @@ function initContactScrollReveal() {
 
   revealTargets.forEach((element) => {
     if (element.dataset.contactRevealObserved === "true") return;
-    observer.observe(element);
+    const delay = Number(
+      element.style.getPropertyValue("--contact-reveal-delay").replace("ms", "") || 0,
+    );
+    if (isElementInRevealViewport(element)) {
+      animateInitialReveal(element, delay);
+    } else {
+      observer.observe(element);
+    }
     element.dataset.contactRevealObserved = "true";
   });
 }

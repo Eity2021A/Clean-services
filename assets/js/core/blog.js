@@ -6,13 +6,27 @@ function isElementInRevealViewport(element, offset = 0.9) {
 }
 
 function animateInitialReveal(element, delay = 0) {
-  window.requestAnimationFrame(() => {
+  if (!element || element.dataset.revealTriggered === "true") return;
+
+  const runReveal = () => {
+    if (element.dataset.revealTriggered === "true") return;
+    element.dataset.revealTriggered = "true";
+
     window.requestAnimationFrame(() => {
-      window.setTimeout(() => {
-        element.classList.add("is-visible");
-      }, delay);
+      window.requestAnimationFrame(() => {
+        window.setTimeout(() => {
+          element.classList.add("is-visible");
+        }, delay);
+      });
     });
-  });
+  };
+
+  if (document.body?.dataset.revealReady === "true") {
+    runReveal();
+    return;
+  }
+
+  document.addEventListener("page:reveal-ready", runReveal, { once: true });
 }
 
 function initBlogScrollReveal() {
@@ -51,7 +65,10 @@ function initBlogScrollReveal() {
     (entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
-        entry.target.classList.add("is-visible");
+        const delay = Number(
+          entry.target.style.getPropertyValue("--blog-reveal-delay").replace("ms", "") || 0,
+        );
+        animateInitialReveal(entry.target, delay);
         observer.unobserve(entry.target);
       });
     },

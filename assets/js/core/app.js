@@ -7,6 +7,14 @@ let sectionRevealObserver = null;
 let trustedSectionAnimated = false;
 let serviceLightRevealInitialized = false;
 
+function markRevealReady() {
+  if (document.body?.dataset.revealReady === "true") return;
+  if (document.body) {
+    document.body.dataset.revealReady = "true";
+  }
+  document.dispatchEvent(new CustomEvent("page:reveal-ready"));
+}
+
 function isElementInRevealViewport(element, offset = 0.9) {
   if (!element) return false;
   const rect = element.getBoundingClientRect();
@@ -15,13 +23,27 @@ function isElementInRevealViewport(element, offset = 0.9) {
 }
 
 function animateInitialReveal(element, className, delay = 0) {
-  window.requestAnimationFrame(() => {
+  if (!element || element.dataset.revealTriggered === "true") return;
+
+  const runReveal = () => {
+    if (element.dataset.revealTriggered === "true") return;
+    element.dataset.revealTriggered = "true";
+
     window.requestAnimationFrame(() => {
-      window.setTimeout(() => {
-        element.classList.add(className);
-      }, delay);
+      window.requestAnimationFrame(() => {
+        window.setTimeout(() => {
+          element.classList.add(className);
+        }, delay);
+      });
     });
-  });
+  };
+
+  if (document.body?.dataset.revealReady === "true") {
+    runReveal();
+    return;
+  }
+
+  document.addEventListener("page:reveal-ready", runReveal, { once: true });
 }
 
 // Run `callback` once the named placeholder component has been injected.
@@ -45,7 +67,10 @@ function onComponentLoaded(id, callback) {
 
 function initPageLoader() {
   const loader = document.getElementById("page-loader");
-  if (!loader) return;
+  if (!loader) {
+    markRevealReady();
+    return;
+  }
   const minVisibleMs = 100;
   const startedAt = Date.now();
   let pageReady = document.readyState === "complete";
@@ -63,6 +88,7 @@ function initPageLoader() {
 
     window.setTimeout(() => {
       loader.classList.add("is-hidden");
+      markRevealReady();
       window.setTimeout(() => {
         loader.remove();
       }, 320);
@@ -935,9 +961,7 @@ function initTopNotchReveal() {
         );
 
         visibleCards.forEach((card, index) => {
-          window.setTimeout(() => {
-            card.classList.add("is-visible");
-          }, index * 180);
+          animateInitialReveal(card, "is-visible", index * 180);
         });
 
         observer.disconnect();
@@ -993,7 +1017,7 @@ function initSectionReveal() {
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
-          entry.target.classList.add("is-visible");
+          animateInitialReveal(entry.target, "is-visible");
           sectionRevealObserver.unobserve(entry.target);
         });
       },
@@ -1034,9 +1058,7 @@ function initServiceLightReveal() {
 
         const card = entry.target;
         const delay = Number(card.dataset.revealDelay || "0");
-        window.setTimeout(() => {
-          card.classList.add("scroll-light-in");
-        }, delay);
+        animateInitialReveal(card, "scroll-light-in", delay);
 
         observer.unobserve(card);
       });
