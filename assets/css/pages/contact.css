@@ -930,3 +930,27 @@ a {
         padding-top: 80px;
     }
 }
+
+/* CONTACT PAGE SCROLL REVEAL */
+.contact-reveal {
+    opacity: 0;
+    transform: translate3d(0, 46px, 0);
+    transition:
+        opacity 0.95s ease,
+        transform 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--contact-reveal-delay, 0ms);
+    will-change: opacity, transform;
+}
+
+.contact-reveal.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .contact-reveal {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+}
