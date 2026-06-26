@@ -1,0 +1,151 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Professional cleaning services for your home and office."
+    />
+    <title>Cleaning Services | Login</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"
+    ></script>
+    <link rel="stylesheet" href="assets/css/layout/header.css" />
+    <link rel="stylesheet" href="assets/css/layout/footer.css" />
+    <link rel="stylesheet" href="assets/css/pages/login.css" />
+  </head>
+
+  <body>
+    <div
+      class="page-loader"
+      id="page-loader"
+      aria-live="polite"
+      aria-label="Loading page"
+    >
+      <img
+        src="assets/images/colorLogo.png"
+        alt="Loading logo"
+        class="loader-logo"
+      />
+    </div>
+
+    <div id="header-placeholder"></div>
+    <div class="login-wrapper">
+      <!-- <div class="logo-circle">
+        <img src="/assets/images/colorLogo.png" alt="logo" />
+      </div> -->
+
+      <h1>Welcome Back</h1>
+      <p class="subtitle">Sign in to continue to your account</p>
+
+      <div class="login-card">
+        <div class="login-tabs" role="tablist" aria-label="Login method">
+          <button
+            class="tab-btn active"
+            type="button"
+            data-login-method="mobile"
+            role="tab"
+            aria-selected="true"
+          >
+            <i class="bi bi-phone"></i> Mobile
+          </button>
+          <button
+            class="tab-btn"
+            type="button"
+            data-login-method="email"
+            role="tab"
+            aria-selected="false"
+          >
+            <i class="bi bi-envelope"></i> Email
+          </button>
+        </div>
+
+        <form id="loginForm" novalidate>
+          <label id="loginInputLabel" for="loginInput" class="form-label"
+            >Mobile Number</label
+          >
+          <div class="input-box">
+            <span class="phone-icon" id="loginInputIcon" aria-hidden="true">
+              <i class="bi bi-phone"></i>
+            </span>
+            <input
+              id="loginInput"
+              type="tel"
+              inputmode="tel"
+              autocomplete="tel"
+              placeholder="+880 000-000-0000"
+            />
+          </div>
+
+          <div class="email-login-fields" id="emailLoginFields" hidden>
+            <label for="loginPasswordInput" class="form-label">Password</label>
+            <div class="input-box password-box">
+              <span class="phone-icon" aria-hidden="true">
+                <i class="bi bi-lock"></i>
+              </span>
+              <input
+                id="loginPasswordInput"
+                type="password"
+                autocomplete="current-password"
+                placeholder="Enter your password"
+              />
+              <button
+                type="button"
+                class="password-toggle-btn"
+                id="passwordToggleBtn"
+                aria-label="Show password"
+              >
+                <i class="bi bi-eye"></i>
+              </button>
+            </div>
+
+            <div class="email-login-options">
+              <label class="remember-wrap" for="rememberLogin">
+                <input id="rememberLogin" type="checkbox" />
+                <span>Remember me</span>
+              </label>
+              <a href="#" class="forgot-link">Forgot password?</a>
+            </div>
+          </div>
+
+          <button class="signin-btn" type="submit">Sign In →</button>
+        </form>
+
+        <div class="divider">
+          <span>Or continue with</span>
+        </div>
+
+        <button class="google-btn" type="button">
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/281/281764.png"
+            alt="Google logo"
+          />
+          Sign in with Google
+        </button>
+
+        <p class="signup-text">
+          Don't have an account?
+          <a href="signUp.html">Sign up</a>
+        </p>
+      </div>
+    </div>
+    <div id="footer-placeholder"></div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/core/components-loader.js"></script>
+    <script src="assets/js/core/app.js"></script>
+  </body>
+</html>

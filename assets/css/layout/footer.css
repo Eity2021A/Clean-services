@@ -1,0 +1,224 @@
+        .footer-section {
+            background: var(--secondary-color);
+            padding: 90px 0 40px;
+            color: #fff;
+        }
+
+        .footer-logo img {
+            max-width: 190px;
+            margin-bottom: 25px;
+        }
+
+        .footer-description {
+            font-family: var(--font-secondary);
+            font-weight: 40;
+            font-size: 18px;
+            line-height: 27px;
+            width: 300px;
+            color: var(--white);
+        }
+
+        .footer-title {
+            font-family: var(--font-primary);
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: var(--white);
+        }
+
+        .footer-links,
+        .footer-contact {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links li,
+        .footer-contact li {
+            margin-bottom: 16px;
+        }
+
+        .footer-links a,
+        .footer-contact a {
+            text-decoration: none;
+            font-family: var(--font-primary);
+            color: var(--white);
+            font-size: 20px;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+            transition: 0.3s;
+        }
+
+        .footer-links a:hover,
+        .footer-contact a:hover {
+            opacity: 0.8;
+            padding-left: 4px;
+        }
+
+        .footer-contact i {
+            margin-right: 12px;
+            font-size: 18px;
+        }
+
+        .social-icons {
+            margin-top: 30px;
+            display: flex;
+            gap: 14px;
+        }
+
+        .social-icons a {
+            width: 36px;
+            height: 36px;
+            border: 1.5px solid #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .social-icons a:hover {
+            background: white;
+            color: #22b3c1;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 90px;
+            font-size: 20px;
+            color: var(--white);
+        }
+
+        .footer-bottom a {
+            color: var(--white);
+            font-weight: 500;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 991px) {
+            .footer-section {
+                text-align: center;
+            }
+
+            .footer-description {
+                font-size: 16px;
+            }
+
+            .footer-title {
+                font-size: 20px;
+            }
+
+            .footer-links a,
+            .footer-contact a {
+                font-size: 18px;
+            }
+
+            .social-icons {
+                justify-content: center;
+            }
+
+            /* .footer-column {
+                margin-bottom: 40px;
+            } */
+            .footer-bottom {
+                text-align: center;
+                margin-top: 30px;
+                font-size: 16px;
+                color: var(--white);
+            }
+
+        }
+
+        @media (max-width: 767px) {
+            .footer-description {
+                width: 100%;
+            }
+
+            .footer-logo img {
+                max-width: 140px;
+                margin-bottom: 25px;
+            }
+        }
+
+        @media (max-width: 575px) {
+            .footer-title {
+                font-size: 20px;
+            }
+
+            .footer-description {
+                font-size: 14px;
+                width: 100%;
+            }
+
+            .footer-links a,
+            .footer-contact a {
+                font-size: 14px;
+            }
+        }
+
+        /* =====================================================================
+   Global glossy shine — a continuous light sweep across primary buttons
+   site-wide (loaded on every page via footer.css).
+   ===================================================================== */
+        .booking-btn,
+        .checkout-btn,
+        .cart-checkout-btn,
+        .cart-mobile-checkout,
+        .service-cart-checkout,
+        .btn-complete-order {
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        .booking-btn::after,
+        .checkout-btn::after,
+        .cart-checkout-btn::after,
+        .cart-mobile-checkout::after,
+        .service-cart-checkout::after,
+        .btn-complete-order::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 55%;
+            height: 100%;
+            background: linear-gradient(115deg,
+                    rgba(255, 255, 255, 0) 0%,
+                    rgba(255, 255, 255, 0.08) 35%,
+                    rgba(255, 255, 255, 0.55) 50%,
+                    rgba(255, 255, 255, 0.08) 65%,
+                    rgba(255, 255, 255, 0) 100%);
+            transform: translateX(-160%) skewX(-18deg);
+            animation: btnGlossSweep 3s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Sweeps left→right, then `alternate` reverses it right→left, back and forth */
+        @keyframes btnGlossSweep {
+            0% {
+                transform: translateX(-160%) skewX(-18deg);
+            }
+
+            100% {
+                transform: translateX(260%) skewX(-18deg);
+            }
+        }
+
+        /* Respect users who prefer reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+
+            .booking-btn::after,
+            .checkout-btn::after,
+            .cart-checkout-btn::after,
+            .cart-mobile-checkout::after,
+            .service-cart-checkout::after,
+            .btn-complete-order::after {
+                animation: none;
+                opacity: 0;
+            }
+        }

@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Review service details, pricing, and booking options for this cleaning package."
+    />
+    <title>Cleaning Services | Service Details</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"
+    ></script>
+    <link rel="stylesheet" href="assets/css/layout/header.css" />
+    <link
+      rel="stylesheet"
+      href="assets/css/pages/collapse-service-details.css"
+    />
+    <link rel="stylesheet" href="assets/css/layout/footer.css" />
+  </head>
+
+  <body>
+    <div
+      class="page-loader"
+      id="page-loader"
+      aria-live="polite"
+      aria-label="Loading page"
+    >
+      <img
+        src="assets/images/colorLogo.png"
+        alt="Loading logo"
+        class="loader-logo"
+      />
+    </div>
+
+    <div id="header-placeholder"></div>
+    <section class="service_details">
+      <h1>Service Details</h1>
+    </section>
+
+    <section class="service-details">
+      <div class="custom_container">
+        <div class="row g-4">
+          <!-- 1. Home Size -->
+          <div class="col-lg-6 col-xl-8 order-1 order-md-1 order-xl-1">
+            <!-- Image -->
+            <div class="service-image-box">
+              <div class="size-estimator-card">
+                <div class="size-estimator-head">
+                  <div>
+                    <h2 class="size-estimator-title">Home Size</h2>
+                    <p class="size-estimator-subtitle">
+                      Precision home size adjustment
+                    </p>
+                  </div>
+
+                  <div class="size-estimator-value-wrap">
+                    <span id="sliderValue" class="size-estimator-value"
+                      >2,450</span
+                    >
+                    <span class="size-estimator-unit">BDT</span>
+                    <span id="sliderSqft" class="size-estimator-subunit"
+                      >2,450 SFT</span
+                    >
+                  </div>
+                </div>
+
+                <div class="size-slider-wrap">
+                  <div class="size-slider-demo" aria-hidden="true">
+                    <span class="size-slider-demo-fill"></span>
+                    <span class="size-slider-demo-thumb"></span>
+                    <span class="size-slider-demo-hand">
+                      <i class="bi bi-hand-index-thumb"></i>
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    id="sizeSlider"
+                    min="500"
+                    max="5000"
+                    value="500"
+                    step="10"
+                    class="size-slider slider-progress"
+                  />
+                </div>
+
+                <div class="size-estimator-range-labels">
+                  <span>500 SFT</span>
+                  <span>5,000 SFT</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Estimated Investment -->
+          <div class="col-lg-6 col-xl-4 order-2 order-md-2 order-xl-2">
+            <div
+              class="price-card"
+              data-cart-category="Deep Cleaning"
+              data-cart-image="assets/images/services/services_1.png"
+            >
+              <div class="price-card-head">
+                <span>ESTIMATED INVESTMENT </span>
+              </div>
+
+              <div class="price-row">
+                <span class="base-label">Base Rate (2,450 SFT)</span>
+                <strong>৳ 2450.00</strong>
+              </div>
+
+              <div class="price-row">
+                <span class="frequency-label">Frequency Discount (10%)</span>
+                <strong class="frequency-label">- ৳ 245.00</strong>
+              </div>
+              <div class="hr"></div>
+              <div class="total-row">
+                <span class="total-label">Total Estimate</span>
+                <div>
+                  <strong class="total-amount">BDT 2,205.00</strong>
+                  <h6 class="per-week">PER WEEKLY SESSION</h6>
+                </div>
+              </div>
+
+              <a href="checkout.html" class="btn checkout-btn w-100 mb-2"
+                >Check Out</a
+              >
+
+              <button type="button" class="btn cart-btn w-100" data-add-to-cart>
+                Add to cart
+              </button>
+            </div>
+          </div>
+
+          <!-- 3. House Deep Cleaning -->
+          <div class="col-lg-6 col-xl-8 order-3 order-md-3 order-xl-3">
+            <div class="service-box service-box-collapsible is-open">
+              <button
+                type="button"
+                class="service-box-toggle"
+                aria-expanded="true"
+                onclick="toggleServiceBox(this)"
+              >
+                <h2 class="service-title mb-0">
+                  House Deep <span>Cleaning</span>
+                </h2>
+                <i class="bi bi-chevron-down"></i>
+              </button>
+
+              <div class="service-box-body">
+                <ul class="feature-list">
+                  <li>Trusted & Reliable Technicians</li>
+                  <li>7 Days Fast Service Warranty</li>
+                  <li>
+                    Well-equipped & Well-prepared Specialists to Prevent
+                    COVID-19
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="service-dropdowns-section">
+      <div class="custom_container">
+        <div class="service-dropdowns" id="serviceDropdowns">
+          <article class="service-dropdown-card is-open">
+            <button
+              type="button"
+              class="service-dropdown-toggle"
+              aria-expanded="true"
+            >
+              <span class="service-dropdown-title-wrap">
+                <span class="service-dropdown-kicker">Service Overview</span>
+                <span class="service-dropdown-title"
+                  >Specialized Service in Dhaka</span
+                >
+                <span class="service-dropdown-preview"
+                  >Deep cleaning for hidden dust, grime, and allergens across
+                  every corner of your home.</span
+                >
+              </span>
+              <i class="bi bi-chevron-down" aria-hidden="true"></i>
+            </button>
+            <div class="service-dropdown-panel">
+              <div class="service-dropdown-panel-inner">
+                <p>
+                  CleanSlate brings world-class hygiene standards to the heart
+                  of Dhaka. Our deep cleaning service goes beyond the surface,
+                  targeting hidden allergens, deep-seated dust, and stubborn
+                  grime. We utilize industrial-grade equipment and specialized
+                  cleaning agents to ensure every corner of your residence
+                  reflects absolute purity and professional care.
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <article class="service-dropdown-card">
+            <button
+              type="button"
+              class="service-dropdown-toggle"
+              aria-expanded="false"
+            >
+              <span class="service-dropdown-title-wrap">
+                <span class="service-dropdown-kicker">Why Choose This</span>
+                <span class="service-dropdown-title">Why It Worth It</span>
+                <span class="service-dropdown-preview"
+                  >Save time and get deeper sanitization than regular
+                  cleaning.</span
+                >
+              </span>
+              <i class="bi bi-chevron-down" aria-hidden="true"></i>
+            </button>
+            <div class="service-dropdown-panel">
+              <div class="service-dropdown-panel-inner">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <div class="info-card">
+                      <h6>Saves Valuable Time</h6>
+                      <p>
+                        Reclaim your weekends. Our pros handle the labor while
+                        you focus on what matters most.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="info-card">
+                      <h6>Deeper Cleaning Results</h6>
+                      <p>
+                        We reach the spots a standard mop can't, ensuring true
+                        sanitization of all surfaces.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="service-dropdown-card">
+            <button
+              type="button"
+              class="service-dropdown-toggle"
+              aria-expanded="false"
+            >
+              <span class="service-dropdown-title-wrap">
+                <span class="service-dropdown-kicker">Coverage</span>
+                <span class="service-dropdown-title">What's Included?</span>
+                <span class="service-dropdown-preview"
+                  >Surface cleaning, kitchen sanitization, bathroom care, and
+                  glass scrubbing.</span
+                >
+              </span>
+              <i class="bi bi-chevron-down" aria-hidden="true"></i>
+            </button>
+            <div class="service-dropdown-panel">
+              <div class="service-dropdown-panel-inner">
+                <div class="included-box">
+                  <div class="included-item">
+                    <img
+                      src="assets/images/check-icon.png"
+                      alt="Check icon"
+                      class="check-icon"
+                    />
+                    <div>
+                      <h4 class="included-item-title">General Surface Cleaning</h4>
+                      <p class="included-item-description">
+                        Dusting, wiping, and polishing of all accessible
+                        household surfaces.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="included-item">
+                    <img
+                      src="assets/images/check-icon.png"
+                      alt="Check icon"
+                      class="check-icon"
+                    />
+                    <div>
+                      <h4 class="included-item-title">
+                        Deep Kitchen Sanitization
+                      </h4>
+                      <p class="included-item-description">
+                        Inside cabinets, exhaust fans, tiled backsplashes, and
+                        appliance exteriors.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="included-item">
+                    <img
+                      src="assets/images/check-icon.png"
+                      alt="Check icon"
+                      class="check-icon"
+                    />
+                    <div>
+                      <h4 class="included-item-title">Sanitary & Bathroom Care</h4>
+                      <p class="included-item-description">
+                        Full scrub of bathroom tiles, commodes, basins, and
+                        hardware polishing.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="included-item">
+                    <img
+                      src="assets/images/check-icon.png"
+                      alt="Check icon"
+                      class="check-icon"
+                    />
+                    <div>
+                      <h4 class="included-item-title">Glass & Windows Scrub</h4>
+                      <p class="included-item-description">
+                        Cleaning of window panes, tracks, grills, and glass
+                        partitions.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="service-dropdown-card">
+            <button
+              type="button"
+              class="service-dropdown-toggle"
+              aria-expanded="false"
+            >
+              <span class="service-dropdown-title-wrap">
+                <span class="service-dropdown-kicker">4-Step Workflow</span>
+                <span class="service-dropdown-title">Our Working Process</span>
+                <span class="service-dropdown-preview"
+                  >Assessment, debris removal, wet-area sanitization, and final
+                  quality audit.</span
+                >
+              </span>
+              <i class="bi bi-chevron-down" aria-hidden="true"></i>
+            </button>
+            <div class="service-dropdown-panel">
+              <div class="service-dropdown-panel-inner">
+                <section class="process-section process-section-embedded">
+                  <div class="container">
+                    <div class="row g-4 mt-1">
+                      <div class="col-md-6">
+                        <div class="process-item">
+                          <span>01</span>
+                          <div>
+                            <h6>Initial Assessment</h6>
+                            <p>
+                              Detailed walkthrough to identify priority areas,
+                              fragile surfaces, and specific requirements before
+                              we touch a single surface.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <div class="process-item">
+                          <span>02</span>
+                          <div>
+                            <h6>Dust & Debris Removal</h6>
+                            <p>
+                              Detailed walkthrough to identify priority areas,
+                              fragile surfaces, and specific requirements before
+                              we touch a single surface.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <div class="process-item">
+                          <span>03</span>
+                          <div>
+                            <h6>Wet Area Sanitization</h6>
+                            <p>
+                              Kitchen and bathrooms receive concentrated
+                              attention: degreasing of exhausts, descaling of
+                              taps, and deep scrubbing of all tiles.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <div class="process-item">
+                          <span>04</span>
+                          <div>
+                            <h6>Final Polish & Audit</h6>
+                            <p>
+                              Final floor scrubbing, glass cleaning, and a
+                              quality inspection by our lead supervisor to
+                              ensure the Luminous standard is met.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <button
+      type="button"
+      class="service-top-indicator"
+      id="serviceTopIndicator"
+      aria-label="Back to top"
+      aria-hidden="true"
+      title="Back to top"
+    >
+      <span class="service-top-indicator-icons" aria-hidden="true">
+        <i class="bi bi-chevron-up"></i>
+        <i class="bi bi-chevron-up"></i>
+      </span>
+    </button>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/core/components-loader.js"></script>
+    <script src="assets/js/core/app.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const root = document.getElementById("serviceDropdowns");
+        if (!root) return;
+
+        const cards = Array.from(root.querySelectorAll(".service-dropdown-card"));
+
+        const setOpenState = (card, isOpen) => {
+          const toggle = card.querySelector(".service-dropdown-toggle");
+          const panel = card.querySelector(".service-dropdown-panel");
+          if (!toggle || !panel) return;
+
+          card.classList.toggle("is-open", isOpen);
+          toggle.setAttribute("aria-expanded", String(isOpen));
+          panel.style.maxHeight = isOpen ? `${panel.scrollHeight}px` : "0px";
+        };
+
+        cards.forEach((card, index) => {
+          const toggle = card.querySelector(".service-dropdown-toggle");
+          if (!toggle) return;
+
+          setOpenState(card, card.classList.contains("is-open") && index === 0);
+
+          toggle.addEventListener("click", () => {
+            const shouldOpen = !card.classList.contains("is-open");
+            cards.forEach((item) => setOpenState(item, false));
+            if (shouldOpen) setOpenState(card, true);
+          });
+        });
+
+        window.addEventListener("resize", () => {
+          cards.forEach((card) => {
+            if (!card.classList.contains("is-open")) return;
+            const panel = card.querySelector(".service-dropdown-panel");
+            if (panel) panel.style.maxHeight = `${panel.scrollHeight}px`;
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

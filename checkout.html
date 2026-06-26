@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Complete your cleaning service booking and payment details securely."
+    />
+    <title>Cleaning Services | Checkout</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"
+    ></script>
+    <link rel="stylesheet" href="assets/css/layout/header.css" />
+    <link rel="stylesheet" href="assets/css/layout/footer.css" />
+    <link rel="stylesheet" href="assets/css/pages/checkout.css" />
+  </head>
+
+  <body>
+    <div
+      class="page-loader"
+      id="page-loader"
+      aria-live="polite"
+      aria-label="Loading page"
+    >
+      <img
+        src="assets/images/colorLogo.png"
+        alt="Loading logo"
+        class="loader-logo"
+      />
+    </div>
+    <div id="header-placeholder"></div>
+
+    <div class="custom_container">
+      <div class="checkout-page-content">
+        <div class="row g-4 lg:g-5">
+          <div class="col-12 col-lg-8 pe-lg-4">
+            <form id="checkoutForm" class="checkout-form" novalidate>
+              <div
+                class="checkout-section checkout-section-collapsible is-open mb-1 mb-md-2 mb-lg-3"
+              >
+                <button
+                  type="button"
+                  class="checkout-section-toggle"
+                  aria-expanded="true"
+                  onclick="toggleCheckoutSection(this)"
+                >
+                  <span
+                    class="section-title d-flex align-items-center gap-2 mb-0"
+                  >
+                    <img
+                      src="assets/images/outline_user.png"
+                      alt="Contact Icon"
+                    />
+                    <span>Contact Details</span>
+                  </span>
+                  <i class="bi bi-chevron-down"></i>
+                </button>
+
+                <div class="checkout-section-body">
+                  <div class="row">
+                    <div class="col-12 col-md-6">
+                      <div class="form-group-custom mb-0">
+                        <label>Full Name <span class="required-mark">*</span></label>
+                        <input
+                          id="checkoutFullName"
+                          name="fullName"
+                          type="text"
+                          class="form-control-underline"
+                          placeholder="Enter Your Full Name"
+                          autocomplete="name"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                      <div class="form-group-custom mb-0">
+                        <label>Phone Number <span class="required-mark">*</span></label>
+                        <input
+                          id="checkoutPhone"
+                          name="phone"
+                          type="tel"
+                          class="form-control-underline"
+                          placeholder="01XXXXXXXXX"
+                          inputmode="tel"
+                          autocomplete="tel"
+                          maxlength="14"
+                          title="Use a valid Bangladesh mobile number, like 017XXXXXXXX or +88017XXXXXXXX."
+                          required
+                        />
+                      </div>
+                    </div>
+                  <div class="col-12">
+                      <div class="form-group-custom mt-3 mb-0">
+                        <label>Email Address</label>
+                        <input
+                          id="checkoutEmail"
+                          name="email"
+                          type="email"
+                          class="form-control-underline"
+                          placeholder="Enter Your Email Address"
+                          autocomplete="email"
+                        />
+                      </div>
+                    </div> 
+                  </div>
+                </div>
+              </div>
+
+             
+
+              <div
+                class="checkout-section checkout-section-collapsible mb-1 mb-md-2 mb-lg-3"
+              >
+                <button
+                  type="button"
+                  class="checkout-section-toggle"
+                  aria-expanded="false"
+                  onclick="toggleCheckoutSection(this)"
+                >
+                  <span
+                    class="section-title d-flex align-items-center gap-2 mb-0"
+                  >
+                    <img
+                      src="assets/images/outline_location.png"
+                      alt="Address Icon"
+                    />
+                    <span>Service Address</span>
+                  </span>
+                  <i class="bi bi-chevron-down"></i>
+                </button>
+
+                <div class="checkout-section-body">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="form-group-custom">
+                        <label>Street Address <span class="required-mark">*</span></label>
+                        <textarea
+                          id="checkoutStreetAddress"
+                          name="streetAddress"
+                          class="form-control-underline"
+                          placeholder="Flat/Level, Building No., Road No., Block, Sector, Dhaka"
+                          autocomplete="street-address"
+                          rows="2"
+                          required
+                        ></textarea>
+                      </div>
+                    </div>
+                
+                    <div class="col-12">
+                      <div class="form-group-custom select-wrapper select2-wrapper mb-0">
+                        <label>Area (Dhaka) <span class="required-mark">*</span></label>
+                        <select
+                          id="checkoutArea"
+                          name="area"
+                          class="form-control-underline"
+                          data-placeholder="Select your area"
+                          required
+                        >
+                          <option value=""></option>
+                          <option value="gulshan">Gulshan</option>
+                          <option value="banani">Banani</option>
+                          <option value="dhanmondi">Dhanmondi</option>
+                          <option value="uttara">Uttara</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+ <div
+                class="checkout-section checkout-section-collapsible mb-1 mb-md-2 mb-lg-3"
+              >
+                <button
+                  type="button"
+                  class="checkout-section-toggle"
+                  aria-expanded="false"
+                  onclick="toggleCheckoutSection(this)"
+                >
+                  <span
+                    class="section-title d-flex align-items-center gap-2 mb-0"
+                  >
+                    <img
+                      src="assets/images/outline_location.png"
+                      alt="Address Icon"
+                    />
+                    <span>Booking Schedule</span>
+                  </span>
+                  <i class="bi bi-chevron-down"></i>
+                </button>
+
+                <div class="checkout-section-body">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="form-group-custom checkout-schedule-group mb-0">
+                        <div class="row g-3 checkout-schedule-row">
+                          <div class="col-12 col-md-6">
+                            <div class="form-group-custom checkout-schedule-field mb-0">
+                              <label>Service Date <span class="required-mark">*</span></label>
+                              <div class="checkout-date-dropdown" id="checkoutDateDropdown">
+                                <button
+                                  type="button"
+                                  id="checkoutDateTrigger"
+                                  class="checkout-date-trigger"
+                                  aria-expanded="false"
+                                  aria-controls="checkoutDateMenu"
+                                >
+                                  <span id="checkoutDateDisplay" class="checkout-date-display">Select date</span>
+                                  <i class="bi bi-chevron-down"></i>
+                                </button>
+                                <div
+                                  id="checkoutDateMenu"
+                                  class="checkout-date-menu"
+                                  aria-hidden="true"
+                                >
+                                  <div class="checkout-date-header">
+                                    <button type="button" id="checkoutDatePrev" class="checkout-date-nav" aria-label="Previous month">
+                                      <i class="bi bi-chevron-left"></i>
+                                    </button>
+                                    <span id="checkoutDateMonthLabel" class="checkout-date-month-label">June 2026</span>
+                                    <button type="button" id="checkoutDateNext" class="checkout-date-nav" aria-label="Next month">
+                                      <i class="bi bi-chevron-right"></i>
+                                    </button>
+                                  </div>
+                                  <div class="checkout-date-weekdays" aria-hidden="true">
+                                    <span>Su</span>
+                                    <span>Mo</span>
+                                    <span>Tu</span>
+                                    <span>We</span>
+                                    <span>Th</span>
+                                    <span>Fr</span>
+                                    <span>Sa</span>
+                                  </div>
+                                  <div id="checkoutDateGrid" class="checkout-date-grid"></div>
+                                  <div class="checkout-date-actions">
+                                    <button type="button" id="checkoutDateClear" class="checkout-date-action-link">Clear</button>
+                                    <button type="button" id="checkoutDateToday" class="checkout-date-action-link">Today</button>
+                                  </div>
+                                </div>
+                              </div>
+                              <input
+                                id="checkoutServiceDate"
+                                name="serviceDate"
+                                type="hidden"
+                                required
+                              />
+                            </div>
+                          </div>
+                          <div class="col-12 col-md-6">
+                            <div class="form-group-custom checkout-schedule-field mb-0">
+                              <label>Service Time <span class="required-mark">*</span></label>
+                              <div class="checkout-time-dropdown" id="checkoutTimeDropdown">
+                                <button
+                                  type="button"
+                                  id="checkoutTimeTrigger"
+                                  class="checkout-time-trigger"
+                                  aria-expanded="false"
+                                  aria-controls="checkoutTimeMenu"
+                                >
+                                  <span id="checkoutTimeDisplay" class="checkout-time-display">Select time</span>
+                                  <i class="bi bi-chevron-down"></i>
+                                </button>
+                                <div
+                                  id="checkoutTimeMenu"
+                                  class="checkout-time-menu"
+                                  aria-hidden="true"
+                                >
+                                  <div class="checkout-time-menu-grid">
+                                    <div class="checkout-time-menu-field">
+                                      <label>Hour</label>
+                                      <div id="checkoutHourOptions" class="checkout-time-options"></div>
+                                    </div>
+                                    <div class="checkout-time-menu-field">
+                                      <label>Minute</label>
+                                      <div id="checkoutMinuteOptions" class="checkout-time-options"></div>
+                                    </div>
+                                    <div class="checkout-time-menu-field">
+                                      <label>AM/PM</label>
+                                      <div id="checkoutPeriodOptions" class="checkout-time-options"></div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <input id="checkoutServiceHour" type="hidden" />
+                              <input id="checkoutServiceMinute" type="hidden" />
+                              <input id="checkoutServicePeriod" type="hidden" />
+                              <input
+                                id="checkoutServiceTime"
+                                name="serviceTime"
+                                type="hidden"
+                                required
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="checkout-section checkout-section-collapsible checkout-section-payment mb-4"
+              >
+                <button
+                  type="button"
+                  class="checkout-section-toggle"
+                  aria-expanded="false"
+                  onclick="toggleCheckoutSection(this)"
+                >
+                  <span
+                    class="section-title d-flex align-items-center gap-2 mb-0"
+                  >
+                    <img
+                      src="assets/images/outline_money.png"
+                      alt="Payment Icon"
+                    />
+                    <span>Payment Method</span>
+                  </span>
+                  <i class="bi bi-chevron-down"></i>
+                </button>
+
+                <div class="checkout-section-body">
+                  <button
+                    type="button"
+                    class="payment-dropdown-toggle d-sm-none"
+                    aria-expanded="false"
+                    aria-controls="payment-list"
+                    onclick="togglePaymentDropdown()"
+                  >
+                    <span class="payment-dropdown-label">Cash Payment</span>
+                    <i class="bi bi-chevron-down"></i>
+                  </button>
+
+                  <div class="payment-list" id="payment-list">
+                    <div
+                      class="payment-option-card active"
+                      role="radio"
+                      aria-checked="true"
+                      tabindex="0"
+                      onclick="selectPaymentMethod(this)"
+                    >
+                      <div class="payment-option-main">
+                        <div class="custom-radio-ring">
+                          <div class="custom-radio-dot"></div>
+                        </div>
+                        <div class="payment-option-content">
+                          <span class="payment-option-icon">
+                            <img src="assets/images/cash.png" alt="Cash Icon" />
+                          </span>
+                          <div class="payment-option-copy">
+                            <p class="payment-option-title">Cash Payment</p>
+                            <p class="payment-option-description">
+                              Pay after service completion
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <input
+                        type="radio"
+                        name="payment"
+                        value="cash"
+                        checked
+                        class="d-none"
+                      />
+                    </div>
+
+                    <div
+                      class="payment-option-card"
+                      role="radio"
+                      aria-checked="false"
+                      tabindex="0"
+                      onclick="selectPaymentMethod(this)"
+                    >
+                      <div class="payment-option-main">
+                        <div class="custom-radio-ring">
+                          <div class="custom-radio-dot"></div>
+                        </div>
+                        <div class="payment-option-content">
+                          <span class="payment-option-icon">
+                            <img
+                              src="assets/images/outline_bank.png"
+                              alt="Bank Transfer Icon"
+                            />
+                          </span>
+                          <div class="payment-option-copy">
+                            <p class="payment-option-title">Bank Transfer</p>
+                            <p class="payment-option-description">
+                              Direct deposit to SCB or City Bank
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <input
+                        type="radio"
+                        name="payment"
+                        value="bank"
+                        class="d-none"
+                      />
+                    </div>
+
+                    <div
+                      class="payment-option-card"
+                      role="radio"
+                      aria-checked="false"
+                      tabindex="0"
+                      onclick="selectPaymentMethod(this)"
+                    >
+                      <div class="payment-option-main">
+                        <div class="custom-radio-ring">
+                          <div class="custom-radio-dot"></div>
+                        </div>
+                        <div class="payment-option-content">
+                          <span class="payment-option-icon">
+                            <img
+                              src="assets/images/online_banking.png"
+                              alt="Mobile Payment Icon"
+                            />
+                          </span>
+                          <div class="payment-option-copy">
+                            <p class="payment-option-title">
+                              Mobile Payment (bKash/Nagad)
+                            </p>
+                            <p class="payment-option-description">
+                              Secure digital wallet transfer
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <input
+                        type="radio"
+                        name="payment"
+                        value="mobile"
+                        class="d-none"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="col-12 col-lg-4 checkout-summary-column">
+            <div class="summary-sidebar shadow-sm">
+              <div class="summary-header">
+                <h5 class="order-summary-title">Order Summary</h5>
+                <p id="orderScheduleSummary" class="order-schedule">
+                  Select your service date and time
+                </p>
+              </div>
+
+              <div class="summary-content p-4">
+                <div
+                  class="d-flex justify-content-between align-items-start pb-3 mb-3 border-b"
+                >
+                  <div>
+                    <h6 class="house-cleaning">House Deep Cleaning</h6>
+                    <p class="sft-area">1,500 SFT AREA</p>
+                  </div>
+                  <span class="bdt-amount">৳ BDT 6,000</span>
+                </div>
+
+                <div
+                  class="pb-3 mb-3 border-b style"
+                  style="border-bottom: 1px solid #f3f4f6; font-size: 13px"
+                >
+                  <div class="d-flex justify-content-between mb-2.5">
+                    <span class="services_text">Subtotal</span>
+                    <span class="services_amount">৳ BDT 6,000</span>
+                  </div>
+                  <div
+                    class="d-flex justify-content-between mb-2.5 text-secondary fw-medium"
+                  >
+                    <span class="services_text">Service Fee</span>
+                    <span class="services_amount">৳ BDT 300</span>
+                  </div>
+                  <div
+                    class="d-flex justify-content-between mb-2.5 text-secondary fw-medium"
+                  >
+                    <span class="services_text">Discount 10%</span>
+                    <span class="services_amount">৳ BDT 600</span>
+                  </div>
+                  <div
+                    class="d-flex justify-content-between text-secondary fw-medium"
+                  >
+                    <span class="services_text">Transport Allowance</span>
+                    <span class="services_amount">৳ BDT 200</span>
+                  </div>
+                </div>
+
+                <div
+                  class="d-flex justify-content-between align-items-center mb-4"
+                >
+                  <span class="total_text">Total Amount</span>
+                  <span class="total_amount">৳ BDT 6,500</span>
+                </div>
+
+                <button
+                  type="submit"
+                  form="checkoutForm"
+                  class="btn-complete-order"
+                >
+                  <span>Complete the Order</span>
+                  <svg
+                    width="14"
+                    height="14"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M14 5l7 7m0 0l-7 7m7-7H3"
+                    ></path>
+                  </svg>
+                </button>
+
+                <p class="by_text">
+                  By clicking "Complete the Order", you agree to our
+                  <a
+                    href="terms.html"
+                    class="text-decoration-underline text-secondary"
+                    >Terms of Service</a
+                  >
+                  and
+                  <a
+                    href="privacy.html"
+                    class="text-decoration-underline text-secondary"
+                    >Privacy Policy</a
+                  >.
+                </p>
+              </div>
+
+              <div class="guarantee-box d-flex align-items-start gap-3">
+                <div
+                  style="
+                    color: var(--theme-teal);
+                    flex-shrink: 0;
+                    margin-top: 2px;
+                  "
+                >
+                  <img src="assets/images/security.png" alt="Guarantee Icon" />
+                </div>
+                <p
+                  class="mb-0 text-secondary"
+                  style="font-size: 11px; line-height: 1.4"
+                >
+                  <span class="fw-bold text-dark"
+                    >100% Satisfaction Guarantee.</span
+                  >
+                  If you aren't happy with the cleaning, we'll come back and
+                  redo it for free.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="footer-placeholder"></div>
+
+    <button
+      type="button"
+      class="service-top-indicator"
+      id="serviceTopIndicator"
+      aria-label="Back to top"
+      aria-hidden="true"
+      title="Back to top"
+    >
+      <span class="service-top-indicator-icons" aria-hidden="true">
+        <i class="bi bi-chevron-up"></i>
+        <i class="bi bi-chevron-up"></i>
+      </span>
+    </button>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/core/components-loader.js"></script>
+    <script src="assets/js/core/app.js"></script>
+  </body>
+</html>

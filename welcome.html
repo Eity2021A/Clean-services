@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Welcome page for your cleaning service account experience."
+    />
+    <title>Cleaning Services | Welcome</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"
+    ></script>
+    <link rel="stylesheet" href="assets/css/layout/header.css" />
+    <link rel="stylesheet" href="assets/css/pages/welcome.css" />
+    <link rel="stylesheet" href="assets/css/layout/footer.css" />
+  </head>
+
+  <body>
+    <div
+      class="page-loader"
+      id="page-loader"
+      aria-live="polite"
+      aria-label="Loading page"
+    >
+      <img
+        src="assets/images/colorLogo.png"
+        alt="Loading logo"
+        class="loader-logo"
+      />
+    </div>
+
+    <div id="header-placeholder"></div>
+
+    <main class="welcome-page">
+      <section class="welcome-shell" aria-labelledby="welcomeTitle">
+        <div class="welcome-hero text-center">
+          <!-- <div class="welcome-badge" aria-hidden="true">
+            <img
+              src="assets/images/colorLogo.png"
+              alt="Company Logo"
+              class="welcome-logo"
+            />
+          </div> -->
+          <h1 class="welcome-title" id="welcomeTitle">Create Account</h1>
+          <p class="welcome-subtitle">Join us and get started in minutes</p>
+        </div>
+
+        <div class="welcome-card">
+          <div class="welcome-status" aria-hidden="true">
+            <img
+              src="assets/images/container.png"
+              alt="Success Icon"
+              class="welcome-status-icon"
+            />
+          </div>
+
+          <div class="welcome-copy text-center">
+            <h2 class="welcome-card-title">Welcome aboard, Jhone</h2>
+            <p class="welcome-card-subtitle">
+              Your account has been created successfully
+            </p>
+          </div>
+
+          <form
+            id="getStartedForm"
+            class="welcome-form"
+            onsubmit="event.preventDefault()"
+          >
+            <button type="submit" class="welcome-btn">
+              <span>Get Started</span>
+              <i class="bi bi-arrow-right"></i>
+            </button>
+          </form>
+        </div>
+      </section>
+    </main>
+    <div id="footer-placeholder"></div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/core/components-loader.js"></script>
+    <script src="assets/js/core/app.js"></script>
+  </body>
+</html>

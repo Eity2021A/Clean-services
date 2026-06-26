@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="The page you were looking for could not be found."
+    />
+    <title>Cleaning Services | 404</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"
+    ></script>
+    <link rel="stylesheet" href="assets/css/layout/header.css" />
+    <link rel="stylesheet" href="assets/css/layout/footer.css" />
+    <link rel="stylesheet" href="assets/css/pages/404.css" />
+  </head>
+
+  <body>
+    <div
+      class="page-loader"
+      id="page-loader"
+      aria-live="polite"
+      aria-label="Loading page"
+    >
+      <img
+        src="assets/images/colorLogo.png"
+        alt="Loading logo"
+        class="loader-logo"
+      />
+    </div>
+
+    <div id="header-placeholder"></div>
+
+    <main class="not-found-page">
+      <section class="not-found-shell" aria-labelledby="notFoundTitle">
+        <div class="not-found-hero text-center">
+          <p class="not-found-eyebrow">Not Found Page</p>
+          <!-- <h1 class="not-found-title" id="notFoundTitle">This page ran dry</h1>
+          <p class="not-found-subtitle">
+            The bucket is nearly empty, and the page you were trying to reach is
+            not available right now.
+          </p> -->
+        </div>
+
+        <div class="not-found-card">
+          <div class="not-found-illustration-wrap">
+            <img
+              src="assets/images/bucket-404.png"
+              alt="A water bucket with very little water left and a few drops leaking out"
+              class="not-found-illustration"
+            />
+          </div>
+
+          <div class="not-found-copy text-center">
+            <h2 class="not-found-card-title">Looks like this link is empty</h2>
+            <p class="not-found-card-subtitle">
+              Try heading back home, explore our services, or contact us if you
+              need help finding the right page.
+            </p>
+          </div>
+
+          <div class="not-found-actions">
+            <a href="index.html" class="not-found-btn not-found-btn-primary">
+              <span>Back To Home</span>
+              <i class="bi bi-arrow-right"></i>
+            </a>
+            <a
+              href="services.html"
+              class="not-found-btn not-found-btn-secondary"
+            >
+              <span>View Services</span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/core/components-loader.js"></script>
+    <script src="assets/js/core/app.js"></script>
+  </body>
+</html>

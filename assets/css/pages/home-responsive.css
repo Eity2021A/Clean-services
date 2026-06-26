@@ -1,0 +1,879 @@
+﻿/* ==================Hero Section======================= */
+@media (max-width: 1200px) {
+    .hero-section {
+
+        --hero-height: clamp(340px, 48vw, 620px);
+        padding: 0;
+        flex-direction: column;
+        color: var(--white);
+    }
+
+    .hero-section .carousel-caption {
+        max-width: 700px;
+    }
+
+    .main_header {
+        font-size: 45px;
+        line-height: 1;
+        width: 100%;
+    }
+}
+
+@media (max-width: 992px) {
+    .hero-section {
+        margin-top: 70px;
+        padding: 0;
+        flex-direction: column;
+        color: var(--white);
+    }
+
+    .gallery-section {
+        padding: 60px 0px 0px 0px;
+    }
+
+    .main_header {
+        font-size: 42px;
+        line-height: 1;
+        width: 100%;
+    }
+
+    .subTitle {
+        font-size: 14px;
+        width: 100%;
+    }
+
+    .btn-primary-custom {
+        margin-top: 8px;
+    }
+
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        --hero-height: auto;
+        min-height: auto;
+    }
+
+    .gallery-section {
+        padding: 40px 0px 0px 0px;
+    }
+
+    .main_header {
+        font-size: 32px;
+        line-height: 1.2;
+        padding-top: 2px;
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-section {
+        --hero-height: auto;
+        min-height: auto;
+        padding: 0;
+        margin-top: 70px;
+    }
+
+    .main_header {
+        font-size: 24px;
+        line-height: 1.2;
+        padding-top: 2px;
+        width: 100%;
+    }
+
+    .subTitle {
+        padding-top: 10px;
+        line-height: 1.3;
+        padding-top: 0px;
+        font-size: 10px;
+        max-width: 80%;
+    }
+
+    .video-btn {
+        padding: 10px 24px;
+        font-size: 12px;
+    }
+}
+
+/* ======================== Stats Component ================================== */
+
+@media (max-width: 1100px) {
+    .text-info-number {
+        font-size: 30px;
+    }
+
+    .text-subtitle {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 992px) {
+    .stat-component {
+        padding: 60px 0px 0px 0px;
+    }
+
+    .trusted-header {
+        font-size: 30px;
+    }
+
+    .text-info-number {
+        font-size: 23px;
+        padding: 0px 0px;
+    }
+
+    .text-subtitle {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 576px) {
+    .stat-component {
+        padding: 40px 0px 0px 0px;
+    }
+
+    .trusted-carousel,
+    .trusted-carousel:hover,
+    .trusted-logo-item img,
+    .trusted-logo-item img:hover,
+    .trustedBox,
+    .trustedBox:hover,
+    .trustedBox:hover::before,
+    .trustedBox:hover .text-info-number,
+    .trustedBox:hover .text-subtitle {
+        transform: none;
+    }
+
+    .trusted-carousel:hover,
+    .trustedBox:hover {
+        box-shadow: none;
+    }
+
+    .trusted-logo-item img:hover {
+        filter: grayscale(12%);
+        opacity: 0.95;
+    }
+
+    .trustedBox::before,
+    .trustedBox:hover::before {
+        opacity: 0;
+    }
+
+    .trustedBox {
+        margin-top: 0px;
+        padding: 4px;
+    }
+
+    .trusted-header {
+        font-size: 22px;
+        margin-bottom: 6px;
+    }
+
+    .text-info-number {
+        font-size: 24px;
+        margin-top: 14px;
+    }
+
+    .text-subtitle {
+        font-size: 12px;
+    }
+}
+
+@media (hover: none), (pointer: coarse) {
+    .trusted-carousel:hover,
+    .trusted-logo-item img:hover,
+    .trustedBox:hover,
+    .trustedBox:hover::before,
+    .trustedBox:hover .text-info-number,
+    .trustedBox:hover .text-subtitle {
+        transform: none;
+    }
+
+    .trusted-carousel:hover,
+    .trustedBox:hover {
+        box-shadow: none;
+    }
+
+    .trusted-logo-item img:hover {
+        filter: grayscale(12%);
+        opacity: 0.95;
+    }
+
+    .trustedBox:hover::before {
+        opacity: 0;
+    }
+}
+
+@media (max-width: 420px) {
+    .text-info-number {
+        font-size: 20px;
+    }
+
+    .trustedBox {
+        padding: 4px;
+    }
+}
+
+/* ===================== Top Notch Services ===================== */
+
+@media (max-width: 1200px) {
+    .topNotch_header {
+        font-size: 34px;
+    }
+}
+
+@media (max-width: 1100px) {
+    .service-title {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 992px) {
+    .topNotch_header {
+        font-size: 32px;
+    }
+
+    .topNotch_subtitle {
+        font-size: 14px;
+    }
+
+    .button {
+        font-size: 12px;
+    }
+
+    .service-title {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    .service-title {
+        font-size: 12px;
+    }
+
+    .see-all {
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 576px) {
+    .top-notch {
+        padding: 60px 0px 0px 0px;
+    }
+
+    /* .service-card-link {
+        height: 145px;
+    } */
+
+    .topNotch_header {
+        font-size: 24px;
+        text-align: center;
+    }
+
+    .topNotch_subtitle {
+        font-size: 12px;
+        text-align: center;
+        width: 100%;
+    }
+
+    .see-all {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .button {
+        font-size: 12px;
+    }
+
+    .service-title {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 420px) {
+    .service-card-link {
+        height: 180px;
+    }
+
+    .top-notch {
+        padding: 40px 0px 0px 0px;
+    }
+
+    .service-title {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 380px) {
+    .service-card-link {
+        height: 160px;
+    }
+
+}
+
+/* ======================== Happy Clients ============================ */
+@media (max-width: 1200px) {
+    .section-title {
+        font-size: 34px;
+    }
+}
+
+@media (max-width: 992px) {
+    .section-title {
+        font-size: 32px;
+    }
+
+    .section-subtitle {
+        font-size: 14px;
+    }
+
+    .testimonial-text {
+        font-size: 14px;
+    }
+
+    .client-name {
+        font-size: 18px;
+    }
+
+    .client-role {
+        font-size: 12px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .testimonial-item {
+        flex-basis: 50%;
+    }
+}
+
+@media (min-width: 992px) {
+    .testimonial-item {
+        flex-basis: 33.3333%;
+    }
+}
+
+@media (max-width: 576px) {
+    .testimonial-card {
+        background: #fff;
+        border-radius: 14px;
+        padding: 24px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        min-height: 320px;
+        height: 100%;
+    }
+
+    .testimonial-section {
+        padding: 60px 0px 0px 0px;
+    }
+
+    .section-title {
+        font-size: 24px;
+        text-align: center;
+    }
+
+    .section-subtitle {
+        font-size: 12px;
+        text-align: center;
+        width: 100%;
+    }
+
+    .testimonial-text {
+        font-size: 12px;
+        text-align: center;
+    }
+
+    .client-name {
+        font-size: 16px;
+    }
+
+    .client-role {
+        font-size: 10px;
+    }
+
+    .testimonial-card {
+        text-align: center;
+    }
+
+    .client-info {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .client-left {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-align: center;
+    }
+
+    .review-score {
+        text-align: center;
+    }
+}
+
+/* ====================== Choose Us ========================== */
+@media (max-width: 1200px) {
+    .chooseUs_header {
+        font-size: 34px;
+    }
+
+    .chooseUs_subtitle {
+        font-size: 16px;
+        width: 100%;
+    }
+
+    .feature-card {
+        padding: 24px 20px;
+    }
+
+    /* .feature-icon {
+        width: 60px;
+    } */
+
+    .chooseUs_feature_title {
+        font-size: 18px;
+        line-height: 20px;
+    }
+
+    .chooseUs_feature_description {
+        line-height: 18px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 992px) {
+    .why-choose-us {
+        padding: 60px 0px 0px 0px;
+    }
+
+    .chooseUs_header {
+        font-size: 32px;
+    }
+
+    .chooseUs_subtitle {
+        font-size: 16px;
+        width: 100%;
+    }
+
+    .feature-card {
+        padding: 24px 10px;
+    }
+   .feature-icon {
+        width: 60px;
+        height: 60px;
+    }
+
+    .chooseUs_feature_title {
+        font-size: 16px;
+        line-height: 20px;
+    }
+
+    .chooseUs_feature_description {
+        line-height: 18px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    .why-choose-us {
+        padding: 40px 0px 0px 0px;
+    }
+
+    .feature-card {
+        padding: 20px 14px;
+    }
+
+    .feature-icon {
+        width: 50px;
+        height: 50px;
+    } 
+
+    .chooseUs_feature_title {
+        font-size: 15px;
+        line-height: 20px;
+    }
+
+    .chooseUs_feature_description {
+        line-height: 18px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 576px) {
+    .why-choose-us {
+        padding: 40px 0px 0px 0px;
+    }
+
+    .why-choose-us .row {
+        row-gap: 0px;
+    }
+
+    .chooseUs_header {
+        font-size: 24px;
+        text-align: center;
+    }
+
+    .chooseUs_subtitle {
+        font-size: 12px;
+        text-align: center;
+        width: 100%;
+    }
+
+    .feature-card {
+        padding: 20px 14px;
+        min-height: auto;
+    }
+
+    /* .feature-icon {
+        width: 42px;
+        height: 42px;
+    } */
+
+    .chooseUs_feature_title {
+        font-size: 14px;
+        line-height: 20px;
+        max-width: none;
+    }
+
+    .chooseUs_feature_description {
+        line-height: 18px;
+        font-size: 12px;
+    }
+}
+
+@media (hover: none), (pointer: coarse) {
+    .feature-card:hover {
+        transform: none;
+        box-shadow: 0 10px 25px rgba(28, 170, 184, 0.15);
+        background-color: #ffffff;
+    }
+}
+
+/* =======================Impact of Cleanliness========================== */
+@media (max-width: 1350px) {
+    .about-title {
+        font-size: 38px;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+    .about-description {
+        font-size: 20px;
+        line-height: 30px;
+        margin-bottom: 15px;
+    }
+
+    .feature-item {
+        margin-bottom: 14px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .about-title {
+        font-size: 34px;
+    }
+}
+
+@media (max-width: 992px) {
+    .about-section {
+        padding: 60px 0px 0px 0px;
+    }
+
+    .about-title {
+        font-size: 32px;
+        width: 100%;
+    }
+
+    .about-description {
+        font-size: 16px;
+        line-height: 1.8;
+        width: 100%;
+    }
+
+    .feature-item {
+        font-size: 14px;
+    }
+
+    .about-content {
+        margin-top: 20px;
+        padding-left: 0px;
+    }
+
+    .btn-booking {
+        font-size: 12px;
+        padding: 10px 24px;
+    }
+
+    .btn-outline-custom {
+        font-size: 12px;
+        padding: 10px 34px;
+    }
+}
+
+@media (max-width: 576px) {
+    .about-section {
+        padding: 40px 0px 0px 0px;
+    }
+
+    .about-text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .about-title {
+        font-size: 24px;
+        text-align: center;
+        width: 100%;
+    }
+
+    .about-description {
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .feature-item {
+        font-size: 12px;
+    }
+
+    .pg-feature-list {
+        gap: 14px 16px;
+    }
+
+    .pg-feature-list .feature-item {
+        flex: 0 0 calc(50% - 8px);
+        margin-bottom: 0;
+        font-size: 12px;
+    }
+
+    .pg-feature-list .feature-item img {
+        width: 16px;
+        height: 16px;
+    }
+
+    .btn-booking {
+        font-size: 12px;
+        padding: 10px 20px;
+    }
+
+    .btn-outline-custom {
+        font-size: 10px;
+        padding: 0px 20px;
+    }
+}
+
+/* @media (max-width: 420px) {
+    .feature-list {
+        display: inline-block;
+    }
+
+} */
+
+/* ===================== How it works ===================== */
+
+@media (max-width: 1200px) {
+    .works {
+        padding: 60px 0px 0px 0px;
+    }
+
+    .hows_title {
+        font-size: 34px;
+    }
+
+    .hows_subtitle {
+        font-size: 16px;
+        width: 100%;
+    }
+}
+
+@media (max-width: 992px) {
+    .works {
+        padding: 40px 0px 0px 0px;
+    }
+
+    .hows_title {
+        font-size: 32px;
+    }
+
+    .hows_subtitle {
+        font-size: 16px;
+        width: 100%;
+    }
+
+    .services_title {
+        font-size: 16px;
+    }
+
+    .section_subtitle {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 576px) {
+    .works {
+        padding: 40px 0px 0px 0px;
+    }
+
+    .hows_title {
+        font-size: 24px;
+        text-align: center;
+    }
+
+    .hows_subtitle {
+        font-size: 14px;
+        text-align: center;
+        width: 100%;
+    }
+
+    .services_title {
+        font-size: 16px;
+    }
+
+    .section_subtitle {
+        font-size: 12px;
+    }
+}
+
+/* ===================== Project Gallery ===================== */
+
+@media (max-width: 992px) {
+    .gallery-title {
+        font-size: 32px;
+    }
+
+    .gallery-subtitle {
+        font-size: 16px;
+        width: 100%;
+    }
+
+    .pg-masonry {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .pg-toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .pg-view-all {
+        align-self: center;
+    }
+}
+
+@media (max-width: 574px) {
+    .gallery-title {
+        font-size: 24px;
+        text-align: center;
+    }
+
+    .gallery-subtitle {
+        font-size: 14px;
+        text-align: center;
+        width: 100%;
+    }
+
+    .gallery-section .row>[class*="col-"] {
+        width: 100%;
+    }
+
+    .gallery-img-wrapper img {
+        min-height: 220px;
+    }
+
+    .pg-masonry {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+    }
+
+    .pg-view-all {
+        padding: 8px 14px;
+        font-size: 13px;
+    }
+
+    .pg-card figcaption {
+        opacity: 1;
+        transform: none;
+    }
+
+    .pg-kicker {
+        font-size: 13px;
+        text-align: center;
+    }
+}
+
+/* ===================== FAQ ===================== */
+
+@media (max-width: 992px) {
+    .faq-section {
+        padding: 60px 0px 0px 0px;
+    }
+
+    .faq-title {
+        font-size: 32px;
+    }
+
+    .faq-subtitle {
+        font-size: 16px;
+        width: 100%;
+    }
+
+    .faq-question {
+        font-size: 18px;
+    }
+
+    .faq-answer {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 576px) {
+    .faq-section {
+        padding: 40px 0px 0px 0px;
+    }
+
+    .faq-title {
+        font-size: 24px;
+        text-align: center;
+    }
+
+    .faq-subtitle {
+        font-size: 14px;
+        text-align: center;
+        width: 100%;
+    }
+
+    .faq-question {
+        font-size: 14px;
+        padding: 20px 24px;
+    }
+
+    .faq-answer {
+        font-size: 12px;
+    }
+
+    .faq-section {
+        padding: 60px 0px 0px 0px;
+    }
+}
+
+/* ==================== Map ====================== */
+
+@media (max-width: 768px) {
+    .map-wrapper {
+        border-radius: 20px;
+    }
+
+    .map-wrapper iframe {
+        height: 350px;
+    }
+
+    .bottom-bg {
+        height: 80px;
+        margin-top: -40px;
+    }
+}

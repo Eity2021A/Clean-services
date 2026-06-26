@@ -1,0 +1,283 @@
+<header class="main-header">
+  <div>
+    <div class="desktop-header d-none d-lg-block custom_container">
+      <nav class="navbar navbar-expand-lg p-0">
+        <a class="navbar-brand" href="index.html">
+          <img src="assets/images/logo.png" alt="Clean and Service logo" />
+        </a>
+
+        <div class="collapse navbar-collapse show" id="navbarContent">
+          <ul class="navbar-nav mx-auto align-items-lg-center">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="about.html">About us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="services.html">Services</a>
+            </li>
+            <!-- <li class="nav-item"><a class="nav-link" href="index.html#footer-placeholder">Contact</a></li> -->
+            <li class="nav-item">
+              <a class="nav-link" href="blog.html">Blogs</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contact.html">Contact</a>
+            </li>
+          </ul>
+
+          <div class="d-lg-flex align-items-center header-actions">
+            <div class="lang-toggle-container">
+              <input
+                type="checkbox"
+                id="languageToggle"
+                class="lang-checkbox"
+                checked
+              />
+              <label for="languageToggle" class="lang-label">
+                <i class="bi bi-globe lang-icon"></i>
+                <span class="lang-text bn">BN</span>
+                <span class="lang-text en">EN</span>
+              </label>
+            </div>
+            <div class="top-user-actions">
+              <a
+                class="header-icon-btn top-user-btn header-cart-btn"
+                href="login.html"
+                aria-label="User profile"
+              >
+                <i class="bi bi-person"></i>
+              </a>
+            </div>
+            <div class="position-relative">
+              <a
+                class="header-icon-btn header-cart-btn"
+                href="cart.html"
+                aria-label="Cart"
+              >
+                <i class="bi bi-bag"></i>
+              </a>
+              <div class="cart_length">
+                <small data-cart-count>0</small>
+              </div>
+            </div>
+            <a class="booking-btn ms-lg-4" href="contact.html">BOOKING NOW</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+  <!-- ==================Mobile Screen======================== -->
+
+  <div class="container-fluid mobile-topbar d-lg-none">
+    <div class="mobile-topbar-slot mobile-topbar-slot-start">
+      <button
+        class="mobile-icon-btn"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#mobileSidebar"
+        aria-controls="mobileSidebar"
+        aria-label="Open menu"
+      >
+        <i class="bi bi-list"></i>
+      </button>
+    </div>
+
+    <div class="mobile-topbar-slot mobile-topbar-slot-center">
+      <a class="mobile-logo" href="index.html">
+        <img src="assets/images/logo.png" alt="Clean and Service logo" />
+      </a>
+    </div>
+
+    <div class="mobile-topbar-slot mobile-topbar-slot-end" aria-hidden="true">
+      <span class="mobile-topbar-spacer"></span>
+    </div>
+  </div>
+</header>
+
+<div
+  class="offcanvas offcanvas-start mobile-sidebar"
+  tabindex="-1"
+  id="mobileSidebar"
+  aria-labelledby="mobileSidebarLabel"
+>
+  <div class="offcanvas-header">
+    <div class="signin-card">
+      <!-- <div>
+        <img src="assets/images/user.png" alt="side bar user" class="mb-2" />
+      </div> -->
+      <div>
+        <img src="assets/images/avatar_1.png" alt="side bar user" class="mb-2" />
+      </div>
+      <div>
+        <h6 id="mobileSidebarLabel" class="mobileSideBarLabel">Hello there!</h6>
+        <a href="login.html" class="signIn">Signin</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="offcanvas-body p-0">
+    <h2 class="sidebar-section-title">Services</h2>
+    <a class="sidebar-row" href="service_details.html"
+      >AC Servicing <i class="bi bi-chevron-right"></i
+    ></a>
+    <a class="sidebar-row" href="service_details.html"
+      >Floor Deep Cleaning <i class="bi bi-chevron-right"></i
+    ></a>
+    <a class="sidebar-row" href="service_details.html"
+      >House Deep Cleaning <i class="bi bi-chevron-right"></i
+    ></a>
+    <a class="sidebar-row" href="service_details_video.html"
+      >Deep Cleaning Service <i class="bi bi-chevron-right"></i
+    ></a>
+    <a class="sidebar-row" href="service_details.html"
+      >AC Servicing <i class="bi bi-chevron-right"></i
+    ></a>
+    <a class="sidebar-row" href="service_details.html"
+      >Floor Deep Cleaning <i class="bi bi-chevron-right"></i
+    ></a>
+    <a class="sidebar-row" href="service_details.html"
+      >House Deep Cleaning <i class="bi bi-chevron-right"></i
+    ></a>
+    <a class="sidebar-row" href="service_details_video.html"
+      >Deep Cleaning Service <i class="bi bi-chevron-right"></i
+    ></a>
+
+    <div class="sidebar-section-title">Quick Links</div>
+    <div class="quick-links-box">
+      <a class="sidebar-row" href="index.html">Home</a>
+      <a class="sidebar-row" href="about.html">About Us</a>
+      <a class="sidebar-row" href="services.html">Services</a>
+      <a class="sidebar-row" href="blog.html">Blogs</a>
+      <a class="sidebar-row" href="contact.html">Contact</a>
+      <div class="sidebar-lang-row">
+        <span class="sidebar-lang-label">Language</span>
+        <div class="lang-toggle-container mobile-lang-toggle">
+          <input
+            type="checkbox"
+            id="languageToggleMobile2"
+            class="lang-checkbox"
+            checked
+          />
+          <label for="languageToggleMobile2" class="lang-label">
+            <i class="bi bi-globe lang-icon"></i>
+            <span class="lang-text bn">BN</span>
+            <span class="lang-text en">EN</span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button
+  type="button"
+  class="overlay-close-btn d-lg-none"
+  data-bs-dismiss="offcanvas"
+  data-bs-target="#mobileSidebar"
+  aria-label="Close sidebar"
+></button>
+
+<nav class="mobile-bottom-nav d-lg-none" aria-label="Mobile quick navigation">
+  <a href="index.html"><i class="bi bi-house-fill"></i><span>Home</span></a>
+  <a href="services.html"
+    ><i class="bi bi-grid-3x3-gap-fill"></i><span>Service</span></a
+  >
+  <a href="cart.html"><i class="bi bi-bag-fill"></i><span>Cart</span></a>
+  <a href="login.html"><i class="bi bi-person-fill"></i><span>Profile</span></a>
+</nav>
+
+<a class="floating-call-btn" href="tel:+8801711663506" aria-label="Call now">
+  <!-- <i class="bi bi-telephone-fill"></i> -->
+  <span
+    >Call <br />
+    Now!</span
+  >
+</a>
+
+<!-- ==================== Global Floating Cart ==================== -->
+<div class="service-cart-fab">
+  <button
+    type="button"
+    id="serviceCartFab"
+    aria-label="Open cart"
+    class="service-cart-fab-btn"
+  >
+    <i class="bi bi-basket2"></i>
+    <span class="service-cart-fab-count" data-cart-fab-count>0 Items</span>
+  </button>
+  <div class="service-cart-fab-total-wrap">
+    <span class="service-cart-fab-total">৳ 9,500</span>
+  </div>
+</div>
+
+<div class="service-cart-backdrop" id="serviceCartBackdrop"></div>
+
+<aside
+  class="service-cart-drawer"
+  id="serviceCartDrawer"
+  aria-hidden="true"
+  aria-label="Shopping cart"
+>
+  <div class="service-cart-head">
+    <div>
+      <h5>Your Cart</h5>
+      <p>Clinical Precision Guaranteed</p>
+    </div>
+    <button
+      type="button"
+      class="service-cart-close"
+      id="serviceCartClose"
+      aria-label="Close cart"
+    >
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+
+  <div class="service-cart-list">
+    <div class="service-cart-item">
+      <div class="service-cart-item-head">
+        <h6>House Deep Cleaning</h6>
+        <button type="button" aria-label="Remove item">
+          <i class="bi bi-trash3"></i>
+        </button>
+      </div>
+      <p class="service-cart-desc">3,450 SQ FT PROPERTY</p>
+
+      <p class="service-cart-price">৳ 6,000</p>
+    </div>
+
+    <div class="service-cart-item">
+      <div class="service-cart-item-head">
+        <h6>AC Servicing</h6>
+        <button type="button" aria-label="Remove item">
+          <i class="bi bi-trash3"></i>
+        </button>
+      </div>
+      <p class="service-cart-desc">3,450 SQ FT PROPERTY</p>
+      <p class="service-cart-price">৳ 1,500</p>
+    </div>
+
+    <div class="service-cart-item">
+      <div class="service-cart-item-head">
+        <h6>Sofa &amp; Carpet Cleaning</h6>
+        <button type="button" aria-label="Remove item">
+          <i class="bi bi-trash3"></i>
+        </button>
+      </div>
+      <p class="service-cart-desc">3,450 SQ FT PROPERTY</p>
+      <p class="service-cart-price">৳ 2,500</p>
+    </div>
+  </div>
+
+  <div class="service-cart-foot">
+    <div class="service-cart-total">
+      <span>Total</span>
+      <strong>৳ 9,500</strong>
+    </div>
+    <!-- <a href="cart.html" class="service-cart-viewCart">View Cart</a> -->
+    <a href="checkout.html" class="service-cart-checkout"
+      >Proceed to Checkout</a
+    >
+  </div>
+</aside>

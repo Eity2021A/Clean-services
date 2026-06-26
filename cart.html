@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Review the cleaning services in your cart and proceed to checkout."
+    />
+    <title>Cleaning Services | Cart</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"
+    ></script>
+    <link rel="stylesheet" href="assets/css/layout/header.css" />
+    <link rel="stylesheet" href="assets/css/layout/footer.css" />
+    <link rel="stylesheet" href="assets/css/pages/cart.css" />
+  </head>
+
+  <body>
+    <div
+      class="page-loader"
+      id="page-loader"
+      aria-live="polite"
+      aria-label="Loading page"
+    >
+      <img
+        src="assets/images/colorLogo.png"
+        alt="Loading logo"
+        class="loader-logo img-fluid"
+      />
+    </div>
+
+    <div id="header-placeholder"></div>
+
+    <section class="cart-section">
+      <div class="custom_container">
+        <!-- Page head -->
+        <div class="cart-head">
+          <!-- <nav class="cart-breadcrumb" aria-label="breadcrumb">
+            <a href="index.html">Home</a>
+            <i class="bi bi-chevron-right"></i>
+            <a href="services.html">Services</a>
+            <i class="bi bi-chevron-right"></i>
+            <span>Cart</span>
+          </nav> -->
+          <h1 class="cart-title">
+            <i class="bi bi-bag-check"></i> Your Cart
+            <span class="cart-count" id="cartCount">0 items</span>
+          </h1>
+        </div>
+
+        <!-- Cart grid -->
+        <div class="row g-4 g-xl-5" id="cartLayout">
+          <!-- LEFT — items -->
+          <div class="col-12 col-lg-8">
+            <div class="cart-items" id="cartItems">
+              <!-- Item -->
+              <div class="cart-item" data-price="6000">
+                <div class="cart-item-thumb">
+                  <img
+                    src="assets/images/services/services_1.png"
+                    alt="House Deep Cleaning"
+                    class="img-fluid"
+                  />
+                </div>
+                <div class="cart-item-main">
+                  <div class="cart-item-top">
+                    <div>
+                      <span class="cart-item-tag">Deep Cleaning</span>
+                      <h3 class="cart-item-name">House Deep Cleaning</h3>
+                      <ul class="cart-item-meta">
+                        <li><i class="bi bi-rulers"></i> 1,500 SFT area</li>
+                        <li>
+                          <i class="bi bi-calendar3"></i> Oct 24, 10:00 AM
+                        </li>
+                      </ul>
+                    </div>
+                    <button
+                      class="cart-remove"
+                      type="button"
+                      aria-label="Remove item"
+                    >
+                      <i class="bi bi-trash3"></i>
+                    </button>
+                  </div>
+                  <div class="cart-item-bottom">
+                    <div class="qty-stepper" data-qty="1">
+                      <button
+                        type="button"
+                        class="qty-btn qty-minus"
+                        aria-label="Decrease"
+                      >
+                        <i class="bi bi-dash-lg"></i>
+                      </button>
+                      <span class="qty-val">1</span>
+                      <button
+                        type="button"
+                        class="qty-btn qty-plus"
+                        aria-label="Increase"
+                      >
+                        <i class="bi bi-plus-lg"></i>
+                      </button>
+                    </div>
+                    <div class="cart-item-price">
+                      <span class="cart-line-price">৳ 6,000</span>
+                      <small>৳ 6,000 / unit</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Item -->
+              <div class="cart-item" data-price="1500">
+                <div class="cart-item-thumb">
+                  <img
+                    src="assets/images/services/services_2.png"
+                    alt="AC Servicing"
+                    class="img-fluid"
+                  />
+                </div>
+                <div class="cart-item-main">
+                  <div class="cart-item-top">
+                    <div>
+                      <span class="cart-item-tag">Appliance</span>
+                      <h3 class="cart-item-name">AC Servicing</h3>
+                      <ul class="cart-item-meta">
+                        <li><i class="bi bi-snow"></i> Split AC, 1.5 ton</li>
+                        <li>
+                          <i class="bi bi-calendar3"></i> Oct 25, 02:00 PM
+                        </li>
+                      </ul>
+                    </div>
+                    <button
+                      class="cart-remove"
+                      type="button"
+                      aria-label="Remove item"
+                    >
+                      <i class="bi bi-trash3"></i>
+                    </button>
+                  </div>
+                  <div class="cart-item-bottom">
+                    <div class="qty-stepper" data-qty="1">
+                      <button
+                        type="button"
+                        class="qty-btn qty-minus"
+                        aria-label="Decrease"
+                      >
+                        <i class="bi bi-dash-lg"></i>
+                      </button>
+                      <span class="qty-val">1</span>
+                      <button
+                        type="button"
+                        class="qty-btn qty-plus"
+                        aria-label="Increase"
+                      >
+                        <i class="bi bi-plus-lg"></i>
+                      </button>
+                    </div>
+                    <div class="cart-item-price">
+                      <span class="cart-line-price">৳ 1,500</span>
+                      <small>৳ 1,500 / unit</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Item -->
+              <div class="cart-item" data-price="2500">
+                <div class="cart-item-thumb">
+                  <img
+                    src="assets/images/services/services_3.png"
+                    alt="Sofa Cleaning"
+                    class="img-fluid"
+                  />
+                </div>
+                <div class="cart-item-main">
+                  <div class="cart-item-top">
+                    <div>
+                      <span class="cart-item-tag">Upholstery</span>
+                      <h3 class="cart-item-name">Sofa &amp; Carpet Cleaning</h3>
+                      <ul class="cart-item-meta">
+                        <li><i class="bi bi-house-door"></i> 5-seater + rug</li>
+                        <li>
+                          <i class="bi bi-calendar3"></i> Oct 26, 11:30 AM
+                        </li>
+                      </ul>
+                    </div>
+                    <button
+                      class="cart-remove"
+                      type="button"
+                      aria-label="Remove item"
+                    >
+                      <i class="bi bi-trash3"></i>
+                    </button>
+                  </div>
+                  <div class="cart-item-bottom">
+                    <div class="qty-stepper" data-qty="1">
+                      <button
+                        type="button"
+                        class="qty-btn qty-minus"
+                        aria-label="Decrease"
+                      >
+                        <i class="bi bi-dash-lg"></i>
+                      </button>
+                      <span class="qty-val">1</span>
+                      <button
+                        type="button"
+                        class="qty-btn qty-plus"
+                        aria-label="Increase"
+                      >
+                        <i class="bi bi-plus-lg"></i>
+                      </button>
+                    </div>
+                    <div class="cart-item-price">
+                      <span class="cart-line-price">৳ 2,500</span>
+                      <small>৳ 2,500 / unit</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Continue shopping -->
+            <a href="services.html" class="cart-continue">
+              <i class="bi bi-arrow-left"></i> Continue browsing services
+            </a>
+          </div>
+
+          <!-- RIGHT — summary -->
+          <div class="col-12 col-lg-4">
+            <aside class="cart-summary">
+              <h2 class="cart-summary-title">Order Summary</h2>
+
+              <!-- Promo -->
+              <form class="cart-promo" onsubmit="return false;">
+                <i class="bi bi-tag"></i>
+                <input
+                  type="text"
+                  placeholder="Promo code"
+                  aria-label="Promo code"
+                />
+                <button type="submit">Apply</button>
+              </form>
+
+              <ul class="cart-summary-rows">
+                <li>
+                  <span>Subtotal</span>
+                  <strong id="sumSubtotal">৳ 10,000</strong>
+                </li>
+                <li>
+                  <span>Service fee</span>
+                  <strong id="sumFee">৳ 300</strong>
+                </li>
+                <li class="is-discount">
+                  <span>Discount (10%)</span>
+                  <strong id="sumDiscount">− ৳ 1,000</strong>
+                </li>
+                <li>
+                  <span>Transport allowance</span>
+                  <strong id="sumTransport">৳ 200</strong>
+                </li>
+              </ul>
+
+              <div class="cart-total">
+                <span>Total</span>
+                <strong id="sumTotal">৳ 9,500</strong>
+              </div>
+
+              <a href="checkout.html" class="cart-checkout-btn">
+                Proceed to Checkout <i class="bi bi-arrow-right"></i>
+              </a>
+
+              <div class="cart-guarantee">
+                <i class="bi bi-shield-check"></i>
+                <p>
+                  <strong>100% Satisfaction Guarantee.</strong> Not happy with
+                  the clean? We'll come back and redo it for free.
+                </p>
+              </div>
+
+              <div class="cart-pay-note">
+                <i class="bi bi-lock-fill"></i> Secure checkout · Cash, bKash,
+                Nagad &amp; bank transfer
+              </div>
+            </aside>
+          </div>
+        </div>
+
+        <!-- Empty state (shown when cart is cleared) -->
+        <div class="cart-empty" id="cartEmpty" hidden>
+          <div class="cart-empty-icon"><i class="bi bi-bag-x"></i></div>
+          <h2>Your cart is empty</h2>
+          <p>Looks like you haven't added any cleaning services yet.</p>
+          <a href="services.html" class="cart-checkout-btn cart-empty-btn">
+            Browse Services <i class="bi bi-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sticky mobile checkout bar -->
+    <div class="cart-mobile-bar d-lg-none" id="cartMobileBar">
+      <div class="cart-mobile-total">
+        <small>Total</small>
+        <strong id="sumTotalMobile">৳ 9,500</strong>
+      </div>
+      <a href="checkout.html" class="cart-mobile-checkout">
+        Checkout <i class="bi bi-arrow-right"></i>
+      </a>
+    </div>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/core/components-loader.js"></script>
+    <script src="assets/js/core/app.js"></script>
+    <script>
+      // ===== Cart logic (quantity, remove, live totals) =====
+      (function () {
+        if (window.__cartAppManaged) return;
+        var SERVICE_FEE = 300;
+        var TRANSPORT = 200;
+        var DISCOUNT_RATE = 0.1;
+
+        var itemsWrap = document.getElementById("cartItems");
+        var layout = document.getElementById("cartLayout");
+        var emptyState = document.getElementById("cartEmpty");
+        var mobileBar = document.getElementById("cartMobileBar");
+        if (!itemsWrap) return;
+
+        function money(n) {
+          return "৳ " + Math.round(n).toLocaleString("en-US");
+        }
+        function setText(id, txt) {
+          var el = document.getElementById(id);
+          if (el) el.textContent = txt;
+        }
+
+        function recompute() {
+          var items = itemsWrap.querySelectorAll(".cart-item");
+          var subtotal = 0;
+          items.forEach(function (item) {
+            var price = Number(item.getAttribute("data-price")) || 0;
+            var stepper = item.querySelector(".qty-stepper");
+            var qty = Number(stepper.getAttribute("data-qty")) || 1;
+            var line = price * qty;
+            subtotal += line;
+            var lineEl = item.querySelector(".cart-line-price");
+            if (lineEl) lineEl.textContent = money(line);
+          });
+
+          var count = items.length;
+          setText("cartCount", count + (count === 1 ? " item" : " items"));
+
+          if (count === 0) {
+            if (layout) layout.hidden = true;
+            if (emptyState) emptyState.hidden = false;
+            if (mobileBar) mobileBar.style.display = "none";
+            return;
+          }
+
+          var discount = subtotal * DISCOUNT_RATE;
+          var total = subtotal + SERVICE_FEE - discount + TRANSPORT;
+
+          setText("sumSubtotal", money(subtotal));
+          setText("sumFee", money(SERVICE_FEE));
+          setText("sumDiscount", "− " + money(discount));
+          setText("sumTransport", money(TRANSPORT));
+          setText("sumTotal", money(total));
+          setText("sumTotalMobile", money(total));
+        }
+
+        itemsWrap.addEventListener("click", function (e) {
+          var btn = e.target.closest("button");
+          if (!btn) return;
+
+          // Quantity
+          var stepper = btn.closest(".qty-stepper");
+          if (stepper) {
+            var qty = Number(stepper.getAttribute("data-qty")) || 1;
+            if (btn.classList.contains("qty-plus")) qty++;
+            if (btn.classList.contains("qty-minus") && qty > 1) qty--;
+            stepper.setAttribute("data-qty", qty);
+            stepper.querySelector(".qty-val").textContent = qty;
+            recompute();
+            return;
+          }
+
+          // Remove
+          if (btn.classList.contains("cart-remove")) {
+            var item = btn.closest(".cart-item");
+            if (!item) return;
+            item.classList.add("is-removing");
+            window.setTimeout(function () {
+              item.remove();
+              recompute();
+            }, 220);
+          }
+        });
+
+        recompute();
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Browse our home, office, and deep cleaning services to find the right package for your needs."
+    />
+    <title>Cleaning Services | Services</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"
+    ></script>
+    <link rel="stylesheet" href="assets/css/layout/header.css" />
+    <link rel="stylesheet" href="assets/css/layout/footer.css" />
+    <link rel="stylesheet" href="assets/css/pages/services.css" />
+  </head>
+
+  <body>
+    <div
+      class="page-loader"
+      id="page-loader"
+      aria-live="polite"
+      aria-label="Loading page"
+    >
+      <img
+        src="assets/images/colorLogo.png"
+        alt="Loading logo"
+        class="loader-logo"
+      />
+    </div>
+
+    <div id="header-placeholder"></div>
+    <section class="services">
+      <h1>Service</h1>
+    </section>
+    <section class="service-section">
+      <div class="custom_container">
+        <!-- Header -->
+        <div class="service-header">
+          <div class="service-header-top">
+            <h2>Our Best Services</h2>
+            <button
+              class="service-search-toggle"
+              type="button"
+              aria-label="Open service search"
+              aria-expanded="false"
+              aria-controls="service-search-box"
+            >
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
+
+          <div class="search-box" id="service-search-box">
+            <div class="search-field">
+              <input type="text" placeholder="Search Service" />
+              <button
+                type="button"
+                class="search-submit-mobile"
+                aria-label="Search services"
+              >
+                <i class="bi bi-search"></i>
+              </button>
+            </div>
+            <button type="button" class="search-submit-desktop">Search</button>
+          </div>
+        </div>
+
+        <!-- Service Grid -->
+        <div class="row g-4" id="service-grid">
+          <!-- Card -->
+          <a
+            href="service_details.html"
+            class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 service-card-link"
+          >
+            <div class="service-card">
+              <div class="service-image">
+                <img
+                  src="./assets/images/services/services_1.png"
+                  alt="service"
+                />
+
+                <span class="discount-badge">10% Offer</span>
+              </div>
+
+              <div class="service-content">
+                <h6>AC Servicing</h6>
+                <span class="arrow-btn">
+                  <i class="bi bi-arrow-right-short"></i>
+                </span>
+              </div>
+            </div>
+          </a>
+          <a
+            href="service_details_video.html"
+            class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 service-card-link"
+          >
+            <div class="service-card">
+              <div class="service-image">
+                <img
+                  src="./assets/images/services/services_2.png"
+                  alt="service"
+                />
+              </div>
+
+              <div class="service-content">
+                <h6>Deep Cleaning Service</h6>
+                <span class="arrow-btn">
+                  <i class="bi bi-arrow-right-short"></i>
+                </span>
+              </div>
+            </div>
+          </a>
+          <a
+            href="collapse_services_details.html"
+            class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 service-card-link"
+          >
+            <div class="service-card">
+              <div class="service-image">
+                <img
+                  src="./assets/images/services/services_3.png"
+                  alt="service"
+                />
+              </div>
+
+              <div class="service-content">
+                <h6>House Deep Cleaning</h6>
+                <span class="arrow-btn">
+                  <i class="bi bi-arrow-right-short"></i>
+                </span>
+              </div>
+            </div>
+          </a>
+          <a
+            href="service_details_video.html"
+            class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 service-card-link"
+          >
+            <div class="service-card">
+              <div class="service-image">
+                <img
+                  src="./assets/images/services/services_4.png"
+                  alt="service"
+                />
+              </div>
+
+              <div class="service-content">
+                <h6>Floor Deep Cleaning</h6>
+                <span class="arrow-btn">
+                  <i class="bi bi-arrow-right-short"></i>
+                </span>
+              </div>
+            </div>
+          </a>
+
+          <a
+            href="service_details.html"
+            class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 service-card-link"
+          >
+            <div class="service-card">
+              <div class="service-image">
+                <img
+                  src="./assets/images/services/services_1.png"
+                  alt="service"
+                />
+              </div>
+
+              <div class="service-content">
+                <h6>AC Servicing</h6>
+                <span class="arrow-btn">
+                  <i class="bi bi-arrow-right-short"></i>
+                </span>
+              </div>
+            </div>
+          </a>
+          <a
+            href="service_details_video.html"
+            class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 service-card-link"
+          >
+            <div class="service-card">
+              <div class="service-image">
+                <img
+                  src="./assets/images/services/services_2.png"
+                  alt="service"
+                />
+              </div>
+
+              <div class="service-content">
+                <h6>Deep Cleaning Service</h6>
+                <span class="arrow-btn">
+                  <i class="bi bi-arrow-right-short"></i>
+                </span>
+              </div>
+            </div>
+          </a>
+          <a
+            href="service_details.html"
+            class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 service-card-link"
+          >
+            <div class="service-card">
+              <div class="service-image">
+                <img
+                  src="./assets/images/services/services_3.png"
+                  alt="service"
+                />
+              </div>
+
+              <div class="service-content">
+                <h6>House Deep Cleaning</h6>
+                <span class="arrow-btn">
+                  <i class="bi bi-arrow-right-short"></i>
+                </span>
+              </div>
+            </div>
+          </a>
+          <a
+            href="service_details_video.html"
+            class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 service-card-link"
+          >
+            <div class="service-card">
+              <div class="service-image">
+                <img
+                  src="./assets/images/services/services_4.png"
+                  alt="service"
+                />
+              </div>
+
+              <div class="service-content">
+                <h6>Floor Deep Cleaning</h6>
+                <span class="arrow-btn">
+                  <i class="bi bi-arrow-right-short"></i>
+                </span>
+              </div>
+            </div>
+          </a>
+
+          <a
+            href="service_details.html"
+            class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 service-card-link"
+          >
+            <div class="service-card">
+              <div class="service-image">
+                <img
+                  src="./assets/images/services/services_1.png"
+                  alt="service"
+                />
+              </div>
+
+              <div class="service-content">
+                <h6>AC Servicing</h6>
+                <span class="arrow-btn">
+                  <i class="bi bi-arrow-right-short"></i>
+                </span>
+              </div>
+            </div>
+          </a>
+          <a
+            href="service_details_video.html"
+            class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 service-card-link"
+          >
+            <div class="service-card">
+              <div class="service-image">
+                <img
+                  src="./assets/images/services/services_2.png"
+                  alt="service"
+                />
+              </div>
+
+              <div class="service-content">
+                <h6>Deep Cleaning Service</h6>
+                <span class="arrow-btn">
+                  <i class="bi bi-arrow-right-short"></i>
+                </span>
+              </div>
+            </div>
+          </a>
+          <a
+            href="service_details.html"
+            class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 service-card-link"
+          >
+            <div class="service-card">
+              <div class="service-image">
+                <img
+                  src="./assets/images/services/services_3.png"
+                  alt="service"
+                />
+              </div>
+
+              <div class="service-content">
+                <h6>House Deep Cleaning</h6>
+                <span class="arrow-btn">
+                  <i class="bi bi-arrow-right-short"></i>
+                </span>
+              </div>
+            </div>
+          </a>
+          <a
+            href="service_details_video.html"
+            class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 service-card-link"
+          >
+            <div class="service-card">
+              <div class="service-image">
+                <img
+                  src="./assets/images/services/services_4.png"
+                  alt="service"
+                />
+              </div>
+
+              <div class="service-content">
+                <h6>Floor Deep Cleaning</h6>
+                <span class="arrow-btn">
+                  <i class="bi bi-arrow-right-short"></i>
+                </span>
+              </div>
+            </div>
+          </a>
+
+          <a
+            href="service_details.html"
+            class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 service-card-link"
+          >
+            <div class="service-card">
+              <div class="service-image">
+                <img
+                  src="./assets/images/services/services_1.png"
+                  alt="service"
+                />
+              </div>
+
+              <div class="service-content">
+                <h6>AC Servicing</h6>
+                <span class="arrow-btn">
+                  <i class="bi bi-arrow-right-short"></i>
+                </span>
+              </div>
+            </div>
+          </a>
+          <a
+            href="service_details_video.html"
+            class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 service-card-link"
+          >
+            <div class="service-card">
+              <div class="service-image">
+                <img
+                  src="./assets/images/services/services_2.png"
+                  alt="service"
+                />
+              </div>
+
+              <div class="service-content">
+                <h6>Deep Cleaning Service</h6>
+                <span class="arrow-btn">
+                  <i class="bi bi-arrow-right-short"></i>
+                </span>
+              </div>
+            </div>
+          </a>
+          <a
+            href="service_details.html"
+            class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 service-card-link"
+          >
+            <div class="service-card">
+              <div class="service-image">
+                <img
+                  src="./assets/images/services/services_3.png"
+                  alt="service"
+                />
+              </div>
+
+              <div class="service-content">
+                <h6>House Deep Cleaning</h6>
+                <span class="arrow-btn">
+                  <i class="bi bi-arrow-right-short"></i>
+                </span>
+              </div>
+            </div>
+          </a>
+          <a
+            href="service_details_video.html"
+            class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 service-card-link"
+          >
+            <div class="service-card">
+              <div class="service-image">
+                <img
+                  src="./assets/images/services/services_4.png"
+                  alt="service"
+                />
+              </div>
+
+              <div class="service-content">
+                <h6>Floor Deep Cleaning</h6>
+                <span class="arrow-btn">
+                  <i class="bi bi-arrow-right-short"></i>
+                </span>
+              </div>
+            </div>
+          </a>
+
+          <a
+            href="service_details.html"
+            class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 service-card-link"
+          >
+            <div class="service-card">
+              <div class="service-image">
+                <img
+                  src="./assets/images/services/services_1.png"
+                  alt="service"
+                />
+              </div>
+
+              <div class="service-content">
+                <h6>AC Servicing</h6>
+                <span class="arrow-btn">
+                  <i class="bi bi-arrow-right-short"></i>
+                </span>
+              </div>
+            </div>
+          </a>
+          <a
+            href="service_details_video.html"
+            class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 service-card-link"
+          >
+            <div class="service-card">
+              <div class="service-image">
+                <img
+                  src="./assets/images/services/services_2.png"
+                  alt="service"
+                />
+              </div>
+
+              <div class="service-content">
+                <h6>Deep Cleaning Service</h6>
+                <span class="arrow-btn">
+                  <i class="bi bi-arrow-right-short"></i>
+                </span>
+              </div>
+            </div>
+          </a>
+          <a
+            href="service_details.html"
+            class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 service-card-link"
+          >
+            <div class="service-card">
+              <div class="service-image">
+                <img
+                  src="./assets/images/services/services_3.png"
+                  alt="service"
+                />
+              </div>
+
+              <div class="service-content">
+                <h6>House Deep Cleaning</h6>
+                <span class="arrow-btn">
+                  <i class="bi bi-arrow-right-short"></i>
+                </span>
+              </div>
+            </div>
+          </a>
+          <a
+            href="service_details_video.html"
+            class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 service-card-link"
+          >
+            <div class="service-card">
+              <div class="service-image">
+                <img
+                  src="./assets/images/services/services_4.png"
+                  alt="service"
+                />
+              </div>
+
+              <div class="service-content">
+                <h6>Floor Deep Cleaning</h6>
+                <span class="arrow-btn">
+                  <i class="bi bi-arrow-right-short"></i>
+                </span>
+              </div>
+            </div>
+          </a>
+
+          <a
+            href="service_details.html"
+            class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 service-card-link"
+          >
+            <div class="service-card">
+              <div class="service-image">
+                <img
+                  src="./assets/images/services/services_1.png"
+                  alt="service"
+                />
+              </div>
+
+              <div class="service-content">
+                <h6>AC Servicing</h6>
+                <span class="arrow-btn">
+                  <i class="bi bi-arrow-right-short"></i>
+                </span>
+              </div>
+            </div>
+          </a>
+          <a
+            href="service_details_video.html"
+            class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 service-card-link"
+          >
+            <div class="service-card">
+              <div class="service-image">
+                <img
+                  src="./assets/images/services/services_2.png"
+                  alt="service"
+                />
+              </div>
+
+              <div class="service-content">
+                <h6>Deep Cleaning Service</h6>
+                <span class="arrow-btn">
+                  <i class="bi bi-arrow-right-short"></i>
+                </span>
+              </div>
+            </div>
+          </a>
+          <a
+            href="service_details.html"
+            class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 service-card-link"
+          >
+            <div class="service-card">
+              <div class="service-image">
+                <img
+                  src="./assets/images/services/services_3.png"
+                  alt="service"
+                />
+              </div>
+
+              <div class="service-content">
+                <h6>House Deep Cleaning</h6>
+                <span class="arrow-btn">
+                  <i class="bi bi-arrow-right-short"></i>
+                </span>
+              </div>
+            </div>
+          </a>
+          <a
+            href="service_details_video.html"
+            class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 service-card-link"
+          >
+            <div class="service-card">
+              <div class="service-image">
+                <img
+                  src="./assets/images/blog.png"
+                  alt="service"
+                />
+              </div>
+
+              <div class="service-content">
+                <h6>Floor Deep Cleaning</h6>
+                <span class="arrow-btn">
+                  <i class="bi bi-arrow-right-short"></i>
+                </span>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/core/components-loader.js"></script>
+    <script src="assets/js/core/app.js"></script>
+  </body>
+</html>

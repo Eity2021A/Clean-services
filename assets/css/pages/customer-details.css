@@ -1,0 +1,315 @@
+/* Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap");
+
+:root {
+    --primary-color: #1caab8;
+    --secondary-color: #00293d;
+    --text-muted: #6b7280;
+    --text-paragraph: #4a4a4a;
+    --light-bg: #f9fafb;
+    --white: #ffffff;
+    --black: #202020;
+    --font-primary: "Inter", sans-serif;
+    --font-secondary: "Figtree", sans-serif;
+    --font-display: "Playfair Display", serif;
+    --font-outfit: "Outfit", sans-serif;
+    --hero-height: clamp(360px, 42vw, 760px);
+}
+
+#hero-section {
+    min-height: var(--hero-height);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(180deg, #f7fcfd 0%, #eef8f9 100%);
+}
+
+h2 {
+    margin: 0;
+    padding: 0;
+}
+
+.custom_container {
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1320px;
+}
+
+@media (max-width: 1400px) {
+    .custom_container {
+        width: 100%;
+        padding-left: 3rem;
+        padding-right: 3rem;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 1400px;
+    }
+}
+
+@media (max-width: 768px) {
+    .custom_container {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .custom_container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+
+.customer-details-page {
+    background: var(--white);
+    min-height: calc(100dvh - 90px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 80px;
+    padding: 0 12px;
+}
+
+.customer-form-container {
+    width: 100%;
+    max-width: 460px;
+    padding: 15px;
+    margin: 0 auto;
+}
+
+.logo-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+    background: transparent;
+}
+
+.logo-circle img {
+    width: 100px;
+}
+
+
+.page-title {
+    font-family: var(--font-primary);
+    font-size: 30px;
+    font-weight: 700;
+    color: #202020;
+    margin: 0 0 8px;
+}
+
+.page-subtitle {
+    color: #565656;
+    font-family: var(--font-primary);
+    font-size: 16px;
+    font-weight: 400;
+    margin: 0;
+}
+
+.customer-details-card {
+    background-color: transparent;
+    border-radius: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);
+    border: 1px solid rgba(0, 0, 0, 0.01);
+    padding: 25px 24px;
+}
+
+.card-title {
+    font-family: var(--font-primary);
+    font-size: 20px;
+    font-weight: 600;
+    color: #202020;
+    margin: 0 0 6px;
+}
+
+.card-subtitle {
+    color: #565656;
+    font-family: var(--font-primary);
+    font-size: 16px;
+    font-weight: 400;
+    margin: 0;
+}
+
+.form-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #202020;
+    margin-bottom: 6px;
+    font-family: var(--font-primary);
+}
+
+.input-group-custom {
+    position: relative;
+}
+
+.input-group-custom .form-control {
+    background-color: #fff;
+    border: 1px solid #A4AFAE;
+    border-radius: 12px;
+    padding: 12px 12px 12px 40px;
+    font-size: 16px;
+    transition: all 0.2s ease;
+    font-family: var(--font-primary);
+}
+
+.input-group-custom .form-control:focus {
+    background-color: #fff;
+    border-color: var(--primary-color);
+    box-shadow: none;
+}
+
+.input-group-custom .form-control::placeholder {
+    color: #B6B6B6;
+}
+
+.input-group-custom.is-invalid .form-control {
+    border-color: #dc3545;
+}
+
+.prefix-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #8b969a;
+    z-index: 4;
+    font-size: 15px;
+}
+
+.terms-wrap {
+    margin: 0;
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: #565656;
+    font-family: var(--font-primary);
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.terms-wrap.is-invalid {
+    color: #dc3545;
+}
+
+.terms-wrap input {
+    width: 16px;
+    height: 16px;
+    margin: 2px 0 0;
+    accent-color: #A4AFAE;
+}
+
+.terms-wrap a {
+    color: var(--primary-color);
+    font-weight: 700;
+    text-decoration: underline;
+    font-family: var(--font-primary);
+}
+
+.btn-continue {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background-color 0.2s;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-family: var(--font-primary);
+}
+
+.btn-continue:hover {
+    background-color: var(--secondary-color);
+    color: #ffffff;
+}
+
+@media (max-width: 991px) {
+    .customer-details-page {
+        padding-bottom: calc(62px + 18px);
+    }
+
+    .customer-details-card {
+        margin-bottom: 8px;
+    }
+}
+
+@media (max-width: 576px) {
+    body {
+        background: #f4f7f7;
+    }
+
+    .customer-details-page {
+        margin-top: 76px;
+        min-height: calc(100dvh - 76px);
+        padding: 12px 12px calc(62px + 20px);
+        align-items: flex-start;
+    }
+
+    .customer-form-container {
+        max-width: 100%;
+        padding: 0;
+    }
+
+    .page-title {
+        font-size: 28px;
+    }
+
+    .page-subtitle {
+        font-size: 14px;
+    }
+
+    .customer-details-card {
+        border-radius: 20px 20px 14px 14px;
+        padding: 18px 14px 16px;
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+    }
+
+    .card-title {
+        font-size: 20px;
+    }
+
+    .card-subtitle {
+        font-size: 13px;
+    }
+
+    .input-group-custom .form-control {
+        min-height: 52px;
+        font-size: 14px;
+        border-radius: 14px;
+    }
+
+    .btn-continue {
+        font-size: 18px;
+        border-radius: 14px;
+        min-height: 54px;
+    }
+
+    .terms-wrap {
+        font-size: 13px;
+        gap: 8px;
+    }
+}
+
+@media (max-width: 380px) {
+    .page-title {
+        font-size: 26px;
+    }
+
+    .customer-details-card {
+        padding: 16px 12px 14px;
+    }
+}

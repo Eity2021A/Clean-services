@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Professional cleaning services for your home and office."
+    />
+    <title>Cleaning Services | OTP Verification</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"
+    ></script>
+    <link rel="stylesheet" href="assets/css/layout/header.css" />
+    <link rel="stylesheet" href="assets/css/layout/footer.css" />
+    <link rel="stylesheet" href="assets/css/pages/otp.css" />
+  </head>
+
+  <body>
+    <div
+      class="page-loader"
+      id="page-loader"
+      aria-live="polite"
+      aria-label="Loading page"
+    >
+      <img
+        src="assets/images/colorLogo.png"
+        alt="Loading logo"
+        class="loader-logo"
+      />
+    </div>
+
+    <div id="header-placeholder"></div>
+
+    <main class="otp-page">
+      <div class="otp-container">
+        <div class="text-center mb-4">
+          <!-- <div class="logo-circle">
+            <img
+              src="assets/images/colorLogo.png"
+              alt="Company Logo"
+              class="logo-img"
+            />
+          </div> -->
+          <h1 class="otp-hero-title">Create Account</h1>
+          <p class="otp-hero-subtitle">Join us and get started in minutes</p>
+        </div>
+
+        <section class="otp-card">
+          <div class="otp-icon-wrap" aria-hidden="true">
+            <i class="bi bi-envelope"></i>
+          </div>
+
+          <div class="text-center mb-3">
+            <h2 class="otp-card-title">Check your mobile</h2>
+            <p class="otp-card-subtitle">We sent a 6 digit code</p>
+          </div>
+
+          <form id="otpForm" novalidate>
+            <label for="otpDigit1" class="otp-label">Enter OTP</label>
+            <div class="otp-inputs">
+              <input
+                id="otpDigit1"
+                class="otp-box"
+                type="text"
+                maxlength="1"
+                inputmode="numeric"
+                pattern="[0-9]*"
+                placeholder="0"
+                required
+              />
+              <input
+                class="otp-box"
+                type="text"
+                maxlength="1"
+                inputmode="numeric"
+                pattern="[0-9]*"
+                placeholder="0"
+                required
+              />
+              <input
+                class="otp-box"
+                type="text"
+                maxlength="1"
+                inputmode="numeric"
+                pattern="[0-9]*"
+                placeholder="0"
+                required
+              />
+              <input
+                class="otp-box"
+                type="text"
+                maxlength="1"
+                inputmode="numeric"
+                pattern="[0-9]*"
+                placeholder="0"
+                required
+              />
+              <input
+                class="otp-box"
+                type="text"
+                maxlength="1"
+                inputmode="numeric"
+                pattern="[0-9]*"
+                placeholder="0"
+                required
+              />
+              <input
+                class="otp-box"
+                type="text"
+                maxlength="1"
+                inputmode="numeric"
+                pattern="[0-9]*"
+                placeholder="0"
+                required
+              />
+            </div>
+
+            <p class="otp-verified">
+              <i class="bi bi-check-circle"></i>
+              Code verified
+            </p>
+
+            <div class="text-center">
+              <p class="otp-hint">Didn't receive the code?</p>
+              <a href="#" class="resend-link">Resend code</a>
+            </div>
+
+            <button type="submit" class="btn-complete">
+              Complete <i class="bi bi-arrow-right"></i>
+            </button>
+          </form>
+        </section>
+      </div>
+    </main>
+    <div id="footer-placeholder"></div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/core/components-loader.js"></script>
+    <script src="assets/js/core/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Contact information for our cleaning services."
+    />
+    <title>Cleaning Services | Contact</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"
+    ></script>
+    <link rel="stylesheet" href="assets/css/layout/header.css" />
+    <link rel="stylesheet" href="assets/css/pages/contact.css" />
+    <link rel="stylesheet" href="assets/css/layout/footer.css" />
+  </head>
+
+  <body>
+    <div
+      class="page-loader"
+      id="page-loader"
+      aria-live="polite"
+      aria-label="Loading page"
+    >
+      <img
+        src="assets/images/colorLogo.png"
+        alt="Loading logo"
+        class="loader-logo"
+      />
+    </div>
+
+    <div id="header-placeholder"></div>
+
+    <section class="contact-section">
+      <h1>Contact</h1>
+    </section>
+    <!-- INFO CARDS -->
+    <section class="info-cards-section">
+      <div class="custom_container">
+        <div class="info-cards-wrap">
+          <div class="row g-4 info-cards-row">
+            <div class="col-md-4">
+              <div class="info-card-item">
+                <div class="info-card-icon">
+                  <a href="tel:+8801711663506">
+                    <i class="bi bi-telephone icons"></i>
+                  </a>
+                </div>
+
+                <h3 class="info-card-title">Phone</h3>
+                <a href="tel:+8801711663506">
+                  <p class="info-card-text">+880 171 166 3506</p>
+                </a>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="info-card-item">
+                <div class="info-card-icon">
+                  <a href="mailto:info.cleanandservice@gmail.com">
+                    <i class="bi bi-envelope icons"></i>
+                  </a>
+                </div>
+
+                <h3 class="info-card-title">Email</h3>
+                <a href="mailto:info.cleanandservice@gmail.com">
+                  <p class="info-card-text">info.cleanandservice@gmail.com</p>
+                </a>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="info-card-item">
+                <div class="info-card-icon">
+                  <a
+                    href="https://www.google.com/maps/search/?api=1&query=Ja-4%2F1%2C+Ground+Floor%2C+Gulshan+Badda+Link+Rd%2C+Dhaka+1212"
+                    target="_blank"
+                  >
+                    <i class="bi bi-geo-alt icons"></i>
+                  </a>
+                </div>
+
+                <h3 class="info-card-title">Office Location</h3>
+                <a
+                  href="https://www.google.com/maps/search/?api=1&query=Ja-4%2F1%2C+Ground+Floor%2C+Gulshan+Badda+Link+Rd%2C+Dhaka+1212"
+                  target="_blank"
+                >
+                  <p class="info-card-text">Ja-4/1, Ground Floor</p>
+                  <p class="info-card-text">
+                    Gulshan Badda Link Rd, Dhaka 1212
+                  </p>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- CONTACT -->
+    <section class="contact">
+      <div class="custom_container">
+        <div class="contact-box">
+          <div class="row align-items-center g-4">
+            <div class="col-lg-6">
+              <h2 class="contact-title">Get In <span>Touch !</span></h2>
+              <p class="contact-subtitle">
+                Looking for the best cleaning service in Dhaka? Our professional
+                cleaning service team delivers exceptional results, leaving your
+                space spotless and sanitized.
+              </p>
+              <button
+                type="button"
+                class="btn submit-btn contact-open-btn d-sm-none"
+                id="mobileContactOpen"
+              >
+                Get In Touch
+              </button>
+            </div>
+
+            <div class="col-lg-6 desktop-contact-form">
+              <form novalidate>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <input
+                      type="text"
+                      name="firstName"
+                      class="form-control"
+                      placeholder="First Name"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <input
+                      type="text"
+                      name="lastName"
+                      class="form-control"
+                      placeholder="Last Name"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <input
+                      type="email"
+                      name="email"
+                      class="form-control"
+                      placeholder="Email Address"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <input
+                      type="text"
+                      name="subject"
+                      class="form-control"
+                      placeholder="Subject"
+                      required
+                    />
+                  </div>
+                  <div class="col-12">
+                    <textarea
+                      class="form-control"
+                      name="message"
+                      rows="4"
+                      placeholder="Message"
+                      required
+                    ></textarea>
+                  </div>
+                  <div class="col-12 d-flex gap-2 flex-wrap">
+                    <button class="btn submit-btn">Submit</button>
+                    <div class="d-block d-md-none">
+                      <button type="reset" class="btn cancel-btn btn-danger">
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div
+      class="mobile-contact-overlay"
+      id="mobileContactOverlay"
+      aria-hidden="true"
+    >
+      <button
+        type="button"
+        class="mobile-contact-close"
+        id="mobileContactClose"
+        aria-label="Close contact form"
+      >
+        <i class="bi bi-x-lg"></i>
+      </button>
+      <div
+        class="mobile-contact-sheet"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Contact form"
+      >
+        <!-- <h2 class="mobile-contact-title">Get In <span>Touch !</span></h2>
+        <p class="mobile-contact-subtitle">
+          Tell us about your space — we'll get back with a quick quote.
+        </p> -->
+        <form class="mobile-form" novalidate>
+          <div class="row g-3">
+            <div class="col-6">
+              <input
+                type="text"
+                name="firstName"
+                class="form-control"
+                placeholder="First Name"
+                required
+              />
+            </div>
+            <div class="col-6">
+              <input
+                type="text"
+                name="lastName"
+                class="form-control"
+                placeholder="Last Name"
+                required
+              />
+            </div>
+            <div class="col-6">
+              <input
+                type="email"
+                name="email"
+                class="form-control"
+                placeholder="Email Address"
+                required
+              />
+            </div>
+            <div class="col-6">
+              <input
+                type="text"
+                name="subject"
+                class="form-control"
+                placeholder="Subject"
+                required
+              />
+            </div>
+            <div class="col-12">
+              <textarea
+                class="form-control"
+                name="message"
+                rows="5"
+                placeholder="Message"
+                required
+              ></textarea>
+            </div>
+            <div class="col-12 mobile-form-actions">
+              <button class="btn submit-btn w-100">Submit</button>
+              <button
+                type="button"
+                class="btn cancel-btn btn-danger w-100 mt-2"
+                id="mobileFormCancel"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="map-component"></div>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/core/components-loader.js"></script>
+    <script src="assets/js/core/app.js"></script>
+  </body>
+</html>
