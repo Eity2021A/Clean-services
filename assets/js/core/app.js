@@ -2926,6 +2926,57 @@ function animateCartFabSurface() {
   }, 430);
 }
 
+function ensureMobileCartToast() {
+  let toast = document.getElementById("mobileCartToast");
+  if (toast) return toast;
+
+  toast = document.createElement("div");
+  toast.id = "mobileCartToast";
+  toast.className = "mobile-cart-toast";
+  toast.setAttribute("aria-live", "polite");
+  toast.innerHTML = `
+    <span class="mobile-cart-toast-icon" aria-hidden="true">
+      <i class="bi bi-basket2"></i>
+    </span>
+    <span class="mobile-cart-toast-copy">
+      <span class="mobile-cart-toast-title"></span>
+      <span class="mobile-cart-toast-meta"></span>
+    </span>
+  `;
+  document.body.appendChild(toast);
+  return toast;
+}
+
+function showMobileCartToast(item) {
+  if (!window.matchMedia("(max-width: 991.98px)").matches) return;
+
+  const toast = ensureMobileCartToast();
+  const title = toast.querySelector(".mobile-cart-toast-title");
+  const meta = toast.querySelector(".mobile-cart-toast-meta");
+  const summary = getCartSummary();
+  const itemName = normalizeCartText(item?.name) || "Service";
+
+  if (title) {
+    title.textContent = `${itemName} added to cart`;
+  }
+
+  if (meta) {
+    meta.innerHTML = `<strong>${summary.quantity} items</strong> • ${formatCartMoney(summary.total)}`;
+  }
+
+  if (toast.hideTimerId) {
+    window.clearTimeout(toast.hideTimerId);
+  }
+
+  toast.classList.remove("is-visible");
+  void toast.offsetWidth;
+  toast.classList.add("is-visible");
+
+  toast.hideTimerId = window.setTimeout(() => {
+    toast.classList.remove("is-visible");
+  }, 2200);
+}
+
 function renderGlobalCart() {
   const items = readCartItems();
   const summary = getCartSummary(items);
@@ -3067,7 +3118,9 @@ function initCartButtons() {
 
     button.addEventListener("click", (event) => {
       event.preventDefault();
-      addCartItem(buildServicePageCartItem(button));
+      const cartItem = buildServicePageCartItem(button);
+      addCartItem(cartItem);
+      showMobileCartToast(cartItem);
     });
 
     button.dataset.cartBound = "true";
