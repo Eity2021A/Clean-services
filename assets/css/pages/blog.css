@@ -414,7 +414,9 @@ details.category-box[open] .category-toggle-icon {
     .category-box ul {
         display: flex;
         flex-direction: column;
+        margin-top: 8px;
         gap: 8px;
+
     }
 
     .category-box li {
