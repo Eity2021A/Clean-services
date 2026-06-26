@@ -2981,6 +2981,7 @@ function renderGlobalCart() {
   const items = readCartItems();
   const summary = getCartSummary(items);
   const headerCount = document.querySelector(".cart_length small");
+  const mobileBottomCount = document.querySelector(".mobile-bottom-cart-count");
   const fabCount = document.querySelector(".service-cart-fab-count");
   const fabTotal = document.querySelector(".service-cart-fab-total");
   const drawerList = document.querySelector(".service-cart-list");
@@ -2992,6 +2993,10 @@ function renderGlobalCart() {
   const shouldAnimateTotal = fabTotal && fabTotal.textContent !== nextTotalText;
 
   if (headerCount) headerCount.textContent = String(summary.quantity);
+  if (mobileBottomCount) {
+    mobileBottomCount.textContent = String(summary.quantity);
+    mobileBottomCount.classList.toggle("has-items", summary.quantity > 0);
+  }
   if (fabCount) fabCount.textContent = nextCountText;
   if (fabTotal) fabTotal.textContent = nextTotalText;
 
