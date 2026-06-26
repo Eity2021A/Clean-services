@@ -1,3 +1,20 @@
+function isElementInRevealViewport(element, offset = 0.9) {
+  if (!element) return false;
+  const rect = element.getBoundingClientRect();
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+  return rect.top < viewportHeight * offset && rect.bottom > 0;
+}
+
+function animateInitialReveal(element, delay = 0) {
+  window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(() => {
+      window.setTimeout(() => {
+        element.classList.add("is-visible");
+      }, delay);
+    });
+  });
+}
+
 function initBlogScrollReveal() {
   const prefersReducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
@@ -46,7 +63,14 @@ function initBlogScrollReveal() {
 
   revealTargets.forEach((element) => {
     if (element.dataset.blogRevealObserved === "true") return;
-    observer.observe(element);
+    const delay = Number(
+      element.style.getPropertyValue("--blog-reveal-delay").replace("ms", "") || 0,
+    );
+    if (isElementInRevealViewport(element)) {
+      animateInitialReveal(element, delay);
+    } else {
+      observer.observe(element);
+    }
     element.dataset.blogRevealObserved = "true";
   });
 }

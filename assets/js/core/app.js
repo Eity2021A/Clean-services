@@ -7,6 +7,23 @@ let sectionRevealObserver = null;
 let trustedSectionAnimated = false;
 let serviceLightRevealInitialized = false;
 
+function isElementInRevealViewport(element, offset = 0.9) {
+  if (!element) return false;
+  const rect = element.getBoundingClientRect();
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+  return rect.top < viewportHeight * offset && rect.bottom > 0;
+}
+
+function animateInitialReveal(element, className, delay = 0) {
+  window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(() => {
+      window.setTimeout(() => {
+        element.classList.add(className);
+      }, delay);
+    });
+  });
+}
+
 // Run `callback` once the named placeholder component has been injected.
 // components.js loads header/footer/etc. asynchronously and dispatches a
 // "component:loaded" CustomEvent (with detail.id) after setting each
@@ -930,7 +947,13 @@ function initTopNotchReveal() {
   );
 
   const section = document.querySelector("#top-notch-component");
-  if (section) observer.observe(section);
+  if (section && isElementInRevealViewport(section, 0.95)) {
+    cards.forEach((card, index) => {
+      animateInitialReveal(card, "is-visible", index * 180);
+    });
+  } else if (section) {
+    observer.observe(section);
+  }
 
   topNotchRevealInitialized = true;
 }
@@ -981,7 +1004,11 @@ function initSectionReveal() {
   revealTargets.forEach((section) => {
     if (section.dataset.revealReady === "true") return;
     section.classList.add("section-reveal");
-    sectionRevealObserver.observe(section);
+    if (isElementInRevealViewport(section)) {
+      animateInitialReveal(section, "is-visible");
+    } else {
+      sectionRevealObserver.observe(section);
+    }
     section.dataset.revealReady = "true";
   });
 }
@@ -1019,7 +1046,12 @@ function initServiceLightReveal() {
 
   cards.forEach((card, index) => {
     card.dataset.revealDelay = String((index % 4) * 80);
-    observer.observe(card);
+    const delay = Number(card.dataset.revealDelay || "0");
+    if (isElementInRevealViewport(card)) {
+      animateInitialReveal(card, "scroll-light-in", delay);
+    } else {
+      observer.observe(card);
+    }
   });
 
   serviceLightRevealInitialized = true;

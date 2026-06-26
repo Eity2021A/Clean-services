@@ -15,6 +15,23 @@ function onComponentLoaded(id, callback) {
 let bootstrapLoaderPromise = null;
 let scrollRevealObserver = null;
 
+function isElementInRevealViewport(element, offset = 0.9) {
+  if (!element) return false;
+  const rect = element.getBoundingClientRect();
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+  return rect.top < viewportHeight * offset && rect.bottom > 0;
+}
+
+function animateInitialReveal(element, className, delay = 0) {
+  window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(() => {
+      window.setTimeout(() => {
+        element.classList.add(className);
+      }, delay);
+    });
+  });
+}
+
 function ensureBootstrapBundle() {
   if (typeof bootstrap !== "undefined") {
     return Promise.resolve(bootstrap);
@@ -305,7 +322,17 @@ function initScrollReveal() {
     .querySelectorAll(".section-reveal, .section-reveal-item")
     .forEach((element) => {
       if (element.dataset.sectionRevealObserved === "true") return;
-      scrollRevealObserver.observe(element);
+      const className = element.classList.contains("section-reveal-item")
+        ? "is-visible"
+        : "is-visible";
+      const delay = Number(
+        element.style.getPropertyValue("--reveal-delay").replace("ms", "") || 0,
+      );
+      if (isElementInRevealViewport(element)) {
+        animateInitialReveal(element, className, delay);
+      } else {
+        scrollRevealObserver.observe(element);
+      }
       element.dataset.sectionRevealObserved = "true";
     });
 }

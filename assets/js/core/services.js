@@ -15,34 +15,26 @@ function animateInitialReveal(element, delay = 0) {
   });
 }
 
-function initAboutScrollReveal() {
+function initServicesScrollReveal() {
   const prefersReducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
   ).matches;
 
-  const revealGroups = [
-    ".hero-section h1",
-    ".best-cleaning .text-center",
-    ".best-cleaning .custom-card",
-    ".best-cleaning .service-bar",
-    ".best-cleaning .about-tabs-nav",
-    ".best-cleaning .about-mobile-tabs .tab-content",
-    ".contact .contact-box",
-  ];
+  const revealSelectors = [".services h1", ".service-header"];
 
-  revealGroups.forEach((selector) => {
+  revealSelectors.forEach((selector) => {
     document.querySelectorAll(selector).forEach((element, index) => {
-      if (element.dataset.aboutRevealReady === "true") return;
-      element.classList.add("about-reveal");
+      if (element.dataset.servicesRevealReady === "true") return;
+      element.classList.add("services-reveal");
       element.style.setProperty(
-        "--about-reveal-delay",
-        `${Math.min(index % 3, 2) * 120}ms`,
+        "--services-reveal-delay",
+        `${index * 120}ms`,
       );
-      element.dataset.aboutRevealReady = "true";
+      element.dataset.servicesRevealReady = "true";
     });
   });
 
-  const revealTargets = document.querySelectorAll(".about-reveal");
+  const revealTargets = document.querySelectorAll(".services-reveal");
   if (!revealTargets.length) return;
 
   if (prefersReducedMotion || typeof IntersectionObserver === "undefined") {
@@ -59,25 +51,25 @@ function initAboutScrollReveal() {
       });
     },
     {
-      threshold: 0.18,
+      threshold: 0.16,
       rootMargin: "0px 0px -12% 0px",
     },
   );
 
   revealTargets.forEach((element) => {
-    if (element.dataset.aboutRevealObserved === "true") return;
+    if (element.dataset.servicesRevealObserved === "true") return;
     const delay = Number(
-      element.style.getPropertyValue("--about-reveal-delay").replace("ms", "") || 0,
+      element.style.getPropertyValue("--services-reveal-delay").replace("ms", "") || 0,
     );
     if (isElementInRevealViewport(element)) {
       animateInitialReveal(element, delay);
     } else {
       observer.observe(element);
     }
-    element.dataset.aboutRevealObserved = "true";
+    element.dataset.servicesRevealObserved = "true";
   });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  window.setTimeout(initAboutScrollReveal, 120);
+  window.setTimeout(initServicesScrollReveal, 120);
 });
