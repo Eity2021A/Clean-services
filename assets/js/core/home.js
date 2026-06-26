@@ -13,6 +13,7 @@ function onComponentLoaded(id, callback) {
 }
 
 let bootstrapLoaderPromise = null;
+let scrollRevealObserver = null;
 
 function ensureBootstrapBundle() {
   if (typeof bootstrap !== "undefined") {
@@ -229,6 +230,84 @@ function initHeroCarousel() {
   heroCarousel.style.touchAction = "pan-y";
   instance.cycle();
   heroCarousel.dataset.initialized = "true";
+}
+
+function initScrollReveal() {
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+
+  const sectionSelectors = [
+    ".hero-section",
+    ".stat-component",
+    ".top-notch",
+    ".testimonial-section",
+    ".why-choose-us",
+    ".gallery-section",
+    ".works",
+    ".faq-section",
+    ".map-section",
+  ];
+
+  const itemSelectors = [
+    ".trustedBox",
+    ".service-card-link",
+    ".testimonial-item",
+    ".feature-card",
+    ".gallery-item",
+    ".faq-item",
+  ];
+
+  sectionSelectors.forEach((selector) => {
+    document.querySelectorAll(selector).forEach((element) => {
+      if (element.dataset.sectionRevealReady === "true") return;
+      element.classList.add("section-reveal");
+      element.dataset.sectionRevealReady = "true";
+    });
+  });
+
+  itemSelectors.forEach((selector) => {
+    document.querySelectorAll(selector).forEach((element, index) => {
+      if (element.dataset.sectionRevealItemReady === "true") return;
+      element.classList.add("section-reveal-item");
+      element.style.setProperty(
+        "--reveal-delay",
+        `${Math.min(index % 4, 3) * 90}ms`,
+      );
+      element.dataset.sectionRevealItemReady = "true";
+    });
+  });
+
+  if (prefersReducedMotion || typeof IntersectionObserver === "undefined") {
+    document
+      .querySelectorAll(".section-reveal, .section-reveal-item")
+      .forEach((element) => element.classList.add("is-visible"));
+    return;
+  }
+
+  if (!scrollRevealObserver) {
+    scrollRevealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-visible");
+          scrollRevealObserver.unobserve(entry.target);
+        });
+      },
+      {
+        threshold: 0.16,
+        rootMargin: "0px 0px -10% 0px",
+      },
+    );
+  }
+
+  document
+    .querySelectorAll(".section-reveal, .section-reveal-item")
+    .forEach((element) => {
+      if (element.dataset.sectionRevealObserved === "true") return;
+      scrollRevealObserver.observe(element);
+      element.dataset.sectionRevealObserved = "true";
+    });
 }
 
 function initGalleryVideoPopup() {
@@ -1130,11 +1209,13 @@ function initPageLoader() {
 document.addEventListener("DOMContentLoaded", () => {
   initPageLoader();
   optimizeMediaResources();
+  initScrollReveal();
   scheduleBootstrapBundle();
   window.addEventListener("storage", renderAllCartUIs);
 
   const scheduleAfterLoad = () => {
     window.setTimeout(() => {
+      initScrollReveal();
       initActiveNav();
       initProjectGalleryMobilePreview();
       initFaq();
@@ -1155,6 +1236,7 @@ document.addEventListener("component:loaded", (event) => {
   if (!id) return;
 
   optimizeMediaResources(document.getElementById(id));
+  initScrollReveal();
 });
 
 onComponentLoaded("header-placeholder", initActiveNav);
