@@ -910,12 +910,12 @@ a {
 }
 
 #map-component+#footer-placeholder:not(:empty) .footer-section {
-    padding-top: 210px;
+    padding-top: 90px;
 }
 
 @media (max-width: 768px) {
     .map-section {
-            padding-bottom: 18px;
+       padding-bottom: 18px;
     }
 
     .map-wrapper {

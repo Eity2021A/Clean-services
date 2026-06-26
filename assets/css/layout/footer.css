@@ -129,10 +129,18 @@
                 font-size: 16px;
                 color: var(--white);
             }
+            .footer-description {
+    width: 100%;
+
+}
 
         }
 
         @media (max-width: 767px) {
+            .footer-section {
+             padding: 40px 0 40px;
+
+}
             .footer-description {
                 width: 100%;
             }
