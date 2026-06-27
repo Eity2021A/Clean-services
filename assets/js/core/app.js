@@ -3382,12 +3382,11 @@ function syncCheckoutSectionsForViewport() {
 }
 
 function toggleServiceBox(button) {
+  if (!button) return;
   const section = button.closest(".service-box-collapsible");
   if (!section) return;
-  if (window.innerWidth > 768) return;
-
-  const isOpen = section.classList.toggle("is-open");
-  button.setAttribute("aria-expanded", isOpen ? "true" : "false");
+  section.classList.add("is-open");
+  button.setAttribute("aria-expanded", "true");
 }
 
 function syncServiceBoxForViewport() {

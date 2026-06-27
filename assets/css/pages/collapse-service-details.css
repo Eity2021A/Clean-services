@@ -203,6 +203,7 @@ h2 {
 .total-row {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-bottom: 24px;
 }
 
@@ -1023,7 +1024,7 @@ body.service-cart-open {
 
     .price-card {
         width: 100%;
-        max-width: 560px;
+       
         padding: 24px 28px;
     }
 
@@ -1053,16 +1054,15 @@ body.service-cart-open {
         height: 220px;
     }
 
-    .service-box {
-        margin-top: 0px;
+       .service-box {
+        margin-top: -142px;
     }
 }
 
 @media (max-width: 992px) {
 
-    /* Reserve room for the fixed mobile bottom nav */
-    body {
-        padding-bottom: 62px;
+     .service-box {
+        margin-top: 25px;
     }
 
     .service_details {
@@ -1113,6 +1113,12 @@ body.service-cart-open {
         min-width: 76px;
         padding: 8px 6px;
         display: none !important;
+    }
+        .price-card .checkout-btn, .price-card .cart-btn {
+        max-width:100%;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
     }
 }
 
