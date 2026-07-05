@@ -1087,7 +1087,6 @@ function initServiceSearchToggle() {
   const icon = toggle.querySelector("i");
   const searchInput = searchBox.querySelector("input");
   const mobileQuery = window.matchMedia("(max-width: 768px)");
-  const pageBody = document.body;
 
   const setOpenState = (isOpen) => {
     searchBox.classList.toggle("is-open", isOpen);
@@ -1097,7 +1096,6 @@ function initServiceSearchToggle() {
       "aria-label",
       isOpen ? "Close service search" : "Open service search",
     );
-    pageBody.classList.toggle("service-search-open", isOpen);
 
     if (icon) {
       icon.classList.toggle("bi-search", !isOpen);
