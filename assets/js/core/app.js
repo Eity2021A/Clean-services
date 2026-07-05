@@ -2620,6 +2620,15 @@ function normalizeCartText(value) {
   return String(value || "").replace(/\s+/g, " ").trim();
 }
 
+function escapeHtml(value) {
+  return normalizeCartText(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function parseCartNumber(value) {
   const parsed = Number(String(value || "").replace(/[^0-9.]/g, "").trim());
   return Number.isFinite(parsed) ? parsed : 0;
@@ -2710,6 +2719,8 @@ function initServiceCardLinks() {
 const CART_SERVICE_FEE = 100;
 const CART_TRANSPORT_FEE = 0;
 const CART_DISCOUNT_RATE = 0.1;
+
+window.__cartFlightActive = false;
 
 function readCartItems() {
   try {
@@ -2924,6 +2935,76 @@ function animateCartFabSurface() {
   }, 430);
 }
 
+function animateAddToCartFlight(sourceButton, cartItem) {
+  const basket = document.querySelector(".service-cart-fab");
+  if (!sourceButton || !basket) return;
+
+  const sourceRect = sourceButton.getBoundingClientRect();
+  const targetRect = basket.getBoundingClientRect();
+  const flyer = document.createElement("div");
+  const startX = sourceRect.left + sourceRect.width / 2;
+  const startY = sourceRect.top + sourceRect.height / 2;
+  const endX = targetRect.left + targetRect.width / 2;
+  const endY = targetRect.top + targetRect.height / 2;
+  const deltaX = endX - startX;
+  const deltaY = endY - startY;
+  const travel = Math.max(280, Math.hypot(deltaX, deltaY));
+  const arcRise = Math.min(120, Math.max(44, travel * 0.16));
+
+  flyer.className = "cart-flight-comet";
+
+  if (cartItem) {
+    const itemName = escapeHtml(cartItem.name) || "Service";
+    const itemCategory = escapeHtml(cartItem.category) || "Service";
+    const itemPrice = formatCartMoney(cartItem.price);
+    const itemImage = escapeHtml(cartItem.image) || DEFAULT_CART_IMAGE;
+
+    flyer.innerHTML = `
+      <span class="cart-flight-trail trail-1"></span>
+      <span class="cart-flight-trail trail-2"></span>
+      <span class="cart-flight-trail trail-3"></span>
+      <div class="cart-flight-comet-glow"></div>
+      <div class="cart-flight-comet-body">
+        <img src="${itemImage}" alt="" class="cart-flight-thumb" />
+        <div class="cart-flight-copy">
+          <span class="cart-flight-label">${itemCategory}</span>
+          <strong>${itemName}</strong>
+          <span class="cart-flight-price">${itemPrice}</span>
+        </div>
+      </div>
+      <div class="cart-flight-spark"></div>
+      <div class="cart-flight-spark spark-2"></div>
+    `;
+  } else {
+    flyer.classList.add("cart-flight-fallback");
+    flyer.innerHTML = '<i class="bi bi-basket2" aria-hidden="true"></i>';
+  }
+
+  flyer.style.left = `${startX}px`;
+  flyer.style.top = `${startY}px`;
+  flyer.style.setProperty("--flight-x", `${deltaX}px`);
+  flyer.style.setProperty("--flight-y", `${deltaY}px`);
+  flyer.style.setProperty("--flight-rise", `${arcRise}px`);
+  flyer.style.setProperty("--flight-rise-soft", `${Math.round(arcRise * 0.35)}px`);
+  flyer.style.setProperty(
+    "--flight-duration",
+    `${Math.min(1050, Math.max(650, travel * 0.92))}ms`,
+  );
+  document.body.appendChild(flyer);
+
+  window.requestAnimationFrame(() => {
+    flyer.classList.add("is-flying");
+  });
+
+  const cleanup = () => {
+    flyer.removeEventListener("transitionend", cleanup);
+    flyer.remove();
+  };
+
+  flyer.addEventListener("transitionend", cleanup);
+  window.setTimeout(cleanup, 1600);
+}
+
 function ensureMobileCartToast() {
   let toast = document.getElementById("mobileCartToast");
   if (toast) return toast;
@@ -3016,7 +3097,9 @@ function renderGlobalCart() {
 
   if (shouldAnimateCount) animateCartFabValue(fabCount);
   if (shouldAnimateTotal) animateCartFabValue(fabTotal);
-  if (shouldAnimateCount || shouldAnimateTotal) animateCartFabSurface();
+  if (!window.__cartFlightActive && (shouldAnimateCount || shouldAnimateTotal)) {
+    animateCartFabSurface();
+  }
 }
 
 function renderCartPage() {
@@ -3124,6 +3207,16 @@ function initCartButtons() {
       const cartItem = buildServicePageCartItem(button);
       addCartItem(cartItem);
       showMobileCartToast(cartItem);
+      try {
+        window.__cartFlightActive = true;
+        animateAddToCartFlight(button, cartItem);
+        animateCartFabPulse();
+        window.setTimeout(() => {
+          window.__cartFlightActive = false;
+        }, 2600);
+      } catch (_) {
+        window.__cartFlightActive = false;
+      }
     });
 
     button.dataset.cartBound = "true";
