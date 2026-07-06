@@ -219,6 +219,7 @@
         @media (max-width: 575px) {
             .footer-title {
                 font-size: 20px;
+                margin-bottom:17px;
             }
 
             .footer-description {
@@ -228,7 +229,11 @@
 
             .footer-links a,
             .footer-contact a {
-                font-size: 14px;
+                font-size: 13px;
+             
+            }
+            .footer-links li, .footer-contact li {
+                margin-bottom: 6px;
             }
         }
 

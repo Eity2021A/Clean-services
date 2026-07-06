@@ -141,17 +141,17 @@ body {
     border-color: var(--primary-color);
     outline: none;
     background: var(--white);
-    box-shadow: 0 0 0 3px rgba(28, 170, 184, 0.14);
+    /* box-shadow: 0 0 0 3px rgba(28, 170, 184, 0.14); */
 }
 
 .otp-box.is-invalid {
     border-color: #dc3545;
-    background: #fff5f5;
-    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.12);
+
 }
 
 .otp-box::placeholder {
     color: #98a4a8;
+    font-weight: normal;
 }
 
 .otp-verified {
