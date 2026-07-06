@@ -979,14 +979,37 @@ body.service-cart-open {
     margin-top: 0;
     color: rgba(28, 170, 184, 0.78);
     filter: drop-shadow(0 3px 7px rgba(28, 170, 184, 0.18));
-    transform: translate(-50%, calc(-50% + 2px));
+    transform: translate(-50%, calc(-50% + 1px));
+    width: 22px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
 }
 
 .size-slider-demo-hand i {
     display: block;
     font-size: var(--slider-demo-hand-size);
     line-height: 1;
-    transform: rotate(18deg);
+    transform: translateY(-2px) rotate(18deg);
+    position: relative;
+    z-index: 2;
+}
+
+.size-slider-demo-hand-ring {
+    position: absolute;
+    left: 50%;
+    top: 15px;
+    width: 22px;
+    height: 22px;
+    border: 1.5px solid rgba(28, 170, 184, 0.78);
+    border-radius: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.84);
+    box-shadow:
+        0 0 0 3px rgba(28, 170, 184, 0.08),
+        0 4px 10px rgba(28, 170, 184, 0.12);
 }
 
 .size-estimator-range-labels {
@@ -1310,7 +1333,7 @@ body.service-cart-open {
 
     .size-slider-demo-hand {
         margin-top: 0;
-        transform: translate(-50%, calc(-50% + 2px));
+        transform: translate(-50%, calc(-50% + 1px));
     }
 
     .size-estimator-range-labels {
@@ -2108,5 +2131,44 @@ body.service-cart-open {
         width: 52px;
         height: 52px;
         font-size: 20px;
+    }
+}
+
+.detail-reveal {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0) scale(0.985);
+    filter: blur(10px) saturate(0.96);
+    transition:
+        opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+        filter 0.9s ease;
+    transition-delay: var(--detail-reveal-delay, 0ms);
+    will-change: opacity, transform, filter;
+}
+
+.detail-reveal.detail-reveal-hero {
+    transform: translate3d(0, 28px, 0) scale(0.97);
+}
+
+.detail-reveal.detail-reveal-card {
+    transform: translate3d(0, 32px, 0) scale(0.965);
+}
+
+.detail-reveal.detail-reveal-line {
+    transform: translate3d(0, 18px, 0);
+}
+
+.detail-reveal.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0) saturate(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .detail-reveal {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+        transition: none !important;
     }
 }

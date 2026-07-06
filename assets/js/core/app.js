@@ -1079,6 +1079,90 @@ function initServiceLightReveal() {
   serviceLightRevealInitialized = true;
 }
 
+function initServiceDetailReveal() {
+  if (document.body?.dataset.serviceDetailRevealInitialized === "true") return;
+
+  const revealGroups = [
+    {
+      selector: ".service_details h1",
+      variant: "detail-reveal-hero",
+      step: 0,
+    },
+    {
+      selector:
+        ".service-details .size-estimator-card, .service-details .price-card, .service-details .service-box, .service-details .service-video-shell, .service-details .service-video-single, .service-dropdown-card",
+      variant: "detail-reveal-card",
+      step: 120,
+    },
+    {
+      selector:
+        ".service-details .section-title, .service-details .info-card, .service-details .included-box, .service-details .included-item, .service-details .process-title, .service-details .process-item, .service-details .service-video-copy > *, .service-details .service-video-overlay, .service-top-indicator, .service-dropdown-panel .included-item, .service-dropdown-panel .process-item",
+      variant: "detail-reveal-line",
+      step: 90,
+    },
+  ];
+
+  const seen = new Set();
+  const revealTargets = [];
+
+  revealGroups.forEach(({ selector, variant, step }) => {
+    document.querySelectorAll(selector).forEach((element, index) => {
+      if (seen.has(element)) return;
+      seen.add(element);
+      element.classList.add("detail-reveal", variant);
+      element.style.setProperty("--detail-reveal-delay", `${index * step}ms`);
+      revealTargets.push(element);
+    });
+  });
+
+  if (!revealTargets.length) return;
+
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+
+  if (prefersReducedMotion || typeof IntersectionObserver === "undefined") {
+    revealTargets.forEach((element) => element.classList.add("is-visible"));
+    document.body.dataset.serviceDetailRevealInitialized = "true";
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const delay = Number(
+          entry.target
+            .style.getPropertyValue("--detail-reveal-delay")
+            .replace("ms", "") || 0,
+        );
+        animateInitialReveal(entry.target, "is-visible", delay);
+        observer.unobserve(entry.target);
+      });
+    },
+    {
+      threshold: 0.16,
+      rootMargin: "0px 0px -12% 0px",
+    },
+  );
+
+  revealTargets.forEach((element) => {
+    if (element.dataset.detailRevealObserved === "true") return;
+    const delay = Number(
+      element.style.getPropertyValue("--detail-reveal-delay").replace("ms", "") ||
+        0,
+    );
+    if (isElementInRevealViewport(element, 0.92)) {
+      animateInitialReveal(element, "is-visible", delay);
+    } else {
+      observer.observe(element);
+    }
+    element.dataset.detailRevealObserved = "true";
+  });
+
+  document.body.dataset.serviceDetailRevealInitialized = "true";
+}
+
 function initServiceSearchToggle() {
   const toggle = document.querySelector(".service-search-toggle");
   const searchBox = document.getElementById("service-search-box");
@@ -3547,6 +3631,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initSectionReveal();
     initTrustedSectionReveal();
     initServiceLightReveal();
+    initServiceDetailReveal();
     initMobileContactOverlay();
     initLoginMethodToggle();
     initSignupMethodToggle();
