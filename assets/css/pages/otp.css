@@ -144,6 +144,12 @@ body {
     box-shadow: 0 0 0 3px rgba(28, 170, 184, 0.14);
 }
 
+.otp-box.is-invalid {
+    border-color: #dc3545;
+    background: #fff5f5;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.12);
+}
+
 .otp-box::placeholder {
     color: #98a4a8;
 }
@@ -158,6 +164,14 @@ body {
     border-radius: 999px;
     font-size: 14px;
     color: #4FA46A;
+    font-family: var(--font-primary);
+}
+
+.otp-error-message {
+    margin: 0 auto 10px;
+    text-align: center;
+    font-size: 14px;
+    color: #dc3545;
     font-family: var(--font-primary);
 }
 

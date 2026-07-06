@@ -1816,6 +1816,112 @@ function initCustomerDetailsValidation() {
   form.dataset.customerValidationInitialized = "true";
 }
 
+function initOtpValidation() {
+  const form = document.getElementById("otpForm");
+  const otpInputs = Array.from(document.querySelectorAll(".otp-box"));
+  const errorMessage = document.getElementById("otpErrorMessage");
+  const verifiedMessage = document.getElementById("otpVerifiedMessage");
+
+  if (!form || otpInputs.length !== 6) return;
+  if (form.dataset.otpValidationInitialized === "true") return;
+
+  const clearInvalidState = () => {
+    otpInputs.forEach((input) => input.classList.remove("is-invalid"));
+    if (errorMessage) errorMessage.hidden = true;
+  };
+
+  const showInvalidState = () => {
+    otpInputs.forEach((input) => {
+      if (!/^\d$/.test(input.value.trim())) {
+        input.classList.add("is-invalid");
+      }
+    });
+    if (errorMessage) errorMessage.hidden = false;
+    if (verifiedMessage) verifiedMessage.hidden = true;
+  };
+
+  const sanitizeDigit = (value) => value.replace(/\D/g, "").slice(0, 1);
+
+  const getOtpCode = () => otpInputs.map((input) => input.value.trim()).join("");
+
+  const isOtpComplete = () => /^\d{6}$/.test(getOtpCode());
+
+  otpInputs.forEach((input, index) => {
+    input.addEventListener("input", (event) => {
+      const nextDigit = sanitizeDigit(event.target.value);
+      event.target.value = nextDigit;
+      clearInvalidState();
+      if (verifiedMessage) verifiedMessage.hidden = true;
+
+      if (nextDigit && index < otpInputs.length - 1) {
+        otpInputs[index + 1].focus();
+        otpInputs[index + 1].select();
+      }
+    });
+
+    input.addEventListener("keydown", (event) => {
+      if (event.key === "Backspace" && !input.value && index > 0) {
+        otpInputs[index - 1].focus();
+        otpInputs[index - 1].select();
+      }
+
+      if (event.key === "ArrowLeft" && index > 0) {
+        event.preventDefault();
+        otpInputs[index - 1].focus();
+      }
+
+      if (event.key === "ArrowRight" && index < otpInputs.length - 1) {
+        event.preventDefault();
+        otpInputs[index + 1].focus();
+      }
+    });
+
+    input.addEventListener("paste", (event) => {
+      event.preventDefault();
+      const pastedDigits = (event.clipboardData?.getData("text") || "")
+        .replace(/\D/g, "")
+        .slice(0, otpInputs.length);
+
+      if (!pastedDigits) return;
+
+      otpInputs.forEach((field, fieldIndex) => {
+        field.value = pastedDigits[fieldIndex] || "";
+      });
+
+      clearInvalidState();
+      if (verifiedMessage) verifiedMessage.hidden = true;
+
+      const focusIndex = Math.min(pastedDigits.length, otpInputs.length) - 1;
+      if (focusIndex >= 0) {
+        otpInputs[focusIndex].focus();
+        otpInputs[focusIndex].select();
+      }
+    });
+  });
+
+  form.addEventListener("submit", (event) => {
+    if (!isOtpComplete()) {
+      event.preventDefault();
+      event.stopPropagation();
+      showInvalidState();
+      const firstInvalidInput = otpInputs.find(
+        (input) => !/^\d$/.test(input.value.trim()),
+      );
+      firstInvalidInput?.focus();
+      return;
+    }
+
+    event.preventDefault();
+    clearInvalidState();
+    if (verifiedMessage) verifiedMessage.hidden = false;
+    window.setTimeout(() => {
+      window.location.href = "customer_details.html";
+    }, 250);
+  });
+
+  form.dataset.otpValidationInitialized = "true";
+}
+
 function initCheckoutValidation() {
   const form = document.getElementById("checkoutForm");
   const nameInput = document.getElementById("checkoutFullName");
@@ -3635,6 +3741,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initMobileContactOverlay();
     initLoginMethodToggle();
     initSignupMethodToggle();
+    initOtpValidation();
     initCustomerDetailsValidation();
     initCheckoutSchedulePicker();
     initCheckoutAreaSelect2();

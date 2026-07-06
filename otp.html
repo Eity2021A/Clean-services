@@ -74,62 +74,84 @@
             <div class="otp-inputs">
               <input
                 id="otpDigit1"
+                name="otpDigit1"
                 class="otp-box"
                 type="text"
                 maxlength="1"
                 inputmode="numeric"
                 pattern="[0-9]*"
                 placeholder="0"
+                autocomplete="one-time-code"
+                aria-label="OTP digit 1"
                 required
               />
               <input
+                id="otpDigit2"
+                name="otpDigit2"
                 class="otp-box"
                 type="text"
                 maxlength="1"
                 inputmode="numeric"
                 pattern="[0-9]*"
                 placeholder="0"
+                aria-label="OTP digit 2"
                 required
               />
               <input
+                id="otpDigit3"
+                name="otpDigit3"
                 class="otp-box"
                 type="text"
                 maxlength="1"
                 inputmode="numeric"
                 pattern="[0-9]*"
                 placeholder="0"
+                aria-label="OTP digit 3"
                 required
               />
               <input
+                id="otpDigit4"
+                name="otpDigit4"
                 class="otp-box"
                 type="text"
                 maxlength="1"
                 inputmode="numeric"
                 pattern="[0-9]*"
                 placeholder="0"
+                aria-label="OTP digit 4"
                 required
               />
               <input
+                id="otpDigit5"
+                name="otpDigit5"
                 class="otp-box"
                 type="text"
                 maxlength="1"
                 inputmode="numeric"
                 pattern="[0-9]*"
                 placeholder="0"
+                aria-label="OTP digit 5"
                 required
               />
               <input
+                id="otpDigit6"
+                name="otpDigit6"
                 class="otp-box"
                 type="text"
                 maxlength="1"
                 inputmode="numeric"
                 pattern="[0-9]*"
                 placeholder="0"
+                aria-label="OTP digit 6"
                 required
               />
             </div>
 
-            <p class="otp-verified">
+            <p class="otp-error-message" id="otpErrorMessage" aria-live="polite" hidden>
+              Please enter a valid 6-digit OTP code.
+            </p>
+
+            <p class="otp-verified" id="otpVerifiedMessage" hidden>
               <i class="bi bi-check-circle"></i>
               Code verified
             </p>
