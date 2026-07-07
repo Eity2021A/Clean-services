@@ -1277,7 +1277,7 @@ function initPageLoader() {
   let pageReady = document.readyState === "complete";
   let criticalReady = !(
     document.getElementById("header-placeholder") ||
-    document.getElementById("hero-section")
+    document.getElementById("hero-component")
   );
   let hidden = false;
 

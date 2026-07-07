@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ? "../"
     : "";
   const componentCache = new Map();
+  let registryLoadPromise = null;
   const layoutBase = `${componentBase}components/layout`;
   const homeSectionBase = `${componentBase}components/sections/home`;
 
@@ -31,14 +32,94 @@ document.addEventListener("DOMContentLoaded", () => {
     ],
   ];
 
+  const normalizeComponentPath = (file) =>
+    String(file || "")
+      .replace(/\\/g, "/")
+      .replace(/^(\.\.\/)+/, "")
+      .replace(/^\.\/+/, "");
+
+  const loadComponentRegistry = async () => {
+    if (window.__componentMarkupRegistry) {
+      return window.__componentMarkupRegistry;
+    }
+
+    if (!registryLoadPromise) {
+      registryLoadPromise = new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = `${componentBase}assets/js/core/component-registry.js`;
+        script.async = true;
+        script.onload = () => resolve(window.__componentMarkupRegistry || {});
+        script.onerror = () =>
+          reject(new Error("Could not load local component registry"));
+        document.head.appendChild(script);
+      });
+    }
+
+    return registryLoadPromise;
+  };
+
+  const fetchComponentMarkupWithXhrFallback = async (file) => {
+    const isFileProtocol = window.location.protocol === "file:";
+    const normalizedFile = normalizeComponentPath(file);
+
+    if (isFileProtocol) {
+      const registry = await loadComponentRegistry().catch(() => null);
+      if (registry && typeof registry[normalizedFile] === "string") {
+        return registry[normalizedFile];
+      }
+    }
+
+    try {
+      const response = await fetch(file, { cache: "no-cache" });
+      if (!response.ok) throw new Error(`Could not load ${file}`);
+      return await response.text();
+    } catch (fetchError) {
+      if (!isFileProtocol) throw fetchError;
+
+      try {
+        return await new Promise((resolve, reject) => {
+          const request = new XMLHttpRequest();
+          request.open("GET", file, true);
+          request.onreadystatechange = () => {
+            if (request.readyState !== 4) return;
+
+            // Browsers often report local-file XHR success with status 0.
+            if (
+              (request.status >= 200 && request.status < 300) ||
+              (request.status === 0 && request.responseText)
+            ) {
+              resolve(request.responseText);
+              return;
+            }
+
+            reject(
+              new Error(
+                `Could not load ${file} via XHR fallback (status: ${request.status})`,
+              ),
+            );
+          };
+          request.onerror = () => {
+            reject(
+              new Error(`Could not load ${file} via XHR fallback`),
+            );
+          };
+          request.send();
+        });
+      } catch (xhrError) {
+        const registry = await loadComponentRegistry();
+        if (registry && typeof registry[normalizedFile] === "string") {
+          return registry[normalizedFile];
+        }
+        throw xhrError;
+      }
+    }
+  };
+
   const fetchComponentMarkup = async (file) => {
     if (!componentCache.has(file)) {
       componentCache.set(
         file,
-        fetch(file, { cache: "no-cache" }).then(async (response) => {
-          if (!response.ok) throw new Error(`Could not load ${file}`);
-          return response.text();
-        }),
+        fetchComponentMarkupWithXhrFallback(file),
       );
     }
 
@@ -62,6 +143,10 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const loadCriticalThenRest = async () => {
+    if (window.location.protocol === "file:") {
+      await loadComponentRegistry().catch(() => null);
+    }
+
     const presentCriticalTargets = criticalTargets.filter(([id]) =>
       document.getElementById(id),
     );
