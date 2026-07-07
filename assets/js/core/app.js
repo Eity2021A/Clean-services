@@ -2517,6 +2517,10 @@ function initContactFormValidation() {
 function initServiceDetailsSlider() {
   const slider = document.getElementById("sizeSlider");
   const output = document.getElementById("sliderValue");
+  const bdtOutput = document.getElementById("sliderBdtValue");
+  const valueWrap = document.querySelector(".size-estimator-value-wrap");
+  const valueLine = valueWrap?.querySelector(".size-estimator-value-line");
+  const editHint = valueWrap?.querySelector(".size-estimator-edit-hint");
   const baseLabel = document.querySelector(".price-row .base-label");
   const basePriceEl = document.querySelector(
     ".price-row strong:not(.frequency-label)",
@@ -2528,6 +2532,10 @@ function initServiceDetailsSlider() {
   if (
     !slider ||
     !output ||
+    !bdtOutput ||
+    !valueWrap ||
+    !valueLine ||
+    !editHint ||
     !baseLabel ||
     !basePriceEl ||
     !discountAmountEl ||
@@ -2537,23 +2545,66 @@ function initServiceDetailsSlider() {
 
   const ratePerSqft = 1.0;
   const discountRate = 0.1;
+  const sliderMin = Number(slider.min || 0);
+  const sliderMax = Number(slider.max || 100);
+  const sliderStep = Number(slider.step || 10);
   const formatCurrency = (value) =>
     `৳ ${value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
 
+  const editInput = document.createElement("input");
+
+  editInput.type = "number";
+  editInput.className = "size-estimator-edit-input";
+  editInput.min = String(sliderMin);
+  editInput.max = String(sliderMax);
+  editInput.step = String(sliderStep);
+  editInput.inputMode = "numeric";
+  editInput.hidden = true;
+  editInput.setAttribute("aria-label", "Edit home size in square feet");
+  valueWrap.insertBefore(editInput, editHint);
+
+  const clampToSlider = (value) => {
+    const safeValue = Number.isFinite(value) ? value : sliderMin;
+    const steppedValue =
+      Math.round((safeValue - sliderMin) / sliderStep) * sliderStep + sliderMin;
+    return Math.min(sliderMax, Math.max(sliderMin, steppedValue));
+  };
+
+  const openEditor = () => {
+    editInput.value = String(slider.value);
+    valueLine.hidden = true;
+    editHint.hidden = true;
+    editInput.hidden = false;
+    valueWrap.classList.add("is-editing");
+    editInput.focus();
+    editInput.select();
+  };
+
+  const closeEditor = ({ commit = false } = {}) => {
+    if (commit) {
+      const nextValue = clampToSlider(Number(editInput.value));
+      slider.value = String(nextValue);
+      updateSlider();
+    }
+
+    editInput.hidden = true;
+    valueLine.hidden = false;
+    editHint.hidden = false;
+    valueWrap.classList.remove("is-editing");
+  };
+
   const updateSlider = () => {
     const sqft = Number(slider.value);
-    const min = Number(slider.min || 0);
-    const max = Number(slider.max || 100);
-    const percentage = ((sqft - min) * 100) / (max - min);
+    const percentage = ((sqft - sliderMin) * 100) / (sliderMax - sliderMin);
     const basePrice = sqft * ratePerSqft;
     const discount = basePrice * discountRate;
     const total = basePrice - discount;
 
     slider.style.background = `linear-gradient(to right, #1CAAB8 0%, #1CAAB8 ${percentage}%, #d6eaec ${percentage}%, #d6eaec 100%)`;
     const sliderSqftEl = document.getElementById("sliderSqft");
-    output.textContent = Math.round(basePrice).toLocaleString("en-US");
-    if (sliderSqftEl)
-      sliderSqftEl.textContent = `${sqft.toLocaleString("en-US")} SFT`;
+    output.textContent = sqft.toLocaleString("en-US");
+    bdtOutput.textContent = Math.round(basePrice).toLocaleString("en-US");
+    if (sliderSqftEl) sliderSqftEl.textContent = "SFT";
     baseLabel.textContent = `Base Rate (${sqft.toLocaleString("en-US")} SFT)`;
     basePriceEl.textContent = formatCurrency(basePrice);
     discountAmountEl.textContent = `- ${formatCurrency(discount)}`;
@@ -2563,6 +2614,30 @@ function initServiceDetailsSlider() {
   };
 
   slider.addEventListener("input", updateSlider);
+  editHint.setAttribute("role", "button");
+  editHint.setAttribute("tabindex", "0");
+  editHint.addEventListener("click", openEditor);
+  editHint.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    openEditor();
+  });
+  editInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      closeEditor({ commit: true });
+      return;
+    }
+
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeEditor();
+    }
+  });
+  editInput.addEventListener("blur", () => {
+    if (editInput.hidden) return;
+    closeEditor({ commit: true });
+  });
   updateSlider();
 }
 
