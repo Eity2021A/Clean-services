@@ -344,6 +344,10 @@ h2 {
 }
 
 @media (max-width: 768px) {
+  body.service-search-open {
+    overflow: hidden;
+  }
+
   .service-header {
     flex-direction: column;
     align-items: stretch;
@@ -365,7 +369,12 @@ h2 {
   }
 
   .search-box {
-    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1200;
+    width: auto;
     flex-direction: column;
     max-height: 0;
     opacity: 0;
@@ -373,18 +382,18 @@ h2 {
     visibility: hidden;
     pointer-events: none;
     margin-top: 0;
+    transform: translateY(-100%);
+    transform-origin: top;
     padding: 0 16px;
-    background: #ffffff;
-    border: 1px solid transparent;
-    border-radius: 16px;
-    box-shadow: 0 12px 30px rgba(0, 41, 61, 0.1);
+    background: transparent;
+    border-radius: 0 0 10px 10px;
+    box-shadow: none;
     transition:
       max-height 0.42s ease,
       opacity 0.3s ease,
+      transform 0.38s ease,
       padding 0.3s ease,
-      visibility 0s linear 0.42s,
-      border-color 0.25s ease,
-      box-shadow 0.25s ease;
+      visibility 0s linear 0.42s;
   }
 
   .search-box.is-open {
@@ -392,13 +401,14 @@ h2 {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
+    transform: translateY(0);
     padding: 32px 16px 16px;
     background: #ffffff;
-    border-color: #e4eef0;
     box-shadow: 0 18px 36px rgba(0, 41, 61, 0.16);
     transition:
       max-height 0.42s ease,
       opacity 0.3s ease,
+      transform 0.38s ease,
       padding 0.3s ease,
       visibility 0s linear 0s;
   }
@@ -534,28 +544,5 @@ h2 {
   .service-card.scroll-light-in::after {
     animation: none !important;
     opacity: 0 !important;
-  }
-}
-
-.services-reveal {
-  opacity: 0;
-  transform: translate3d(0, 46px, 0);
-  transition:
-    opacity 0.95s ease,
-    transform 0.95s cubic-bezier(0.22, 1, 0.36, 1);
-  transition-delay: var(--services-reveal-delay, 0ms);
-  will-change: opacity, transform;
-}
-
-.services-reveal.is-visible {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .services-reveal {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
   }
 }
