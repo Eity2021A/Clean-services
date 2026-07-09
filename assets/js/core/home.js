@@ -169,6 +169,45 @@ function optimizeMediaResources(root = document) {
   });
 }
 
+function initReadingProgress() {
+  let progress = document.querySelector(".reading-progress");
+  if (!progress) {
+    progress = document.createElement("div");
+    progress.className = "reading-progress";
+    progress.setAttribute("aria-hidden", "true");
+    const bar = document.createElement("span");
+    bar.id = "readingBar";
+    progress.appendChild(bar);
+    document.body.appendChild(progress);
+  }
+
+  const bar = progress.querySelector("span");
+  if (!bar || progress.dataset.initialized === "true") return;
+
+  let rafId = null;
+
+  const update = () => {
+    const doc = document.documentElement;
+    const max = doc.scrollHeight - doc.clientHeight;
+    const pct = max > 0 ? (doc.scrollTop / max) * 100 : 0;
+    bar.style.width = `${pct}%`;
+  };
+
+  const scheduleUpdate = () => {
+    if (rafId) return;
+    rafId = window.requestAnimationFrame(() => {
+      rafId = null;
+      update();
+    });
+  };
+
+  window.addEventListener("scroll", scheduleUpdate, { passive: true });
+  window.addEventListener("resize", update);
+  update();
+
+  progress.dataset.initialized = "true";
+}
+
 function normalizePath(pathname) {
   const clean = pathname.split("?")[0].split("#")[0];
   const last = clean.substring(clean.lastIndexOf("/") + 1);
@@ -1330,6 +1369,7 @@ function initPageLoader() {
 
 document.addEventListener("DOMContentLoaded", () => {
   initPageLoader();
+  initReadingProgress();
   optimizeMediaResources();
   initScrollReveal();
   scheduleBootstrapBundle();
