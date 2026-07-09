@@ -3176,8 +3176,12 @@ function createCartPageItemMarkup(item) {
   `;
 }
 
+function shouldAnimateCartMotion() {
+  return !window.matchMedia("(max-width: 991.98px)").matches;
+}
+
 function animateCartFabValue(element) {
-  if (!element) return;
+  if (!element || !shouldAnimateCartMotion()) return;
   element.classList.remove("is-updating");
   void element.offsetWidth;
   element.classList.add("is-updating");
@@ -3189,7 +3193,7 @@ function animateCartFabValue(element) {
 
 function animateCartFabSurface() {
   const fab = document.querySelector(".service-cart-fab");
-  if (!fab) return;
+  if (!fab || !shouldAnimateCartMotion()) return;
 
   fab.classList.remove("is-updating");
   void fab.offsetWidth;
@@ -3202,7 +3206,7 @@ function animateCartFabSurface() {
 
 function animateAddToCartFlight(sourceButton, cartItem) {
   const basket = document.querySelector(".service-cart-fab");
-  if (!sourceButton || !basket) return;
+  if (!sourceButton || !basket || !shouldAnimateCartMotion()) return;
 
   const sourceRect = sourceButton.getBoundingClientRect();
   const targetRect = basket.getBoundingClientRect();
@@ -3362,7 +3366,11 @@ function renderGlobalCart() {
 
   if (shouldAnimateCount) animateCartFabValue(fabCount);
   if (shouldAnimateTotal) animateCartFabValue(fabTotal);
-  if (!window.__cartFlightActive && (shouldAnimateCount || shouldAnimateTotal)) {
+  if (
+    shouldAnimateCartMotion() &&
+    !window.__cartFlightActive &&
+    (shouldAnimateCount || shouldAnimateTotal)
+  ) {
     animateCartFabSurface();
   }
 }
@@ -3472,6 +3480,7 @@ function initCartButtons() {
       const cartItem = buildServicePageCartItem(button);
       addCartItem(cartItem);
       showMobileCartToast(cartItem);
+      if (!shouldAnimateCartMotion()) return;
       try {
         window.__cartFlightActive = true;
         animateAddToCartFlight(button, cartItem);
