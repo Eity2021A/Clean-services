@@ -2552,6 +2552,7 @@ function initServiceDetailsSlider() {
     `৳ ${value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
 
   const editInput = document.createElement("input");
+  const confirmButton = document.createElement("button");
 
   editInput.type = "number";
   editInput.className = "size-estimator-edit-input";
@@ -2562,6 +2563,13 @@ function initServiceDetailsSlider() {
   editInput.hidden = true;
   editInput.setAttribute("aria-label", "Edit home size in square feet");
   valueWrap.insertBefore(editInput, editHint);
+
+  confirmButton.type = "button";
+  confirmButton.className = "size-estimator-edit-confirm";
+  confirmButton.hidden = true;
+  confirmButton.setAttribute("aria-label", "Apply home size");
+  confirmButton.innerHTML = '<i class="bi bi-check-lg" aria-hidden="true"></i>';
+  valueWrap.insertBefore(confirmButton, editHint);
 
   const clampToSlider = (value) => {
     const safeValue = Number.isFinite(value) ? value : sliderMin;
@@ -2575,6 +2583,7 @@ function initServiceDetailsSlider() {
     valueLine.hidden = true;
     editHint.hidden = true;
     editInput.hidden = false;
+    confirmButton.hidden = false;
     valueWrap.classList.add("is-editing");
     editInput.focus();
     editInput.select();
@@ -2588,6 +2597,7 @@ function initServiceDetailsSlider() {
     }
 
     editInput.hidden = true;
+    confirmButton.hidden = true;
     valueLine.hidden = false;
     editHint.hidden = false;
     valueWrap.classList.remove("is-editing");
@@ -2625,7 +2635,7 @@ function initServiceDetailsSlider() {
   editInput.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
-      closeEditor({ commit: true });
+      confirmButton.click();
       return;
     }
 
@@ -2634,8 +2644,15 @@ function initServiceDetailsSlider() {
       closeEditor();
     }
   });
-  editInput.addEventListener("blur", () => {
+  editInput.addEventListener("blur", (event) => {
     if (editInput.hidden) return;
+    if (event.relatedTarget === confirmButton) return;
+    closeEditor();
+  });
+  confirmButton.addEventListener("mousedown", (event) => {
+    event.preventDefault();
+  });
+  confirmButton.addEventListener("click", () => {
     closeEditor({ commit: true });
   });
   updateSlider();

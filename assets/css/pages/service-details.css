@@ -877,6 +877,43 @@ body.service-cart-open {
   box-shadow: 0 0 0 3px rgba(28, 170, 184, 0.12);
 }
 
+.size-estimator-edit-confirm {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--primary-color);
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 18px rgba(28, 170, 184, 0.22);
+  cursor: pointer;
+  transition: transform 0.18s ease, background-color 0.18s ease;
+}
+
+.size-estimator-edit-confirm:hover {
+  background: #1599a6;
+  transform: translateY(-1px);
+}
+
+.size-estimator-edit-confirm i {
+  font-size: 15px;
+  line-height: 1;
+}
+
+.size-estimator-value-wrap.is-editing {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  gap: 6px;
+  width: 100%;
+  max-width: 100%;
+  white-space: nowrap;
+}
+
 .size-slider-wrap {
   margin-top: 0px;
   position: relative;
@@ -1630,12 +1667,53 @@ body.service-cart-open {
 
   .size-estimator-edit-hint {
     font-size: 10px;
+    gap: 3px;
+  }
+
+  .size-estimator-edit-hint i {
+    font-size: 10px;
   }
 
   .size-estimator-edit-input {
-    width: 92px;
+    width: 96px;
     font-size: 14px;
     padding: 5px 8px;
+  }
+
+  .size-estimator-edit-confirm {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+  }
+
+  .size-estimator-edit-confirm i {
+    font-size: 12px;
+  }
+
+  .size-estimator-value-wrap.is-editing {
+    grid-column: auto;
+    justify-self: end;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+    gap: 6px;
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    background: transparent;
+    border-radius: 0;
+  }
+
+  .size-estimator-value-wrap.is-editing .size-estimator-edit-input {
+    flex: 0 1 110px;
+    min-width: 0;
+    width: 110px;
+  }
+
+  .size-estimator-value-wrap.is-editing .size-estimator-edit-confirm {
+    flex: 0 0 auto;
+    align-self: center;
   }
 
   .size-estimator-value {
@@ -2030,7 +2108,7 @@ body.service-cart-open {
 
   .size-estimator-center-wrap {
     grid-column: 2;
-    justify-self: end;
+    justify-self: start;
     align-items: center;
     padding: 10px 14px;
     border-radius: 18px;
@@ -2042,6 +2120,7 @@ body.service-cart-open {
     grid-column: 1 / -1;
     width: 100%;
     align-items: flex-start;
+    justify-content: flex-start;
     text-align: left;
     white-space: normal;
     padding: 10px 12px;
@@ -2049,6 +2128,8 @@ body.service-cart-open {
   }
 
   .size-estimator-value-line {
+    align-items: center;
+    justify-content: flex-start;
     flex-wrap: wrap;
     gap: 6px;
   }
@@ -2063,7 +2144,12 @@ body.service-cart-open {
   }
 
   .size-estimator-edit-hint {
-    font-size: 11px;
+    font-size: 10px;
+    gap: 3px;
+  }
+
+  .size-estimator-edit-hint i {
+    font-size: 10px;
   }
 
   .size-slider-wrap {

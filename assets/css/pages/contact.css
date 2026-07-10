@@ -888,7 +888,7 @@ a {
 /* ==================== Map ====================== */
 .map-section {
     position: relative;
-    padding: 0 0 70px;
+    padding: 0 0 33px;
     z-index: 1;
 }
 
@@ -913,7 +913,7 @@ a {
 }
 
 #map-component+#footer-placeholder:not(:empty) .footer-section {
-    padding-top: 90px;
+    padding-top: 120px;
 }
 
 @media (max-width: 768px) {
