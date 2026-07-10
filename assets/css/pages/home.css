@@ -135,6 +135,14 @@ h2 {
   overflow: hidden;
 }
 
+.hero-section.section-reveal,
+.hero-section.section-reveal.is-visible {
+  opacity: 1;
+  transform: none;
+  transition: none;
+  will-change: auto;
+}
+
 .hero-section .carousel,
 .hero-section .carousel-inner,
 .hero-section .carousel-item {

@@ -316,7 +316,6 @@ function initScrollReveal() {
   ).matches;
 
   const sectionSelectors = [
-    ".hero-section",
     ".stat-component",
     ".top-notch",
     ".testimonial-section",
