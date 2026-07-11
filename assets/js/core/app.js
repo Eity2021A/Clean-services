@@ -2579,6 +2579,7 @@ function initServiceDetailsSlider() {
   };
 
   const openEditor = () => {
+    slider.dispatchEvent(new CustomEvent("service-slider-manual-edit"));
     editInput.value = String(slider.value);
     valueLine.hidden = true;
     editHint.hidden = true;
@@ -2594,6 +2595,7 @@ function initServiceDetailsSlider() {
       const nextValue = clampToSlider(Number(editInput.value));
       slider.value = String(nextValue);
       updateSlider();
+      slider.dispatchEvent(new CustomEvent("service-slider-manual-edit"));
     }
 
     editInput.hidden = true;
@@ -2845,6 +2847,7 @@ function initServiceDetailsSliderDemo() {
   slider.addEventListener("focus", stopDemo);
   slider.addEventListener("input", stopDemo);
   slider.addEventListener("change", stopDemo);
+  slider.addEventListener("service-slider-manual-edit", stopDemo);
   slider.dataset.demoInitialized = "true";
 }
 
