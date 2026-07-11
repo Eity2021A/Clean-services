@@ -12,7 +12,7 @@
         .footer-description {
             font-family: var(--font-secondary);
             font-weight: 40;
-            font-size: 18px;
+            font-size: 16px;
             line-height: 27px;
             width: 300px;
             color: var(--white);
@@ -35,7 +35,7 @@
 
         .footer-links li,
         .footer-contact li {
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .footer-links a,
@@ -43,10 +43,11 @@
             text-decoration: none;
             font-family: var(--font-primary);
             color: var(--white);
-            font-size: 20px;
+            font-size: 16px;
             overflow-wrap: anywhere;
             word-break: break-word;
             transition: 0.3s;
+
         }
 
         .footer-links a:hover,
@@ -57,7 +58,7 @@
 
         .footer-contact i {
             margin-right: 12px;
-            font-size: 18px;
+            font-size: 16px;
         }
 
         .social-icons {
