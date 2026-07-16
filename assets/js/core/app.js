@@ -2552,7 +2552,14 @@ function initServiceDetailsSlider() {
     `৳ ${value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
 
   const editInput = document.createElement("input");
+  const editPrefix = document.createElement("span");
   const confirmButton = document.createElement("button");
+
+  editPrefix.className = "size-estimator-edit-prefix";
+  editPrefix.textContent = "SFT";
+  editPrefix.hidden = true;
+  editPrefix.setAttribute("aria-hidden", "true");
+  valueWrap.insertBefore(editPrefix, editHint);
 
   editInput.type = "number";
   editInput.className = "size-estimator-edit-input";
@@ -2583,6 +2590,7 @@ function initServiceDetailsSlider() {
     editInput.value = String(slider.value);
     valueLine.hidden = true;
     editHint.hidden = true;
+    editPrefix.hidden = false;
     editInput.hidden = false;
     confirmButton.hidden = false;
     valueWrap.classList.add("is-editing");
@@ -2598,6 +2606,7 @@ function initServiceDetailsSlider() {
       slider.dispatchEvent(new CustomEvent("service-slider-manual-edit"));
     }
 
+    editPrefix.hidden = true;
     editInput.hidden = true;
     confirmButton.hidden = true;
     valueLine.hidden = false;
@@ -2927,6 +2936,20 @@ function formatCartDiscount(value) {
   return value > 0 ? `- ${formatCartMoney(value)}` : formatCartMoney(0);
 }
 
+function formatCartItemDesc(item) {
+  const desc = normalizeCartText(item?.desc);
+  const qty = Math.max(1, Math.round(parseCartNumber(item?.qty) || 1));
+  const match = desc.match(/^([\d,]+)\s*(SFT)\b/i);
+
+  if (match) {
+    const baseArea = parseCartNumber(match[1]);
+    const unit = match[2].toUpperCase();
+    return `${Math.round(baseArea * qty).toLocaleString("en-US")} ${unit}`;
+  }
+
+  return `${desc}${qty > 1 ? ` x${qty}` : ""}`;
+}
+
 function getSelectedServiceContext() {
   const params = new URLSearchParams(window.location.search);
   const serviceName = normalizeCartText(params.get("service"));
@@ -3107,12 +3130,25 @@ function updateCartItemQuantity(itemId, quantity) {
 function buildServicePageCartItem(trigger) {
   const priceCard = trigger.closest(".price-card");
   const selectedService = getSelectedServiceContext();
+  const sliderValueText = normalizeCartText(
+    document.getElementById("sliderValue")?.textContent,
+  );
+  const sliderUnitText = normalizeCartText(
+    document.getElementById("sliderSqft")?.textContent || "SFT",
+  );
+  const baseLabelMatch = normalizeCartText(
+    priceCard?.querySelector(".base-label")?.textContent,
+  ).match(/\(([^)]+)\)/);
   const name =
     selectedService.name ||
     normalizeCartText(document.querySelector(".service-title")?.textContent) ||
     "Cleaning Service";
   const desc =
-    normalizeCartText(document.getElementById("sliderSqft")?.textContent) ||
+    normalizeCartText(
+      sliderValueText
+        ? `${sliderValueText} ${sliderUnitText}`
+        : baseLabelMatch?.[1],
+    ) ||
     "Custom service package";
   const price = parseCartNumber(
     priceCard?.querySelector(".total-amount")?.textContent ||
@@ -3145,7 +3181,7 @@ function createDrawerCartMarkup(item) {
           <i class="bi bi-trash3"></i>
         </button>
       </div>
-      <p class="service-cart-desc">${item.desc}${item.qty > 1 ? ` x${item.qty}` : ""}</p>
+      <p class="service-cart-desc">${formatCartItemDesc(item)}</p>
       <p class="service-cart-price">${formatCartMoney(item.price * item.qty)}</p>
     </div>
   `;
@@ -3163,7 +3199,7 @@ function createCartPageItemMarkup(item) {
             <span class="cart-item-tag">${item.category || "Service"}</span>
             <h3 class="cart-item-name">${item.name}</h3>
             <ul class="cart-item-meta">
-              <li><i class="bi bi-rulers"></i> ${item.desc}</li>
+              <li><i class="bi bi-rulers"></i> ${formatCartItemDesc(item)}</li>
               <li><i class="bi bi-bag-check"></i> Quantity: ${item.qty}</li>
             </ul>
           </div>
@@ -3460,7 +3496,7 @@ function renderCheckoutSummary() {
               <div class="d-flex justify-content-between align-items-start pb-3 mb-3 border-b">
                 <div>
                   <h6 class="house-cleaning">${item.name}</h6>
-                  <p class="sft-area">${item.desc}${item.qty > 1 ? ` x${item.qty}` : ""}</p>
+                  <p class="sft-area">${formatCartItemDesc(item)}</p>
                 </div>
                 <span class="bdt-amount">${formatCartMoney(item.price * item.qty)}</span>
               </div>

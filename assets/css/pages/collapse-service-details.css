@@ -354,6 +354,13 @@ h2 {
     outline: none;
 }
 
+.size-estimator-edit-prefix {
+    font-size: 16px;
+    font-weight: 700;
+    color: #4f5f68;
+    letter-spacing: 0.08em;
+}
+
 .size-estimator-edit-input:focus {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(28, 170, 184, 0.12);
