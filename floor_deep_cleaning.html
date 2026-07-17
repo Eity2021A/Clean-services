@@ -27,6 +27,199 @@
     <link rel="stylesheet" href="assets/css/layout/header.css" />
     <link rel="stylesheet" href="assets/css/pages/service-details.css" />
     <link rel="stylesheet" href="assets/css/layout/footer.css" />
+    <style>
+      .floor-material-options {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        width: min(100%, 374px);
+        margin-top: 10px;
+        margin-bottom: 18px;
+      }
+
+      .floor-material-option {
+        width: 100%;
+        padding: 9px 10px;
+        border: 1.5px solid #1caab8;
+        border-radius: 10px;
+        background: transparent;
+        color: #1caab8;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 1.2;
+        transition:
+          background-color 0.22s ease,
+          color 0.22s ease,
+          border-color 0.22s ease,
+          box-shadow 0.22s ease,
+          transform 0.22s ease;
+      }
+
+      .floor-material-option:hover,
+      .floor-material-option:focus-visible {
+        background: rgba(28, 170, 184, 0.08);
+        color: #128f9b;
+        border-color: #128f9b;
+        box-shadow: 0 10px 18px rgba(28, 170, 184, 0.12);
+        transform: translateY(-1px);
+        outline: none;
+      }
+
+      .floor-material-option.is-active {
+        background: #1caab8;
+        color: #ffffff;
+        box-shadow: 0 12px 22px rgba(28, 170, 184, 0.2);
+      }
+
+      .floor-type-prompt {
+        margin: 0 0 8px;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.3;
+        color: #58656b;
+      }
+
+      .floor-progress-loader {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        min-height: 34px;
+        margin-top: 2px;
+        margin-bottom: 2px;
+      }
+
+      .floor-progress-loader.is-visible {
+        display: flex;
+      }
+
+      .floor-progress-loader-spinner {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        border: 3px solid rgba(28, 170, 184, 0.18);
+        border-top-color: #1caab8;
+        animation: floor-progress-spin 0.75s linear infinite;
+      }
+
+      .floor-progress-target.is-thumb-animate .size-slider::-webkit-slider-thumb {
+        animation: floor-thumb-pop 0.5s ease;
+      }
+
+      .floor-progress-target.is-thumb-animate .size-slider::-moz-range-thumb {
+        animation: floor-thumb-pop 0.5s ease;
+      }
+
+      .floor-progress-target.is-thumb-animate .size-slider-demo-hand {
+        animation: floor-hand-wave 0.7s ease;
+      }
+
+      .floor-progress-target.is-thumb-animate .size-slider-demo-hand-ring {
+        animation: floor-hand-ring-pulse 0.7s ease;
+      }
+
+      @keyframes floor-progress-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes floor-thumb-pop {
+        0% {
+          transform: scale(0.7);
+          box-shadow: 0 0 0 0 rgba(28, 170, 184, 0.45);
+        }
+        55% {
+          transform: scale(1.18);
+          box-shadow: 0 0 0 10px rgba(28, 170, 184, 0);
+        }
+        100% {
+          transform: scale(1);
+          box-shadow: 0 4px 12px rgba(28, 170, 184, 0.5);
+        }
+      }
+
+      @keyframes floor-hand-wave {
+        0% {
+          transform: translate(-50%, calc(-50% + 1px)) rotate(0deg) scale(1);
+        }
+        35% {
+          transform: translate(-50%, calc(-50% + 1px)) rotate(-12deg) scale(1.06);
+        }
+        70% {
+          transform: translate(-50%, calc(-50% + 1px)) rotate(9deg) scale(1.03);
+        }
+        100% {
+          transform: translate(-50%, calc(-50% + 1px)) rotate(0deg) scale(1);
+        }
+      }
+
+      @keyframes floor-hand-ring-pulse {
+        0% {
+          transform: translateX(-50%) scale(0.7);
+          opacity: 0.4;
+        }
+        45% {
+          transform: translateX(-50%) scale(1.12);
+          opacity: 1;
+        }
+        100% {
+          transform: translateX(-50%) scale(1);
+          opacity: 1;
+        }
+      }
+
+      .floor-progress-target {
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        pointer-events: none;
+        transform: translateY(-8px);
+        transition:
+          max-height 0.35s ease,
+          opacity 0.28s ease,
+          transform 0.28s ease,
+          margin-top 0.28s ease;
+      }
+
+      .floor-progress-target.is-visible {
+        max-height: 128px;
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+
+      .size-slider-wrap.floor-progress-target {
+        margin-top: 0;
+        padding-bottom: 0;
+      }
+
+      .size-slider-wrap.floor-progress-target.is-visible {
+        margin-top: 12px;
+        padding-bottom: 12px;
+        overflow: visible;
+      }
+
+      .size-estimator-range-labels.floor-progress-target.is-visible {
+        margin-top: 10px;
+      }
+
+      @media (max-width: 575.98px) {
+        .floor-material-options {
+          gap: 8px;
+          width: 100%;
+          margin-top: 8px;
+          margin-bottom: 14px;
+        }
+
+        .floor-progress-target.is-visible {
+          max-height: 118px;
+        }
+
+        .floor-material-option {
+          padding: 8px 8px;
+        }
+      }
+    </style>
   </head>
 
   <body>
@@ -82,7 +275,40 @@
                   </div>
                 </div>
 
-                <div class="size-slider-wrap">
+                <div
+                  class="floor-material-options"
+                  role="group"
+                  aria-label="Choose floor material"
+                >
+                  <button
+                    type="button"
+                    class="floor-material-option"
+                    data-floor-material="Tiles"
+                  >
+                    Tiles
+                  </button>
+                  <button
+                    type="button"
+                    class="floor-material-option"
+                    data-floor-material="Marble"
+                  >
+                    Marble
+                  </button>
+                  <button
+                    type="button"
+                    class="floor-material-option"
+                    data-floor-material="Mosaic"
+                  >
+                    Mosaic
+                  </button>
+                </div>
+
+                <div class="floor-progress-loader" data-floor-loader aria-hidden="true">
+                  <span class="floor-progress-loader-spinner"></span>
+                </div>
+
+                <div class="size-slider-wrap floor-progress-target" data-floor-progress>
+                  <p class="floor-type-prompt">What's your floor type</p>
                   <div class="size-slider-demo" aria-hidden="true">
                     <span class="size-slider-demo-fill"></span>
                     <span class="size-slider-demo-thumb"></span>
@@ -102,7 +328,7 @@
                   />
                 </div>
 
-                <div class="size-estimator-range-labels">
+                <div class="size-estimator-range-labels floor-progress-target" data-floor-progress>
                   <span>500 SFT</span>
                   <span>5,000 SFT</span>
                 </div>
@@ -380,5 +606,120 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/core/components-loader.js"></script>
     <script src="assets/js/core/app.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const optionButtons = document.querySelectorAll("[data-floor-material]");
+        const progressTargets = document.querySelectorAll("[data-floor-progress]");
+        const progressLoader = document.querySelector("[data-floor-loader]");
+        const sizeSlider = document.getElementById("sizeSlider");
+        const sliderWrap = sizeSlider?.closest(".size-slider-wrap");
+        const sliderValueEl = document.getElementById("sliderValue");
+        const sliderBdtValueEl = document.getElementById("sliderBdtValue");
+        const sliderSqftEl = document.getElementById("sliderSqft");
+        const baseLabelEl = document.querySelector(".price-row .base-label");
+        const basePriceEl = document.querySelector(".price-row strong:not(.frequency-label)");
+        const discountAmountEl = document.querySelector(".price-row strong.frequency-label");
+        const totalAmountEl = document.querySelector(".total-amount");
+        if (
+          !optionButtons.length ||
+          !progressTargets.length ||
+          !progressLoader ||
+          !sizeSlider ||
+          !sliderWrap ||
+          !sliderValueEl ||
+          !sliderBdtValueEl ||
+          !baseLabelEl ||
+          !basePriceEl ||
+          !discountAmountEl ||
+          !totalAmountEl
+        ) {
+          return;
+        }
+
+        let loaderTimer = null;
+        const sliderMin = Number(sizeSlider.min || 500);
+        const sliderMax = Number(sizeSlider.max || 5000);
+        const ratePerSqft = 1;
+        const discountRate = 0.1;
+        const formatCurrency = (value) =>
+          `৳ ${value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+
+        const resetProgress = () => {
+          const sqft = sliderMin;
+          const percentage = ((sqft - sliderMin) * 100) / (sliderMax - sliderMin);
+          const basePrice = sqft * ratePerSqft;
+          const discount = basePrice * discountRate;
+          const total = basePrice - discount;
+
+          sizeSlider.value = String(sqft);
+          sizeSlider.style.background = `linear-gradient(to right, #1CAAB8 0%, #1CAAB8 ${percentage}%, #d6eaec ${percentage}%, #d6eaec 100%)`;
+          sliderWrap.style.setProperty("--slider-demo-progress", "0");
+          sliderWrap.classList.add("is-demo-active");
+
+          sliderValueEl.textContent = sqft.toLocaleString("en-US");
+          sliderBdtValueEl.textContent = Math.round(basePrice).toLocaleString("en-US");
+          if (sliderSqftEl) sliderSqftEl.textContent = "SFT";
+          baseLabelEl.textContent = `Base Rate (${sqft.toLocaleString("en-US")} SFT)`;
+          basePriceEl.textContent = formatCurrency(basePrice);
+          discountAmountEl.textContent = `- ${formatCurrency(discount)}`;
+          totalAmountEl.textContent = formatCurrency(total);
+        };
+
+        const revealProgress = (activeButton) => {
+          if (loaderTimer) {
+            window.clearTimeout(loaderTimer);
+            loaderTimer = null;
+          }
+
+          optionButtons.forEach((button) => {
+            const isActive = button === activeButton;
+            button.classList.toggle("is-active", isActive);
+            button.setAttribute("aria-pressed", isActive ? "true" : "false");
+          });
+
+          progressTargets.forEach((target) => {
+            target.classList.remove("is-visible");
+            target.classList.remove("is-thumb-animate");
+          });
+          sliderWrap.classList.add("is-demo-active");
+          progressLoader.classList.add("is-visible");
+          resetProgress();
+
+          loaderTimer = window.setTimeout(() => {
+            progressLoader.classList.remove("is-visible");
+            progressTargets.forEach((target) => {
+              target.classList.add("is-visible");
+              target.classList.add("is-demo-active");
+              target.classList.add("is-thumb-animate");
+            });
+            window.setTimeout(() => {
+              progressTargets.forEach((target) => {
+                target.classList.remove("is-thumb-animate");
+              });
+            }, 600);
+            loaderTimer = null;
+          }, 550);
+        };
+
+        const showInitialState = () => {
+          progressTargets.forEach((target) => {
+            target.classList.remove("is-visible");
+            target.classList.remove("is-thumb-animate");
+          });
+          progressLoader.classList.remove("is-visible");
+          sliderWrap.classList.add("is-demo-active");
+          resetProgress();
+        };
+
+        showInitialState();
+
+        optionButtons.forEach((button) => {
+          button.setAttribute("aria-pressed", "false");
+          button.addEventListener("click", () => {
+            revealProgress(button);
+          });
+        });
+      });
+    </script>
   </body>
 </html>
