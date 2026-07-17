@@ -71,12 +71,71 @@
         box-shadow: 0 12px 22px rgba(28, 170, 184, 0.2);
       }
 
-      .floor-type-prompt {
-        margin: 0 0 8px;
+      .paint-selector {
+        display: grid;
+        gap: 10px;
+      }
+
+      .paint-selector-label {
+        margin: 0;
         font-size: 14px;
         font-weight: 600;
         line-height: 1.3;
         color: #58656b;
+      }
+
+      .paint-category-options {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        width: min(100%, 260px);
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+
+      .paint-type-section {
+        display: none;
+        gap: 10px;
+      }
+
+      .paint-type-section.is-visible {
+        display: grid;
+      }
+
+      .paint-subtype-group {
+        display: none;
+        gap: 8px;
+      }
+
+      .paint-subtype-group.is-visible {
+        display: grid;
+      }
+
+      .paint-subtype-title {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 1.3;
+        color: #2d3a40;
+      }
+
+      .paint-subtype-options {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+
+      .paint-subtype-options[data-paint-subtype-row="Interior"] {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        width: min(100%, 374px);
+      }
+
+      .paint-subtype-options[data-paint-subtype-row="Exterior"] {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        width: min(100%, 260px);
+      }
+
+      .paint-subtype-options .floor-material-option {
+        white-space: nowrap;
+        font-size: 13px;
+        padding: 9px 8px;
       }
 
       .floor-progress-loader {
@@ -211,12 +270,26 @@
           margin-bottom: 14px;
         }
 
+        .paint-category-options {
+          width: 100%;
+        }
+
+        .paint-subtype-options[data-paint-subtype-row="Interior"],
+        .paint-subtype-options[data-paint-subtype-row="Exterior"] {
+          width: 100%;
+        }
+
         .floor-progress-target.is-visible {
           max-height: 118px;
         }
 
         .floor-material-option {
           padding: 8px 8px;
+        }
+
+        .paint-subtype-options .floor-material-option {
+          font-size: 12px;
+          padding: 8px 6px;
         }
       }
     </style>
@@ -274,33 +347,96 @@
                     </p>
                   </div>
                 </div>
-                 <p class="floor-type-prompt">What's your floor type</p>
-                <div
-                  class="floor-material-options"
-                  role="group"
-                  aria-label="Choose floor material"
-                >
-                  <button
-                    type="button"
-                    class="floor-material-option"
-                    data-floor-material="Tiles"
+
+                <div class="paint-selector">
+                  <p class="paint-selector-label">What is your painting Type:</p>
+                  <div
+                    class="floor-material-options paint-category-options"
+                    role="group"
+                    aria-label="Choose painting category"
                   >
-                    Tiles
-                  </button>
-                  <button
-                    type="button"
-                    class="floor-material-option"
-                    data-floor-material="Marble"
-                  >
-                    Marble
-                  </button>
-                  <button
-                    type="button"
-                    class="floor-material-option"
-                    data-floor-material="Mosaic"
-                  >
-                    Mosaic
-                  </button>
+                    <button
+                      type="button"
+                      class="floor-material-option"
+                      data-paint-category-choice="Exterior"
+                    >
+                      Exterior
+                    </button>
+                    <button
+                      type="button"
+                      class="floor-material-option"
+                      data-paint-category-choice="Interior"
+                    >
+                      Interior
+                    </button>
+                  </div>
+
+                  <div class="paint-type-section" data-paint-type-section hidden>
+                    <div
+                      class="paint-subtype-group"
+                      data-paint-subtype-group="Interior"
+                      hidden
+                    >
+                      <p class="paint-subtype-title">Interior</p>
+                      <div
+                        class="floor-material-options paint-subtype-options"
+                        role="group"
+                        aria-label="Choose interior paint type"
+                        data-paint-subtype-row="Interior"
+                      >
+                        <button
+                          type="button"
+                          class="floor-material-option"
+                          data-paint-subtype-choice="Luxury Paint"
+                        >
+                          Luxury Paint
+                        </button>
+                        <button
+                          type="button"
+                          class="floor-material-option"
+                          data-paint-subtype-choice="Plastic Paint"
+                        >
+                          Plastic Paint
+                        </button>
+                        <button
+                          type="button"
+                          class="floor-material-option"
+                          data-paint-subtype-choice="Distemper paint"
+                        >
+                          Distemper paint
+                        </button>
+                      </div>
+                    </div>
+
+                    <div
+                      class="paint-subtype-group"
+                      data-paint-subtype-group="Exterior"
+                      hidden
+                    >
+                      <p class="paint-subtype-title">Exterior</p>
+                      <div
+                        class="floor-material-options paint-subtype-options"
+                        role="group"
+                        aria-label="Choose exterior paint type"
+                        data-paint-subtype-row="Exterior"
+                      >
+                        <button
+                          type="button"
+                          class="floor-material-option"
+                          data-paint-subtype-choice="Weather Coat"
+                        >
+                          Weather Coat
+                        </button>
+                        <button
+                          type="button"
+                          class="floor-material-option"
+                          data-paint-subtype-choice="Enamel Paint"
+                        >
+                          Enamel Paint
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="floor-progress-loader" data-floor-loader aria-hidden="true">
@@ -308,7 +444,6 @@
                 </div>
 
                 <div class="size-slider-wrap floor-progress-target" data-floor-progress>
-             
                   <div class="size-slider-demo" aria-hidden="true">
                     <span class="size-slider-demo-fill"></span>
                     <span class="size-slider-demo-thumb"></span>
@@ -608,7 +743,10 @@
     <script src="assets/js/core/app.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        const optionButtons = document.querySelectorAll("[data-floor-material]");
+        const categoryButtons = document.querySelectorAll("[data-paint-category-choice]");
+        const subtypeButtons = document.querySelectorAll("[data-paint-subtype-choice]");
+        const subtypeGroups = document.querySelectorAll("[data-paint-subtype-group]");
+        const typeSection = document.querySelector("[data-paint-type-section]");
         const progressTargets = document.querySelectorAll("[data-floor-progress]");
         const progressLoader = document.querySelector("[data-floor-loader]");
         const sizeSlider = document.getElementById("sizeSlider");
@@ -621,7 +759,8 @@
         const discountAmountEl = document.querySelector(".price-row strong.frequency-label");
         const totalAmountEl = document.querySelector(".total-amount");
         if (
-          !optionButtons.length ||
+          !categoryButtons.length ||
+          !subtypeButtons.length ||
           !progressTargets.length ||
           !progressLoader ||
           !sizeSlider ||
@@ -665,31 +804,54 @@
           totalAmountEl.textContent = formatCurrency(total);
         };
 
+        const hideProgress = () => {
+          progressTargets.forEach((target) => {
+            target.classList.remove("is-visible");
+            target.classList.remove("is-thumb-animate");
+          });
+          progressLoader.classList.remove("is-visible");
+        };
+
+        const clearButtonSelection = (buttons) => {
+          buttons.forEach((button) => {
+            button.classList.remove("is-active");
+            button.setAttribute("aria-pressed", "false");
+          });
+        };
+
+        const showSubtypeGroup = (category) => {
+          if (!typeSection) return;
+
+          typeSection.hidden = false;
+          typeSection.classList.add("is-visible");
+
+          subtypeGroups.forEach((group) => {
+            const isMatch = group.dataset.paintSubtypeGroup === category;
+            group.hidden = !isMatch;
+            group.classList.toggle("is-visible", isMatch);
+          });
+        };
+
         const revealProgress = (activeButton) => {
           if (loaderTimer) {
             window.clearTimeout(loaderTimer);
             loaderTimer = null;
           }
 
-          optionButtons.forEach((button) => {
-            const isActive = button === activeButton;
-            button.classList.toggle("is-active", isActive);
-            button.setAttribute("aria-pressed", isActive ? "true" : "false");
-          });
+          clearButtonSelection(subtypeButtons);
+          activeButton.classList.add("is-active");
+          activeButton.setAttribute("aria-pressed", "true");
 
-          progressTargets.forEach((target) => {
-            target.classList.remove("is-visible");
-            target.classList.remove("is-thumb-animate");
-          });
+          hideProgress();
           sliderWrap.classList.add("is-demo-active");
           progressLoader.classList.add("is-visible");
           resetProgress();
 
           loaderTimer = window.setTimeout(() => {
             progressLoader.classList.remove("is-visible");
+            resetProgress();
             progressTargets.forEach((target) => {
               target.classList.add("is-visible");
-              target.classList.add("is-demo-active");
               target.classList.add("is-thumb-animate");
             });
             window.setTimeout(() => {
@@ -702,20 +864,41 @@
         };
 
         const showInitialState = () => {
-          progressTargets.forEach((target) => {
-            target.classList.remove("is-visible");
-            target.classList.remove("is-thumb-animate");
+          if (typeSection) {
+            typeSection.hidden = true;
+            typeSection.classList.remove("is-visible");
+          }
+          subtypeGroups.forEach((group) => {
+            group.hidden = true;
+            group.classList.remove("is-visible");
           });
-          progressLoader.classList.remove("is-visible");
+          clearButtonSelection(categoryButtons);
+          clearButtonSelection(subtypeButtons);
+          hideProgress();
           sliderWrap.classList.add("is-demo-active");
           resetProgress();
         };
 
         showInitialState();
 
-        optionButtons.forEach((button) => {
+        categoryButtons.forEach((button) => {
           button.setAttribute("aria-pressed", "false");
           button.addEventListener("click", () => {
+            clearButtonSelection(categoryButtons);
+            button.classList.add("is-active");
+            button.setAttribute("aria-pressed", "true");
+            clearButtonSelection(subtypeButtons);
+            hideProgress();
+            resetProgress();
+            showSubtypeGroup(button.dataset.paintCategoryChoice);
+          });
+        });
+
+        subtypeButtons.forEach((button) => {
+          button.setAttribute("aria-pressed", "false");
+          button.addEventListener("click", () => {
+            const parentGroup = button.closest(".paint-subtype-group");
+            if (!parentGroup || parentGroup.hidden) return;
             revealProgress(button);
           });
         });
