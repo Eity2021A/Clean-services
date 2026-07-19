@@ -1813,7 +1813,7 @@ body.service-cart-open {
         justify-self: end;
         flex-direction: row;
         align-items: center;
-        justify-content: flex-end;
+        justify-content: flex-start;
         flex-wrap: nowrap;
         gap: 6px;
         width: 100%;
