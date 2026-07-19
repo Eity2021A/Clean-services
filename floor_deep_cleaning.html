@@ -637,6 +637,7 @@
         }
 
         let loaderTimer = null;
+        let thumbTimer = null;
         const sliderMin = Number(sizeSlider.min || 500);
         const sliderMax = Number(sizeSlider.max || 5000);
         const ratePerSqft = 1;
@@ -665,10 +666,38 @@
           totalAmountEl.textContent = formatCurrency(total);
         };
 
+        const playThumbAnimation = () => {
+          if (thumbTimer) {
+            window.clearTimeout(thumbTimer);
+            thumbTimer = null;
+          }
+
+          progressTargets.forEach((target) => {
+            target.classList.remove("is-thumb-animate");
+          });
+
+          void sliderWrap.offsetWidth;
+
+          progressTargets.forEach((target) => {
+            target.classList.add("is-thumb-animate");
+          });
+
+          thumbTimer = window.setTimeout(() => {
+            progressTargets.forEach((target) => {
+              target.classList.remove("is-thumb-animate");
+            });
+            thumbTimer = null;
+          }, 650);
+        };
+
         const revealProgress = (activeButton) => {
           if (loaderTimer) {
             window.clearTimeout(loaderTimer);
             loaderTimer = null;
+          }
+          if (thumbTimer) {
+            window.clearTimeout(thumbTimer);
+            thumbTimer = null;
           }
 
           optionButtons.forEach((button) => {
@@ -689,14 +718,8 @@
             progressLoader.classList.remove("is-visible");
             progressTargets.forEach((target) => {
               target.classList.add("is-visible");
-              target.classList.add("is-demo-active");
-              target.classList.add("is-thumb-animate");
             });
-            window.setTimeout(() => {
-              progressTargets.forEach((target) => {
-                target.classList.remove("is-thumb-animate");
-              });
-            }, 600);
+            playThumbAnimation();
             loaderTimer = null;
           }, 550);
         };
@@ -707,6 +730,10 @@
             target.classList.remove("is-thumb-animate");
           });
           progressLoader.classList.remove("is-visible");
+          if (thumbTimer) {
+            window.clearTimeout(thumbTimer);
+            thumbTimer = null;
+          }
           sliderWrap.classList.add("is-demo-active");
           resetProgress();
         };
