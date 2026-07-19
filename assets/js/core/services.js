@@ -35,6 +35,7 @@ function initServicesScrollReveal() {
   ).matches;
 
   const revealSelectors = [".services h1", ".service-header"];
+  const serviceCards = document.querySelectorAll("#service-grid .service-card-link");
 
   revealSelectors.forEach((selector) => {
     document.querySelectorAll(selector).forEach((element, index) => {
@@ -48,11 +49,19 @@ function initServicesScrollReveal() {
     });
   });
 
+  serviceCards.forEach((card, index) => {
+    if (card.dataset.servicesCardRevealReady === "true") return;
+    card.classList.add("reveal-init");
+    card.style.setProperty("--services-card-delay", `${(index % 4) * 90}ms`);
+    card.dataset.servicesCardRevealReady = "true";
+  });
+
   const revealTargets = document.querySelectorAll(".services-reveal");
-  if (!revealTargets.length) return;
+  if (!revealTargets.length && !serviceCards.length) return;
 
   if (prefersReducedMotion || typeof IntersectionObserver === "undefined") {
     revealTargets.forEach((element) => element.classList.add("is-visible"));
+    serviceCards.forEach((card) => card.classList.add("is-visible"));
     return;
   }
 
@@ -84,6 +93,36 @@ function initServicesScrollReveal() {
       observer.observe(element);
     }
     element.dataset.servicesRevealObserved = "true";
+  });
+
+  const cardObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const delay = Number(
+          entry.target.style.getPropertyValue("--services-card-delay").replace("ms", "") || 0,
+        );
+        animateInitialReveal(entry.target, delay);
+        cardObserver.unobserve(entry.target);
+      });
+    },
+    {
+      threshold: 0.12,
+      rootMargin: "0px 0px -8% 0px",
+    },
+  );
+
+  serviceCards.forEach((card) => {
+    if (card.dataset.servicesCardRevealObserved === "true") return;
+    const delay = Number(
+      card.style.getPropertyValue("--services-card-delay").replace("ms", "") || 0,
+    );
+    if (isElementInRevealViewport(card, 0.96)) {
+      animateInitialReveal(card, delay);
+    } else {
+      cardObserver.observe(card);
+    }
+    card.dataset.servicesCardRevealObserved = "true";
   });
 }
 

@@ -207,6 +207,33 @@ h2 {
   color: inherit;
 }
 
+.services-reveal {
+  opacity: 0;
+  transform: translate3d(0, 34px, 0);
+}
+
+.services-reveal.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition:
+    opacity 0.82s ease,
+    transform 0.82s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.service-card-link.reveal-init {
+  opacity: 0;
+  transform: translateY(18px) scale(0.98);
+}
+
+.service-card-link.reveal-init.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition:
+    opacity 0.72s ease,
+    transform 0.72s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--services-card-delay, 0ms);
+}
+
 /* Card */
 .service-card {
   background: white;
@@ -242,11 +269,13 @@ h2 {
   pointer-events: none;
 }
 
+.service-card-link.reveal-init .service-card,
 .service-card.scroll-light-init {
   opacity: 0;
   transform: translateY(22px) scale(0.985);
 }
 
+.service-card-link.reveal-init.is-visible .service-card,
 .service-card.scroll-light-in {
   opacity: 1;
   transform: translateY(0) scale(1);
@@ -255,6 +284,7 @@ h2 {
     transform 0.66s cubic-bezier(0.2, 0.9, 0.22, 1);
 }
 
+.service-card-link.reveal-init.is-visible .service-card::after,
 .service-card.scroll-light-in::after {
   opacity: 1;
   animation: serviceLightSweep 860ms cubic-bezier(0.2, 0.7, 0.2, 1) 90ms 1 both;
@@ -280,6 +310,8 @@ h2 {
   height: 160px;
   object-fit: cover;
   border-radius: 12px;
+  transform: scale(var(--services-image-scale, 1));
+  transition: transform 0.52s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* Badge */
@@ -522,6 +554,12 @@ h2 {
     border-radius: 10px;
     font-size: 16px;
   }
+
+  .service-card-link,
+  .service-card-link.reveal-init,
+  .service-card-link.reveal-init.is-visible {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
 }
 
 @media (max-width: 360px) {
@@ -536,12 +574,17 @@ h2 {
 
 @media (prefers-reduced-motion: reduce) {
   .service-card,
-  .service-card.scroll-light-in {
+  .service-card.scroll-light-in,
+  .services-reveal,
+  .service-card-link,
+  .service-image img,
+  .service-card-link.reveal-init.is-visible .service-card {
     transition: none !important;
   }
 
   .service-card::after,
-  .service-card.scroll-light-in::after {
+  .service-card.scroll-light-in::after,
+  .service-card-link.reveal-init.is-visible .service-card::after {
     animation: none !important;
     opacity: 0 !important;
   }
