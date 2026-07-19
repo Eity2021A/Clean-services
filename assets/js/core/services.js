@@ -15,6 +15,10 @@ function animateInitialReveal(element, delay = 0) {
     window.requestAnimationFrame(() => {
       window.requestAnimationFrame(() => {
         window.setTimeout(() => {
+          if (element.classList.contains("scroll-light-init")) {
+            element.classList.remove("scroll-light-init");
+            element.classList.add("scroll-light-in");
+          }
           element.classList.add("is-visible");
         }, delay);
       });
@@ -34,8 +38,8 @@ function initServicesScrollReveal() {
     "(prefers-reduced-motion: reduce)",
   ).matches;
 
-  const revealSelectors = [".services h1", ".service-header"];
-  const serviceCards = document.querySelectorAll("#service-grid .service-card-link");
+  const revealSelectors = [".services h1", ".service-header h2"];
+  const serviceCards = document.querySelectorAll("#service-grid .service-card");
 
   revealSelectors.forEach((selector) => {
     document.querySelectorAll(selector).forEach((element, index) => {
@@ -51,7 +55,7 @@ function initServicesScrollReveal() {
 
   serviceCards.forEach((card, index) => {
     if (card.dataset.servicesCardRevealReady === "true") return;
-    card.classList.add("reveal-init");
+    card.classList.add("scroll-light-init");
     card.style.setProperty("--services-card-delay", `${(index % 4) * 90}ms`);
     card.dataset.servicesCardRevealReady = "true";
   });
@@ -61,7 +65,10 @@ function initServicesScrollReveal() {
 
   if (prefersReducedMotion || typeof IntersectionObserver === "undefined") {
     revealTargets.forEach((element) => element.classList.add("is-visible"));
-    serviceCards.forEach((card) => card.classList.add("is-visible"));
+    serviceCards.forEach((card) => {
+      card.classList.remove("scroll-light-init");
+      card.classList.add("scroll-light-in");
+    });
     return;
   }
 
