@@ -3663,6 +3663,7 @@ function initMobileKeyboardViewportState() {
   if (document.body?.dataset.keyboardViewportInitialized === "true") return;
 
   const mobileViewport = window.matchMedia("(max-width: 991.98px)");
+  const root = document.documentElement;
   const editableSelector = [
     "input:not([type='checkbox']):not([type='radio']):not([type='button']):not([type='submit']):not([type='reset'])",
     "textarea",
@@ -3684,7 +3685,16 @@ function initMobileKeyboardViewportState() {
       mobileViewport.matches &&
       (keyboardHeight > 140 || (hasFocusedEditable && keyboardHeight > 80));
 
+    root.classList.toggle("mobile-keyboard-open", keyboardLikelyOpen);
     document.body.classList.toggle("mobile-keyboard-open", keyboardLikelyOpen);
+
+    if (keyboardLikelyOpen) {
+      window.requestAnimationFrame(() => {
+        if (window.scrollX !== 0) {
+          window.scrollTo({ left: 0, top: window.scrollY, behavior: "auto" });
+        }
+      });
+    }
   };
 
   document.addEventListener("focusin", (event) => {

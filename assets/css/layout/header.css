@@ -709,6 +709,33 @@ body.mobile-keyboard-open .service-top-indicator {
   display: none !important;
 }
 
+html.mobile-keyboard-open,
+body.mobile-keyboard-open {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden !important;
+  overscroll-behavior-x: none;
+}
+
+@supports (overflow: clip) {
+  html.mobile-keyboard-open,
+  body.mobile-keyboard-open {
+    overflow-x: clip !important;
+  }
+}
+
+@media (max-width: 991.98px) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="button"]):not([type="submit"]):not([type="reset"]),
+  textarea,
+  select,
+  .form-control,
+  .form-control-underline,
+  .select2-search__field,
+  .select2-container--default .select2-selection--single .select2-selection__rendered {
+    font-size: 16px !important;
+  }
+}
+
 .floating-call-btn {
   position: fixed;
   right: 75px;
