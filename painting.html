@@ -751,6 +751,7 @@
         const progressLoader = document.querySelector("[data-floor-loader]");
         const sizeSlider = document.getElementById("sizeSlider");
         const sliderWrap = sizeSlider?.closest(".size-slider-wrap");
+        const valueWrap = document.querySelector(".size-estimator-value-wrap");
         const sliderValueEl = document.getElementById("sliderValue");
         const sliderBdtValueEl = document.getElementById("sliderBdtValue");
         const sliderSqftEl = document.getElementById("sliderSqft");
@@ -765,6 +766,7 @@
           !progressLoader ||
           !sizeSlider ||
           !sliderWrap ||
+          !valueWrap ||
           !sliderValueEl ||
           !sliderBdtValueEl ||
           !baseLabelEl ||
@@ -783,6 +785,29 @@
         const discountRate = 0.1;
         const formatCurrency = (value) =>
           `৳ ${value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+
+        const syncEditState = (isEnabled) => {
+          const valueLine = valueWrap.querySelector(".size-estimator-value-line");
+          const editHint = valueWrap.querySelector(".size-estimator-edit-hint");
+          const editPrefix = valueWrap.querySelector(".size-estimator-edit-prefix");
+          const editInput = valueWrap.querySelector(".size-estimator-edit-input");
+          const confirmButton = valueWrap.querySelector(".size-estimator-edit-confirm");
+
+          valueWrap.classList.toggle("is-edit-disabled", !isEnabled);
+
+          if (!isEnabled) {
+            valueWrap.classList.remove("is-editing");
+            if (valueLine) valueLine.hidden = false;
+            if (editPrefix) editPrefix.hidden = true;
+            if (editInput) editInput.hidden = true;
+            if (confirmButton) confirmButton.hidden = true;
+          }
+
+          if (editHint) {
+            editHint.hidden = !isEnabled;
+            editHint.setAttribute("aria-hidden", isEnabled ? "false" : "true");
+          }
+        };
 
         const resetProgress = () => {
           const sqft = sliderMin;
@@ -835,6 +860,7 @@
             target.classList.remove("is-thumb-animate");
           });
           progressLoader.classList.remove("is-visible");
+          syncEditState(false);
         };
 
         const clearButtonSelection = (buttons) => {
@@ -882,6 +908,8 @@
             progressTargets.forEach((target) => {
               target.classList.add("is-visible");
             });
+            sizeSlider.dispatchEvent(new CustomEvent("service-slider-demo-restart"));
+            syncEditState(true);
             playThumbAnimation();
             loaderTimer = null;
           }, 550);

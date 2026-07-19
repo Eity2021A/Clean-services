@@ -2822,6 +2822,16 @@ function initServiceDetailsSliderDemo() {
   const maxProgress = 0.82;
   const cycleDuration = 3200;
 
+  const startDemo = () => {
+    demoStopped = false;
+    startTime = null;
+    if (animationFrameId) {
+      window.cancelAnimationFrame(animationFrameId);
+      animationFrameId = null;
+    }
+    animationFrameId = window.requestAnimationFrame(animateDemo);
+  };
+
   const stopDemo = () => {
     if (demoStopped) return;
     demoStopped = true;
@@ -2849,7 +2859,7 @@ function initServiceDetailsSliderDemo() {
     animationFrameId = window.requestAnimationFrame(animateDemo);
   };
 
-  animationFrameId = window.requestAnimationFrame(animateDemo);
+  startDemo();
 
   slider.addEventListener("pointerdown", stopDemo, { passive: true });
   slider.addEventListener("touchstart", stopDemo, { passive: true });
@@ -2857,6 +2867,7 @@ function initServiceDetailsSliderDemo() {
   slider.addEventListener("input", stopDemo);
   slider.addEventListener("change", stopDemo);
   slider.addEventListener("service-slider-manual-edit", stopDemo);
+  slider.addEventListener("service-slider-demo-restart", startDemo);
   slider.dataset.demoInitialized = "true";
 }
 
