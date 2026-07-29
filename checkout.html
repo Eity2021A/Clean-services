@@ -425,64 +425,94 @@
                       />
 
                       <div class="payment-method-details" id="bankPaymentDetails">
-                        <div class="card-form-wrap">
-                          <div class="card-preview" id="bankCardPreview">
-                            <div class="card-preview-top">
-                              <span class="card-chip">
-                                <svg width="32" height="24" viewBox="0 0 32 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                  <rect width="28" height="22" rx="4" fill="#d4b87a"/>
-                                  <rect x="0" y="7" width="28" height="8" fill="none" stroke="#b8994d" stroke-width="0.5"/>
-                                  <rect x="9" y="0" width="10" height="22" fill="none" stroke="#b8994d" stroke-width="0.5"/>
-                                  <rect x="9" y="7" width="10" height="8" rx="1" fill="#c9a84c" stroke="#b8994d" stroke-width="0.5"/>
-                                </svg>
-                              </span>
-                              <span class="card-network" id="bankCardNetwork">
-                                <img src="assets/images/citybank.png" alt="City Bank" class="card-bank-logo" />
-                              </span>
-                            </div>
-                            <p class="card-number-display" id="bankCardNumberDisplay">
-                              •••• &nbsp;•••• &nbsp;•••• &nbsp;••••
-                            </p>
-                            <div class="card-preview-bottom">
-                              <div>
-                                <p class="card-label">Card Holder</p>
-                                <p class="card-value" id="bankCardHolderDisplay">YOUR NAME</p>
-                              </div>
-                            </div>
+                        <div class="bank-account-panel" aria-label="Bank transfer details">
+                          <div class="bank-account-row">
+                            <span class="bank-account-icon" aria-hidden="true">
+                              <i class="bi bi-person"></i>
+                            </span>
+                            <label class="bank-account-label" for="checkoutBankAccountName">Account Name</label>
+                            <input
+                              id="checkoutBankAccountName"
+                              name="bankAccountName"
+                              type="text"
+                              class="bank-account-input"
+                              placeholder="Enter account name"
+                              autocomplete="name"
+                            />
                           </div>
-
-                          <div class="card-fields">
-                            <div class="form-group-custom">
-                              <label for="checkoutCardHolder">Card Holder Name <span class="required-mark">*</span></label>
-                              <input
-                                id="checkoutCardHolder"
-                                name="cardHolder"
-                                type="text"
-                                class="form-control-underline"
-                                placeholder="Name on card"
-                                autocomplete="cc-name"
-                                maxlength="26"
-                              />
-                            </div>
-
-                            <div class="form-group-custom">
-                              <label for="checkoutCardNumber">Card Number <span class="required-mark">*</span></label>
-                              <div class="card-number-wrap">
-                                <input
-                                  id="checkoutCardNumber"
-                                  name="cardNumber"
-                                  type="tel"
-                                  inputmode="numeric"
-                                  class="form-control-underline"
-                                  placeholder="0000 0000 0000 0000"
-                                  autocomplete="cc-number"
-                                  maxlength="19"
-                                />
-                                <span class="card-type-badge" id="checkoutCardTypeBadge" aria-hidden="true"></span>
-                              </div>
-                            </div>
-
+                          <div class="bank-account-row">
+                            <span class="bank-account-icon" aria-hidden="true">
+                              <i class="bi bi-wallet2"></i>
+                            </span>
+                            <label class="bank-account-label" for="checkoutBankAccountType">Account Type</label>
+                            <input
+                              id="checkoutBankAccountType"
+                              name="bankAccountType"
+                              type="text"
+                              class="bank-account-input"
+                              placeholder="Enter account type"
+                              autocomplete="off"
+                            />
                           </div>
+                          <div class="bank-account-row">
+                            <span class="bank-account-icon" aria-hidden="true">
+                              <i class="bi bi-credit-card-2-front"></i>
+                            </span>
+                            <label class="bank-account-label" for="checkoutBankAccountNumber">Account Number</label>
+                            <input
+                              id="checkoutBankAccountNumber"
+                              name="bankAccountNumber"
+                              type="text"
+                              class="bank-account-input"
+                              placeholder="Enter account number"
+                              inputmode="numeric"
+                              autocomplete="off"
+                            />
+                          </div>
+                          <div class="bank-account-row">
+                            <span class="bank-account-icon" aria-hidden="true">
+                              <i class="bi bi-bank"></i>
+                            </span>
+                            <label class="bank-account-label" for="checkoutBankBranch">Branch Name</label>
+                            <input
+                              id="checkoutBankBranch"
+                              name="bankBranch"
+                              type="text"
+                              class="bank-account-input"
+                              placeholder="Enter branch name"
+                              autocomplete="off"
+                            />
+                          </div>
+                          <div class="bank-account-row">
+                            <span class="bank-account-icon" aria-hidden="true">
+                              <i class="bi bi-diagram-3"></i>
+                            </span>
+                            <label class="bank-account-label" for="checkoutBankRouting">Routing Number</label>
+                            <input
+                              id="checkoutBankRouting"
+                              name="bankRouting"
+                              type="text"
+                              class="bank-account-input"
+                              placeholder="Enter routing number"
+                              inputmode="numeric"
+                              autocomplete="off"
+                            />
+                          </div>
+                        </div>
+
+                        <div class="form-group-custom mb-0 mt-3">
+                          <label for="checkoutBankReference"
+                            >Transaction / Reference ID
+                            <span class="required-mark">*</span></label
+                          >
+                          <input
+                            id="checkoutBankReference"
+                            name="bankReference"
+                            type="text"
+                            class="form-control-underline"
+                            placeholder="Enter your transfer reference ID"
+                            autocomplete="off"
+                          />
                         </div>
                       </div>
                     </div>

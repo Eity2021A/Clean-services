@@ -2110,18 +2110,48 @@ function initCheckoutValidation() {
     });
   }
 
-  const cardHolderInput = document.getElementById("checkoutCardHolder");
-  const cardNumberInput = document.getElementById("checkoutCardNumber");
+  const bankAccountNameInput = document.getElementById("checkoutBankAccountName");
+  const bankAccountTypeInput = document.getElementById("checkoutBankAccountType");
+  const bankAccountNumberInput = document.getElementById("checkoutBankAccountNumber");
+  const bankBranchInput = document.getElementById("checkoutBankBranch");
+  const bankRoutingInput = document.getElementById("checkoutBankRouting");
+  const bankReferenceInput = document.getElementById("checkoutBankReference");
   const walletNumberInput = document.getElementById("checkoutWalletNumber");
   const walletTxnIdInput = document.getElementById("checkoutWalletTxnId");
 
   const getSelectedPayment = () =>
     form.querySelector('input[name="payment"]:checked')?.value || "cash";
 
-  const isValidCardNumber = (value) => {
-    const digits = value.replace(/\s/g, "");
-    return /^\d{13,16}$/.test(digits);
-  };
+  const bankFieldConfigs = [
+    {
+      input: bankAccountNameInput,
+      message: "Please enter the account name.",
+    },
+    {
+      input: bankAccountTypeInput,
+      message: "Please enter the account type.",
+    },
+    {
+      input: bankAccountNumberInput,
+      message: "Please enter the account number.",
+      validate: (value) => value.replace(/\s/g, "").length >= 6,
+    },
+    {
+      input: bankBranchInput,
+      message: "Please enter the branch name.",
+    },
+    {
+      input: bankRoutingInput,
+      message: "Please enter the routing number.",
+      validate: (value) => value.replace(/\s/g, "").length >= 6,
+    },
+    {
+      input: bankReferenceInput,
+      message: "Please enter the bank transfer reference ID.",
+      validate: (value) => value.trim().length >= 4,
+      boxSelector: ".form-group-custom",
+    },
+  ];
 
   phoneInput.setAttribute("inputmode", "numeric");
   phoneInput.setAttribute("autocomplete", "tel-national");
@@ -2168,17 +2198,30 @@ function initCheckoutValidation() {
       isValid = false;
     };
 
-    [cardHolderInput, cardNumberInput, walletNumberInput, walletTxnIdInput].forEach((input) => {
+    bankFieldConfigs.forEach(({ input, boxSelector }) => {
+      if (!input) return;
+      const box = boxSelector
+        ? input.closest(boxSelector)
+        : input.closest(".bank-account-row") || input.closest(".form-group-custom");
+      clearFieldError(box);
+    });
+    [walletNumberInput, walletTxnIdInput].forEach((input) => {
       if (input) clearFieldError(input.closest(".form-group-custom"));
     });
 
     if (method === "bank") {
-      if (!cardHolderInput?.value.trim()) {
-        markInvalid(cardHolderInput, cardHolderInput.closest(".form-group-custom"), "Please enter the card holder name.");
-      }
-      if (!isValidCardNumber(cardNumberInput?.value || "")) {
-        markInvalid(cardNumberInput, cardNumberInput.closest(".form-group-custom"), "Please enter a valid 13–16 digit card number.");
-      }
+      bankFieldConfigs.forEach(({ input, message, validate: validateField, boxSelector }) => {
+        if (!input) return;
+        const box = boxSelector
+          ? input.closest(boxSelector)
+          : input.closest(".bank-account-row") || input.closest(".form-group-custom");
+        const isValidField = validateField
+          ? validateField(input.value)
+          : input.value.trim().length > 0;
+        if (!isValidField) {
+          markInvalid(input, box, message);
+        }
+      });
     }
 
     if (method === "mobile") {
@@ -2789,19 +2832,19 @@ function initServiceDetailsSlider() {
         showAppToast(
           "Invalid size",
           `Please enter a value between ${sliderMin.toLocaleString("en-US")} and ${sliderMax.toLocaleString("en-US")} SFT.`,
-          "warning",
+          "error",
         );
       } else if (rawValue < sliderMin) {
         showAppToast(
           "Minimum size required",
           `Minimum allowed size is ${sliderMin.toLocaleString("en-US")} SFT.`,
-          "warning",
+          "error",
         );
       } else if (rawValue > sliderMax) {
         showAppToast(
           "Maximum size exceeded",
           `Maximum allowed size is ${sliderMax.toLocaleString("en-US")} SFT.`,
-          "warning",
+          "error",
         );
       }
 
@@ -4036,45 +4079,6 @@ function selectPaymentMethod(element) {
   }
 }
 
-function detectCardType(number) {
-  const n = number.replace(/\s/g, "");
-  if (/^4/.test(n)) return "Visa";
-  if (/^5[1-5]/.test(n) || /^2[2-7]/.test(n)) return "Mastercard";
-  if (/^3[47]/.test(n)) return "Amex";
-  if (/^6(?:011|5)/.test(n)) return "Discover";
-  return "";
-}
-
-function formatCardNumber(value) {
-  const digits = value.replace(/\D/g, "").slice(0, 16);
-  return digits.replace(/(.{4})/g, "$1 ").trim();
-}
-
-function updateCardPreview() {
-  const holderInput = document.getElementById("checkoutCardHolder");
-  const numberInput = document.getElementById("checkoutCardNumber");
-  const holderDisplay = document.getElementById("bankCardHolderDisplay");
-  const numberDisplay = document.getElementById("bankCardNumberDisplay");
-  const networkDisplay = document.getElementById("bankCardNetwork");
-  const typeBadge = document.getElementById("checkoutCardTypeBadge");
-
-  if (holderDisplay && holderInput) {
-    const name = holderInput.value.trim().toUpperCase();
-    holderDisplay.textContent = name || "YOUR NAME";
-  }
-
-  if (numberDisplay && numberInput) {
-    const raw = numberInput.value.replace(/\s/g, "");
-    if (raw.length === 0) {
-      numberDisplay.innerHTML = "•••• &nbsp;•••• &nbsp;•••• &nbsp;••••";
-    } else {
-      numberDisplay.textContent = (raw + "                ").slice(0, 16).replace(/(.{4})/g, "$1 ").trim();
-    }
-    const type = detectCardType(raw);
-    if (typeBadge) typeBadge.textContent = type;
-  }
-}
-
 function updateMobileWalletBrandLogo() {
   const logo = document.getElementById("mobileWalletBrandLogo");
   const selected =
@@ -4095,16 +4099,24 @@ function updateMobileWalletBrandLogo() {
 function syncPaymentMethodFields() {
   const method =
     document.querySelector('input[name="payment"]:checked')?.value || "cash";
-  const cardHolder = document.getElementById("checkoutCardHolder");
-  const cardNumber = document.getElementById("checkoutCardNumber");
+  const bankFields = [
+    document.getElementById("checkoutBankAccountName"),
+    document.getElementById("checkoutBankAccountType"),
+    document.getElementById("checkoutBankAccountNumber"),
+    document.getElementById("checkoutBankBranch"),
+    document.getElementById("checkoutBankRouting"),
+    document.getElementById("checkoutBankReference"),
+  ];
   const walletNumber = document.getElementById("checkoutWalletNumber");
   const walletTxnId = document.getElementById("checkoutWalletTxnId");
 
-  [cardHolder, cardNumber].forEach((field) => {
+  bankFields.forEach((field) => {
     if (!field) return;
     field.disabled = method !== "bank";
     if (method !== "bank") {
-      clearFieldError(field.closest(".form-group-custom"));
+      clearFieldError(
+        field.closest(".bank-account-row") || field.closest(".form-group-custom"),
+      );
     }
   });
 
@@ -4127,19 +4139,23 @@ function initCheckoutPaymentDetails() {
   if (!document.getElementById("payment-list")) return;
   if (document.body.dataset.checkoutPaymentInitialized === "true") return;
 
-  const cardHolder = document.getElementById("checkoutCardHolder");
-  const cardNumber = document.getElementById("checkoutCardNumber");
+  const bankFields = [
+    document.getElementById("checkoutBankAccountName"),
+    document.getElementById("checkoutBankAccountType"),
+    document.getElementById("checkoutBankAccountNumber"),
+    document.getElementById("checkoutBankBranch"),
+    document.getElementById("checkoutBankRouting"),
+    document.getElementById("checkoutBankReference"),
+  ];
   const walletNumber = document.getElementById("checkoutWalletNumber");
 
-  cardHolder?.addEventListener("input", () => {
-    clearFieldError(cardHolder.closest(".form-group-custom"));
-    updateCardPreview();
-  });
-
-  cardNumber?.addEventListener("input", () => {
-    cardNumber.value = formatCardNumber(cardNumber.value);
-    clearFieldError(cardNumber.closest(".form-group-custom"));
-    updateCardPreview();
+  bankFields.forEach((field) => {
+    if (!field) return;
+    field.addEventListener("input", () => {
+      clearFieldError(
+        field.closest(".bank-account-row") || field.closest(".form-group-custom"),
+      );
+    });
   });
 
   walletNumber?.addEventListener("input", () => {

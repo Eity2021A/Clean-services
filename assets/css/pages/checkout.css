@@ -914,122 +914,130 @@ h2 {
     cursor: pointer;
 }
 
-/* Card payment form */
-.card-form-wrap {
+/* Bank account details panel */
+.bank-account-panel {
+    width: 100%;
+    border: 1px solid #d7dee0;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.bank-account-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    align-items: start;
+    grid-template-columns: 28px minmax(0, 1fr) minmax(0, 1.2fr);
+    align-items: center;
+    gap: 0.75rem 1rem;
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid #e5eaeb;
 }
 
-/* Card visual preview */
-.card-preview {
-    background: linear-gradient(135deg, #1caab8 0%, #0d7a86 60%, #005d66 100%);
-    border-radius: 18px;
-    padding: 1.4rem 1.4rem 1.2rem;
-    color: #fff;
-    min-height: 180px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    box-shadow: 0 12px 32px rgba(13, 122, 134, 0.32), 0 2px 8px rgba(0,0,0,0.12);
-    user-select: none;
-    position: relative;
-    overflow: hidden;
+.bank-account-row:last-child {
+    border-bottom: none;
 }
 
-.card-preview::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 80% 20%, rgba(255,255,255,0.12) 0%, transparent 60%);
-    pointer-events: none;
-}
-
-.card-preview-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-}
-
-.card-chip {
+.bank-account-icon {
+    width: 22px;
+    height: 22px;
     display: inline-flex;
-}
-
-.card-network {
+    align-items: center;
+    justify-content: center;
+    color: #1f2a2a;
     font-size: 16px;
-    color: rgba(255,255,255,0.85);
-    line-height: 1;
-    flex-shrink: 0;
 }
 
-.card-bank-logo,
-.card-network img.card-bank-logo {
-    width: 65px;
-    display: block;
-    object-fit: contain;
-    filter: none;
-}
-
-.card-number-display {
+.bank-account-label {
+    font-family: var(--font-primary);
     font-size: 13px;
-    letter-spacing: 0.16em;
-    font-family: 'Courier New', monospace;
-    color: #fff;
-    margin: 0.6rem 0 0.45rem;
-    font-weight: 600;
-}
-
-.card-preview-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-}
-
-.card-label {
-    font-size: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: rgba(255,255,255,0.65);
-    margin: 0 0 2px;
-    font-family: var(--font-primary);
-}
-
-.card-value {
-    font-size: 11px;
     font-weight: 700;
-    color: #fff;
-    margin: 0;
-    font-family: var(--font-primary);
-    letter-spacing: 0.04em;
+    color: #1f2a2a;
     text-transform: uppercase;
-    max-width: 130px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-/* Card input fields */
-.card-fields {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-}
-
-.card-number-wrap {
+    letter-spacing: 0.02em;
     position: relative;
+    padding-right: 0.75rem;
+    margin: 0;
 }
 
-.card-type-badge {
+.bank-account-label::after {
+    content: "";
     position: absolute;
     right: 0;
-    bottom: 8px;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--primary-color);
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 18px;
+    background: #d7dee0;
+}
+
+.bank-account-input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
     font-family: var(--font-primary);
-    letter-spacing: 0.02em;
-    pointer-events: none;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1f2a2a;
+    text-align: right;
+    text-transform: none;
+    letter-spacing: 0;
+    padding: 0;
+}
+
+.bank-account-input::placeholder {
+    color: #9aa4a5;
+    font-size: 12px;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    opacity: 1;
+}
+
+.bank-account-row.is-invalid .bank-account-input {
+    color: #dc3545;
+}
+
+.bank-account-row.is-invalid .bank-account-label {
+    color: #dc3545;
+}
+
+.bank-account-row + .field-error {
+    margin: 0;
+    padding: 0 1rem 0.65rem;
+    border-bottom: 1px solid #e5eaeb;
+}
+
+.bank-account-row:last-child + .field-error {
+    border-bottom: none;
+}
+
+@media (max-width: 575.98px) {
+    .bank-account-row {
+        grid-template-columns: 22px minmax(0, 1fr);
+        gap: 0.35rem 0.7rem;
+        padding: 0.8rem 0.85rem;
+    }
+
+    .bank-account-label::after {
+        display: none;
+    }
+
+    .bank-account-value {
+        grid-column: 2;
+        text-align: left;
+        font-size: 12px;
+    }
+
+    .bank-account-input {
+        grid-column: 2;
+        text-align: left;
+        font-size: 12px;
+    }
+
+    .bank-account-label {
+        font-size: 12px;
+        padding-right: 0;
+    }
 }
 
 
@@ -1344,21 +1352,6 @@ h2 {
     .payment-method-details {
         margin-top: 0.85rem;
         padding-top: 0.85rem;
-    }
-
-    .card-form-wrap {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-
-    .card-preview {
-        min-height: 160px;
-        padding: 1.1rem 1.2rem 1rem;
-    }
-
-    .card-number-display {
-        font-size: 12px;
-        letter-spacing: 0.13em;
     }
 
     .mobile-wallet-options {
