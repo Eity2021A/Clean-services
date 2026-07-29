@@ -897,22 +897,59 @@ function initGalleryVideoPopup() {
   }
 
   const closeBtn = modal.querySelector(".impact-video-close");
+  let lastVideoUrl = "";
+
   const stopVideo = () => {
     frame.setAttribute("src", "");
   };
 
+  const normalizeVideoUrl = (url) => {
+    if (!url) return "";
+    try {
+      const parsed = new URL(url, window.location.href);
+      if (!parsed.searchParams.has("playsinline")) {
+        parsed.searchParams.set("playsinline", "1");
+      }
+      if (!parsed.searchParams.has("rel")) {
+        parsed.searchParams.set("rel", "0");
+      }
+      return parsed.toString();
+    } catch (error) {
+      return url;
+    }
+  };
+
+  const loadVideo = (url) => {
+    const nextUrl = normalizeVideoUrl(url);
+    if (!nextUrl) return;
+
+    // Clear first so YouTube re-inits against the finished modal size.
+    frame.setAttribute("src", "");
+    window.requestAnimationFrame(() => {
+      window.setTimeout(() => {
+        frame.setAttribute("src", nextUrl);
+      }, 40);
+    });
+  };
+
+  document.addEventListener(
+    "click",
+    (event) => {
+      const button = event.target.closest('[data-bs-target="#galleryVideoModal"]');
+      if (!button) return;
+      lastVideoUrl = button.getAttribute("data-video") || lastVideoUrl;
+    },
+    true,
+  );
+
   // Set the src on `shown` (AFTER the open animation finishes) so the
   // iframe has real dimensions when YouTube initializes — setting it while
-  // the modal is still animating renders a black screen intermittently.
-  // The URL is read from event.relatedTarget (the trigger that opened the
-  // modal), so it stays correct even for cloned/dynamic triggers and the
-  // mobile hero whose data-video is updated on the fly.
+  // the modal is still animating renders a black screen / cramped player UI.
   modal.addEventListener("shown.bs.modal", (event) => {
     const trigger = event.relatedTarget;
-    const url = trigger ? trigger.getAttribute("data-video") || "" : "";
-    if (url && frame.getAttribute("src") !== url) {
-      frame.setAttribute("src", url);
-    }
+    const url =
+      (trigger && trigger.getAttribute("data-video")) || lastVideoUrl || "";
+    loadVideo(url);
   });
 
   modal.addEventListener("hide.bs.modal", stopVideo);
@@ -2075,8 +2112,6 @@ function initCheckoutValidation() {
 
   const cardHolderInput = document.getElementById("checkoutCardHolder");
   const cardNumberInput = document.getElementById("checkoutCardNumber");
-  const cardExpiryInput = document.getElementById("checkoutCardExpiry");
-  const cardCvcInput = document.getElementById("checkoutCardCvc");
   const walletNumberInput = document.getElementById("checkoutWalletNumber");
   const walletTxnIdInput = document.getElementById("checkoutWalletTxnId");
 
@@ -2086,18 +2121,6 @@ function initCheckoutValidation() {
   const isValidCardNumber = (value) => {
     const digits = value.replace(/\s/g, "");
     return /^\d{13,16}$/.test(digits);
-  };
-
-  const isValidExpiry = (value) => {
-    const cleaned = value.replace(/\s/g, "");
-    const match = cleaned.match(/^(\d{2})\/(\d{2})$/);
-    if (!match) return false;
-    const month = Number(match[1]);
-    const year = 2000 + Number(match[2]);
-    if (month < 1 || month > 12) return false;
-    const now = new Date();
-    const exp = new Date(year, month - 1, 1);
-    return exp >= new Date(now.getFullYear(), now.getMonth(), 1);
   };
 
   phoneInput.setAttribute("inputmode", "numeric");
@@ -2145,8 +2168,7 @@ function initCheckoutValidation() {
       isValid = false;
     };
 
-    [cardHolderInput, cardNumberInput, cardExpiryInput, cardCvcInput,
-      walletNumberInput, walletTxnIdInput].forEach((input) => {
+    [cardHolderInput, cardNumberInput, walletNumberInput, walletTxnIdInput].forEach((input) => {
       if (input) clearFieldError(input.closest(".form-group-custom"));
     });
 
@@ -2156,12 +2178,6 @@ function initCheckoutValidation() {
       }
       if (!isValidCardNumber(cardNumberInput?.value || "")) {
         markInvalid(cardNumberInput, cardNumberInput.closest(".form-group-custom"), "Please enter a valid 13–16 digit card number.");
-      }
-      if (!isValidExpiry(cardExpiryInput?.value || "")) {
-        markInvalid(cardExpiryInput, cardExpiryInput.closest(".form-group-custom"), "Please enter a valid expiry date (MM / YY).");
-      }
-      if (!cardCvcInput?.value.trim() || cardCvcInput.value.length < 3) {
-        markInvalid(cardCvcInput, cardCvcInput.closest(".form-group-custom"), "Please enter the 3 or 4-digit CVC.");
       }
     }
 
@@ -2766,7 +2782,29 @@ function initServiceDetailsSlider() {
 
   const closeEditor = ({ commit = false } = {}) => {
     if (commit) {
-      const nextValue = clampToSlider(Number(editInput.value));
+      const rawValue = Number(editInput.value);
+      const nextValue = clampToSlider(rawValue);
+
+      if (!Number.isFinite(rawValue)) {
+        showAppToast(
+          "Invalid size",
+          `Please enter a value between ${sliderMin.toLocaleString("en-US")} and ${sliderMax.toLocaleString("en-US")} SFT.`,
+          "warning",
+        );
+      } else if (rawValue < sliderMin) {
+        showAppToast(
+          "Minimum size required",
+          `Minimum allowed size is ${sliderMin.toLocaleString("en-US")} SFT.`,
+          "warning",
+        );
+      } else if (rawValue > sliderMax) {
+        showAppToast(
+          "Maximum size exceeded",
+          `Maximum allowed size is ${sliderMax.toLocaleString("en-US")} SFT.`,
+          "warning",
+        );
+      }
+
       slider.value = String(nextValue);
       updateSlider();
       slider.dispatchEvent(new CustomEvent("service-slider-manual-edit"));
@@ -3507,6 +3545,62 @@ function animateAddToCartFlight(sourceButton, cartItem) {
   window.setTimeout(cleanup, 1600);
 }
 
+function ensureAppToast() {
+  let toast = document.getElementById("appToast");
+  if (toast) return toast;
+
+  toast = document.createElement("div");
+  toast.id = "appToast";
+  toast.className = "app-toast";
+  toast.setAttribute("role", "status");
+  toast.setAttribute("aria-live", "polite");
+  toast.innerHTML = `
+    <span class="app-toast-icon" aria-hidden="true">
+      <i class="bi bi-exclamation-triangle-fill"></i>
+    </span>
+    <span class="app-toast-copy">
+      <span class="app-toast-title"></span>
+      <span class="app-toast-meta"></span>
+    </span>
+  `;
+  document.body.appendChild(toast);
+  return toast;
+}
+
+function showAppToast(title, meta = "", type = "warning") {
+  const toast = ensureAppToast();
+  const titleEl = toast.querySelector(".app-toast-title");
+  const metaEl = toast.querySelector(".app-toast-meta");
+  const iconEl = toast.querySelector(".app-toast-icon i");
+
+  toast.dataset.type = type;
+  if (titleEl) titleEl.textContent = title || "";
+  if (metaEl) {
+    metaEl.textContent = meta || "";
+    metaEl.hidden = !meta;
+  }
+  if (iconEl) {
+    iconEl.className =
+      type === "success"
+        ? "bi bi-check-circle-fill"
+        : type === "error"
+          ? "bi bi-x-circle-fill"
+          : "bi bi-exclamation-triangle-fill";
+  }
+
+  if (toast.hideTimerId) {
+    window.clearTimeout(toast.hideTimerId);
+  }
+
+  toast.classList.remove("is-visible");
+  void toast.offsetWidth;
+  toast.classList.add("is-visible");
+
+  toast.hideTimerId = window.setTimeout(() => {
+    toast.classList.remove("is-visible");
+  }, 3200);
+}
+
 function ensureMobileCartToast() {
   let toast = document.getElementById("mobileCartToast");
   if (toast) return toast;
@@ -3956,24 +4050,11 @@ function formatCardNumber(value) {
   return digits.replace(/(.{4})/g, "$1 ").trim();
 }
 
-function formatCardExpiry(value) {
-  const digits = value.replace(/\D/g, "").slice(0, 4);
-  if (digits.length >= 3) {
-    return `${digits.slice(0, 2)} / ${digits.slice(2)}`;
-  }
-  if (digits.length === 2 && value.slice(-1) !== "/") {
-    return `${digits} / `;
-  }
-  return digits;
-}
-
 function updateCardPreview() {
   const holderInput = document.getElementById("checkoutCardHolder");
   const numberInput = document.getElementById("checkoutCardNumber");
-  const expiryInput = document.getElementById("checkoutCardExpiry");
   const holderDisplay = document.getElementById("bankCardHolderDisplay");
   const numberDisplay = document.getElementById("bankCardNumberDisplay");
-  const expiryDisplay = document.getElementById("bankCardExpiryDisplay");
   const networkDisplay = document.getElementById("bankCardNetwork");
   const typeBadge = document.getElementById("checkoutCardTypeBadge");
 
@@ -3984,32 +4065,31 @@ function updateCardPreview() {
 
   if (numberDisplay && numberInput) {
     const raw = numberInput.value.replace(/\s/g, "");
-    const masked =
-      raw.length > 0
-        ? (raw + "................").slice(0, 16).replace(/(.{4})/g, "$1 ").trim()
-        : "•••• &nbsp;•••• &nbsp;•••• &nbsp;••••";
     if (raw.length === 0) {
       numberDisplay.innerHTML = "•••• &nbsp;•••• &nbsp;•••• &nbsp;••••";
     } else {
       numberDisplay.textContent = (raw + "                ").slice(0, 16).replace(/(.{4})/g, "$1 ").trim();
     }
-
     const type = detectCardType(raw);
     if (typeBadge) typeBadge.textContent = type;
-    if (networkDisplay) networkDisplay.textContent = type || "";
-  }
-
-  if (expiryDisplay && expiryInput) {
-    const val = expiryInput.value.replace(/\s/g, "");
-    expiryDisplay.textContent = val || "MM / YY";
   }
 }
 
-function toggleCvcHint(button) {
-  const popup = document.getElementById("cvcHintPopup");
-  if (!popup) return;
-  popup.hidden = !popup.hidden;
-  button.setAttribute("aria-expanded", popup.hidden ? "false" : "true");
+function updateMobileWalletBrandLogo() {
+  const logo = document.getElementById("mobileWalletBrandLogo");
+  const selected =
+    document.querySelector('input[name="mobileWallet"]:checked')?.value ||
+    "bkash";
+
+  if (!logo) return;
+
+  if (selected === "nagad") {
+    logo.src = "assets/images/nogod.png";
+    logo.alt = "Nagad";
+  } else {
+    logo.src = "assets/images/bkash.png";
+    logo.alt = "bKash";
+  }
 }
 
 function syncPaymentMethodFields() {
@@ -4017,12 +4097,10 @@ function syncPaymentMethodFields() {
     document.querySelector('input[name="payment"]:checked')?.value || "cash";
   const cardHolder = document.getElementById("checkoutCardHolder");
   const cardNumber = document.getElementById("checkoutCardNumber");
-  const cardExpiry = document.getElementById("checkoutCardExpiry");
-  const cardCvc = document.getElementById("checkoutCardCvc");
   const walletNumber = document.getElementById("checkoutWalletNumber");
   const walletTxnId = document.getElementById("checkoutWalletTxnId");
 
-  [cardHolder, cardNumber, cardExpiry, cardCvc].forEach((field) => {
+  [cardHolder, cardNumber].forEach((field) => {
     if (!field) return;
     field.disabled = method !== "bank";
     if (method !== "bank") {
@@ -4041,6 +4119,8 @@ function syncPaymentMethodFields() {
   document.querySelectorAll('input[name="mobileWallet"]').forEach((input) => {
     input.disabled = method !== "mobile";
   });
+
+  updateMobileWalletBrandLogo();
 }
 
 function initCheckoutPaymentDetails() {
@@ -4049,8 +4129,6 @@ function initCheckoutPaymentDetails() {
 
   const cardHolder = document.getElementById("checkoutCardHolder");
   const cardNumber = document.getElementById("checkoutCardNumber");
-  const cardExpiry = document.getElementById("checkoutCardExpiry");
-  const cardCvc = document.getElementById("checkoutCardCvc");
   const walletNumber = document.getElementById("checkoutWalletNumber");
 
   cardHolder?.addEventListener("input", () => {
@@ -4064,22 +4142,6 @@ function initCheckoutPaymentDetails() {
     updateCardPreview();
   });
 
-  cardExpiry?.addEventListener("input", (event) => {
-    const prev = event.target.dataset.prev || "";
-    const isDeleting = prev.length > cardExpiry.value.length;
-    if (!isDeleting) {
-      cardExpiry.value = formatCardExpiry(cardExpiry.value);
-    }
-    event.target.dataset.prev = cardExpiry.value;
-    clearFieldError(cardExpiry.closest(".form-group-custom"));
-    updateCardPreview();
-  });
-
-  cardCvc?.addEventListener("input", () => {
-    cardCvc.value = cardCvc.value.replace(/\D/g, "").slice(0, 4);
-    clearFieldError(cardCvc.closest(".form-group-custom"));
-  });
-
   walletNumber?.addEventListener("input", () => {
     const normalized = walletNumber.value.replace(/[^\d+]/g, "");
     const startsWithPlus = normalized.startsWith("+");
@@ -4090,16 +4152,12 @@ function initCheckoutPaymentDetails() {
     clearFieldError(walletNumber.closest(".form-group-custom"));
   });
 
-  document.querySelectorAll(".payment-method-details").forEach((panel) => {
-    panel.addEventListener("click", (event) => event.stopPropagation());
+  document.querySelectorAll('input[name="mobileWallet"]').forEach((input) => {
+    input.addEventListener("change", updateMobileWalletBrandLogo);
   });
 
-  document.addEventListener("click", (event) => {
-    const popup = document.getElementById("cvcHintPopup");
-    if (!popup || popup.hidden) return;
-    if (!event.target.closest(".cvc-wrap") && !event.target.closest(".cvc-hint-btn")) {
-      popup.hidden = true;
-    }
+  document.querySelectorAll(".payment-method-details").forEach((panel) => {
+    panel.addEventListener("click", (event) => event.stopPropagation());
   });
 
   syncPaymentMethodFields();

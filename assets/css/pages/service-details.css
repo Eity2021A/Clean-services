@@ -1275,6 +1275,7 @@ body.service-cart-open {
   right: 24px;
   bottom: 22px;
   z-index: 3;
+  pointer-events: none;
 }
 
 .service-video-overlay-kicker {
@@ -1307,14 +1308,14 @@ body.service-cart-open {
 }
 
 .impact-video-modal-content {
-  background: transparent;
+  background: #000;
   border: 0;
-  border-radius: 0;
-  overflow: visible;
+  border-radius: 12px;
+  overflow: hidden;
   position: relative;
   isolation: isolate;
   padding: 0;
-  box-shadow: none;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.26);
   pointer-events: auto;
 }
 
@@ -1334,15 +1335,40 @@ body.service-cart-open {
   overflow: hidden;
   border-radius: 12px;
   background: #000;
-  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.26);
+  width: 100%;
   pointer-events: auto;
 }
 
-#galleryVideoFrame {
+#galleryVideoFrame,
+#impactVideoFrame {
   border: 0;
-  position: relative;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   z-index: 1;
   pointer-events: auto;
+}
+
+#galleryVideoModal .modal-dialog,
+#impactVideoModal .modal-dialog {
+  width: calc(100% - 1.5rem);
+  max-width: min(960px, calc(100vw - 1.5rem));
+  margin: 1rem auto;
+}
+
+@media (max-width: 767.98px) {
+  #galleryVideoModal .modal-dialog,
+  #impactVideoModal .modal-dialog {
+    width: calc(100% - 1rem);
+    max-width: none;
+    margin: 0.75rem auto;
+  }
+
+  .impact-video-close {
+    right: 8px;
+    top: 8px;
+  }
 }
 
 /* ---------- Mobile "App Feel" enhancements ---------- */
@@ -1413,6 +1439,15 @@ body.service-cart-open {
   }
   .service-video-feature {
     aspect-ratio: 16 / 6;
+  }
+
+  .service-video-overlay-title {
+    font-size: 20px;
+    line-height: 1.2;
+  }
+
+  .service-video-overlay-text {
+    display: none;
   }
 
   .service_details {
@@ -1577,12 +1612,12 @@ body.service-cart-open {
   }
 
   .service-video-overlay-title {
-    font-size: 22px;
+    font-size: 18px;
+    line-height: 1.2;
   }
 
   .service-video-overlay-text {
-    font-size: 12px;
-    line-height: 18px;
+    display: none;
   }
 
   .service-video-feature {

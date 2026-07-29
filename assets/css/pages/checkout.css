@@ -827,6 +827,18 @@ h2 {
     min-width: 0;
 }
 
+.mobile-wallet-brand-logo {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    flex-shrink: 0;
+    margin-left: auto;
+    background: transparent;
+    border: none;
+    padding: 0;
+    border-radius: 0;
+}
+
 .payment-option-icon {
     width: 54px;
     height: 54px;
@@ -948,13 +960,15 @@ h2 {
     font-size: 16px;
     color: rgba(255,255,255,0.85);
     line-height: 1;
+    flex-shrink: 0;
 }
 
-.card-network img {
-    max-height: 24px;
-    max-width: 52px;
+.card-bank-logo,
+.card-network img.card-bank-logo {
+    width: 65px;
+    display: block;
     object-fit: contain;
-    filter: brightness(0) invert(1);
+    filter: none;
 }
 
 .card-number-display {
@@ -1018,54 +1032,6 @@ h2 {
     pointer-events: none;
 }
 
-.cvc-wrap {
-    position: relative;
-}
-
-.cvc-hint-btn {
-    border: none;
-    background: transparent;
-    color: #9ba8a8;
-    padding: 0 0 0 4px;
-    cursor: pointer;
-    font-size: 13px;
-    vertical-align: middle;
-    line-height: 1;
-}
-
-.cvc-hint-btn:hover {
-    color: var(--primary-color);
-}
-
-.cvc-hint-popup {
-    position: absolute;
-    bottom: calc(100% + 8px);
-    left: 0;
-    right: 0;
-    background: #1e2d2d;
-    color: #edf7f8;
-    font-size: 12px;
-    font-family: var(--font-primary);
-    line-height: 1.5;
-    padding: 0.55rem 0.75rem;
-    border-radius: 8px;
-    z-index: 10;
-    pointer-events: none;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.18);
-}
-
-.cvc-hint-popup::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 18px;
-    border: 5px solid transparent;
-    border-top-color: #1e2d2d;
-}
-
-.cvc-hint-popup[hidden] {
-    display: none !important;
-}
 
 .mobile-wallet-options {
     display: grid;
