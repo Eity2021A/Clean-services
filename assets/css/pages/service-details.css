@@ -121,6 +121,68 @@ h2 {
   padding: 24px;
 }
 
+.admin-contact-card {
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+  background: #fff;
+  border: 1px solid #bfc8c980;
+  border-top: 4px solid var(--primary-color);
+  border-radius: 8px;
+  padding: 40px 28px;
+}
+
+.service-details-msg .service-box {
+  margin-top: 0;
+}
+
+.admin-contact-icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(28, 170, 184, 0.12);
+  color: var(--primary-color);
+  font-size: 24px;
+}
+
+.admin-contact-title {
+  margin: 0 0 24px;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #002b2f;
+  font-family: var(--primary-font);
+}
+
+.admin-contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.admin-contact-actions .btn {
+  min-width: 140px;
+}
+
+@media (max-width: 575.98px) {
+  .admin-contact-card {
+    padding: 28px 18px;
+  }
+
+  .admin-contact-title {
+    font-size: 18px;
+  }
+
+  .admin-contact-actions .btn {
+    width: 100%;
+  }
+}
+
 .price-card-head {
   display: flex;
   justify-content: space-between;
@@ -1430,7 +1492,11 @@ body.service-cart-open {
   .service-box {
     margin-top: -200px;
     padding: 10px;
-}
+  }
+
+  .service-details-msg .service-box {
+    margin-top: 0;
+  }
 }
 
 @media (max-width: 992px) {

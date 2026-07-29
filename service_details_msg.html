@@ -48,106 +48,27 @@
       <h1>Service Details</h1>
     </section>
 
-    <section class="service-details">
+    <section class="service-details service-details-msg">
       <div class="custom_container">
         <div class="row g-4">
-          <!-- 1. Home Size -->
-          <div class="col-lg-6 col-xl-8 order-1 order-md-1 order-xl-1">
-            <!-- Image -->
-            <div class="service-image-box">
-              <div class="size-estimator-card">
-                <div class="size-estimator-head">
-                  <div class="size-estimator-copy">
-                    <h2 class="size-estimator-title">Home Size</h2>
-                    <p class="size-estimator-subtitle">
-                      Precision home size adjustment
-                    </p>
-                  </div>
-
-                  <div class="size-estimator-center-wrap">
-                    <span id="sliderBdtValue" class="size-estimator-center-value"
-                      >500</span
-                    >
-                    <span class="size-estimator-center-unit">BDT</span>
-                  </div>
-
-                  <div class="size-estimator-value-wrap">
-                    <div class="size-estimator-value-line">
-                      <span id="sliderValue" class="size-estimator-value">2,450</span>
-                      <span id="sliderSqft" class="size-estimator-subunit">SFT</span>
-                    </div>
-                    <p class="size-estimator-edit-hint">
-                      <i class="bi bi-pencil"></i> click to edit
-                    </p>
-                  </div>
-                </div>
-
-                <div class="size-slider-wrap">
-                  <div class="size-slider-demo" aria-hidden="true">
-                    <span class="size-slider-demo-fill"></span>
-                    <span class="size-slider-demo-thumb"></span>
-                    <span class="size-slider-demo-hand">
-                      <i class="bi bi-hand-index-thumb"></i>
-                      <span class="size-slider-demo-hand-ring"></span>
-                    </span>
-                  </div>
-                  <input
-                    type="range"
-                    id="sizeSlider"
-                    min="500"
-                    max="5000"
-                    value="500"
-                    step="10"
-                    class="size-slider slider-progress"
-                  />
-                </div>
-
-                <div class="size-estimator-range-labels">
-                  <span>500 SFT</span>
-                  <span>5,000 SFT</span>
-                </div>
+          <!-- Admin contact notice -->
+          <div class="col-12">
+            <div class="admin-contact-card" role="status">
+              <div class="admin-contact-icon" aria-hidden="true">
+                <i class="bi bi-headset"></i>
+              </div>
+              <h2 class="admin-contact-title">
+                Please contact the admin for pricing and booking support.
+              </h2>
+              <div class="admin-contact-actions">
+                <a class="btn checkout-btn" href="tel:+8801711663506">Call Admin</a>
+                <a class="btn cart-btn" href="contact.html">Contact Us</a>
               </div>
             </div>
           </div>
 
-          <!-- 2. Estimated Investment -->
-          <div class="col-lg-6 col-xl-4 order-2 order-md-2 order-xl-2">
-            <div
-              class="price-card"
-              data-cart-category="Deep Cleaning"
-              data-cart-image="assets/images/services/services_1.png"
-            >
-              <div class="price-card-head">
-                <span>ESTIMATED INVESTMENT </span>
-              </div>
-
-              <div class="price-row">
-                <span class="base-label">Base Rate (2,450 SFT)</span>
-                <strong>৳ 2450.00</strong>
-              </div>
-
-              <div class="price-row">
-                <span class="frequency-label">Frequency Discount (10%)</span>
-                <strong class="frequency-label">- ৳ 245.00</strong>
-              </div>
-              <div class="hr"></div>
-              <div class="total-row">
-                <span class="total-label">Total Estimate</span>
-                <div>
-                  <strong class="total-amount">BDT 2,205.00</strong>
-                  <h6 class="per-week">PER WEEKLY SESSION</h6>
-                </div>
-              </div>
-
-              <a href="checkout.html" class="btn checkout-btn w-100 mb-2">Check Out</a>
-              <button type="button" class="btn cart-btn w-100" data-add-to-cart>
-                Add to cart
-              </button>
-            </div>
-          </div>
-
-          <!-- 3. House Deep Cleaning -->
-          <div class="col-lg-6 col-xl-8 order-3 order-md-3 order-xl-3">
+          <!-- House Deep Cleaning -->
+          <div class="col-lg-6 col-xl-8">
             <div class="service-box service-box-collapsible is-open">
               <button
                 type="button"
