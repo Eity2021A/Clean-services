@@ -1483,6 +1483,56 @@ function clearFieldError(box) {
   }
 }
 
+function normalizeBangladeshPhone(value) {
+  return String(value || "")
+    .trim()
+    .replace(/[\s-]/g, "")
+    .replace(/^\+?88/, "");
+}
+
+function isValidBangladeshPhone(value) {
+  return /^01[3-9]\d{8}$/.test(normalizeBangladeshPhone(value));
+}
+
+function getEmailError(value, { required = false } = {}) {
+  const raw = String(value || "").trim();
+  if (!raw) {
+    return required ? "Please enter your email." : null;
+  }
+
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  if (!emailPattern.test(raw)) {
+    return `"${raw}" not valid email address.`;
+  }
+
+  return null;
+}
+
+function getPhoneError(value, { required = true } = {}) {
+  const raw = String(value || "").trim();
+  if (!raw) {
+    return required ? "Please enter your phone number." : null;
+  }
+
+  const normalized = normalizeBangladeshPhone(raw);
+  const digits = normalized.replace(/[^\d]/g, "");
+
+  // BD mobile numbers start with 01 (after optional +88 / 88 country code).
+  if (!digits.startsWith("01")) {
+    return `"${raw}" is not a valid BD mobile number.`;
+  }
+
+  if (digits.length !== 11) {
+    return "Phone number must be 11 digits.";
+  }
+
+  if (!/^01[3-9]\d{8}$/.test(digits)) {
+    return `"${raw}" is not a valid BD mobile number.`;
+  }
+
+  return null;
+}
+
 function initLoginMethodToggle() {
   const tabs = document.querySelectorAll(".tab-btn[data-login-method]");
   const form = document.getElementById("loginForm");
@@ -1513,24 +1563,13 @@ function initLoginMethodToggle() {
     clearFieldError(passwordBox);
 
     const mainValue = input.value.trim();
-    if (!mainValue) {
-      setFieldError(
-        inputBox,
-        isEmail ? "Please enter your email." : "Please enter your mobile number.",
-      );
+    const mainError = isEmail
+      ? getEmailError(mainValue, { required: true })
+      : getPhoneError(mainValue, { required: true });
+
+    if (mainError) {
+      setFieldError(inputBox, mainError);
       isValid = false;
-    } else if (isEmail) {
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-      if (!emailPattern.test(mainValue)) {
-        setFieldError(inputBox, "Please enter a valid email address.");
-        isValid = false;
-      }
-    } else {
-      const digitsOnly = mainValue.replace(/[^\d]/g, "");
-      if (digitsOnly.length < 10) {
-        setFieldError(inputBox, "Please enter a valid mobile number.");
-        isValid = false;
-      }
     }
 
     if (isEmail) {
@@ -1734,24 +1773,13 @@ function initSignupMethodToggle() {
     clearFieldError(confirmInputBox);
 
     const value = mainInput.value.trim();
-    if (!value) {
-      setFieldError(
-        mainInputBox,
-        isEmail ? "Please enter your email." : "Please enter your mobile number.",
-      );
+    const mainError = isEmail
+      ? getEmailError(value, { required: true })
+      : getPhoneError(value, { required: true });
+
+    if (mainError) {
+      setFieldError(mainInputBox, mainError);
       ok = false;
-    } else if (isEmail) {
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-      if (!emailPattern.test(value)) {
-        setFieldError(mainInputBox, "Please enter a valid email address.");
-        ok = false;
-      }
-    } else {
-      const digitsOnly = value.replace(/[^\d]/g, "");
-      if (digitsOnly.length < 10) {
-        setFieldError(mainInputBox, "Please enter a valid mobile number.");
-        ok = false;
-      }
     }
 
     if (isEmail) {
@@ -2027,14 +2055,6 @@ function initCheckoutValidation() {
   }
   if (form.dataset.checkoutValidationInitialized === "true") return;
 
-  const normalizeBangladeshPhone = (value) =>
-    value
-      .trim()
-      .replace(/[\s-]/g, "")
-      .replace(/^\+?88/, "");
-
-  const isValidBangladeshPhone = (value) => /^01[3-9]\d{8}$/.test(normalizeBangladeshPhone(value));
-
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const minDate = today.toISOString().split("T")[0];
@@ -2050,8 +2070,7 @@ function initCheckoutValidation() {
     {
       input: phoneInput,
       box: phoneInput.closest(".form-group-custom"),
-      validate: isValidBangladeshPhone,
-      message: "Please enter a valid Bangladesh mobile number.",
+      getError: (value) => getPhoneError(value, { required: true }),
     },
     {
       input: streetInput,
@@ -2087,8 +2106,7 @@ function initCheckoutValidation() {
     fieldConfigs.splice(2, 0, {
       input: emailInput,
       box: emailInput.closest(".form-group-custom"),
-      validate: (value) => value.trim() === "" || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value.trim()),
-      message: "Please enter a valid email address.",
+      getError: (value) => getEmailError(value, { required: false }),
     });
   }
 
@@ -2240,10 +2258,16 @@ function initCheckoutValidation() {
     let isValid = true;
     let firstInvalidInput = null;
 
-    fieldConfigs.forEach(({ input, box, validate: validateField, message }) => {
+    fieldConfigs.forEach(({ input, box, validate: validateField, message, getError }) => {
       clearFieldError(box);
-      if (!validateField(input.value)) {
-        setFieldError(box, message);
+      const errorMessage = getError
+        ? getError(input.value)
+        : validateField && !validateField(input.value)
+          ? message
+          : null;
+
+      if (errorMessage) {
+        setFieldError(box, errorMessage);
         openSectionForField(input);
         if (!firstInvalidInput) firstInvalidInput = input;
         isValid = false;
@@ -3285,8 +3309,46 @@ function initServiceCardLinks() {
 const CART_SERVICE_FEE = 100;
 const CART_TRANSPORT_FEE = 0;
 const CART_DISCOUNT_RATE = 0.1;
+const CART_PROMO_CODE = "PROMO10";
 
 window.__cartFlightActive = false;
+window.__cartPromoApplied = null;
+
+function normalizePromoCode(value) {
+  return normalizeCartText(value)
+    .toUpperCase()
+    .replace(/\s+/g, "")
+    .replace(/%+$/g, "");
+}
+
+function isValidCartPromoCode(value) {
+  return normalizePromoCode(value) === CART_PROMO_CODE;
+}
+
+function readCartPromo() {
+  const promo = window.__cartPromoApplied;
+  if (!promo || typeof promo !== "object") return null;
+  if (!isValidCartPromoCode(promo.code)) return null;
+  return {
+    code: CART_PROMO_CODE,
+    rate: CART_DISCOUNT_RATE,
+  };
+}
+
+function writeCartPromo(promo) {
+  window.__cartPromoApplied = promo
+    ? {
+        code: CART_PROMO_CODE,
+        rate: CART_DISCOUNT_RATE,
+        appliedAt: Date.now(),
+      }
+    : null;
+  renderAllCartUIs();
+}
+
+function clearCartPromo() {
+  writeCartPromo(null);
+}
 
 function readCartItems() {
   try {
@@ -3331,8 +3393,9 @@ function getCartSummary(items = readCartItems()) {
   const subtotal = getCartSubtotal(items);
   const serviceFee = quantity > 0 ? CART_SERVICE_FEE : 0;
   const transportFee = quantity > 0 ? CART_TRANSPORT_FEE : 0;
-  const discount = subtotal * CART_DISCOUNT_RATE;
-  const total = subtotal + serviceFee + transportFee - discount;
+  const promo = readCartPromo();
+  const discount = promo ? subtotal * CART_DISCOUNT_RATE : 0;
+  const total = Math.max(0, subtotal + serviceFee + transportFee - discount);
 
   return {
     quantity,
@@ -3340,6 +3403,7 @@ function getCartSummary(items = readCartItems()) {
     serviceFee,
     transportFee,
     discount,
+    promo,
     total,
   };
 }
@@ -3774,10 +3838,128 @@ function renderCartPage() {
 
   setText("sumSubtotal", formatCartMoney(summary.subtotal));
   setText("sumFee", formatCartMoney(summary.serviceFee));
-  setText("sumDiscount", formatCartDiscount(summary.discount));
   setText("sumTransport", formatCartMoney(summary.transportFee));
+  setText("sumDiscount", formatCartDiscount(summary.discount));
+  setText("sumDiscountLabel", "Discount (10%)");
   setText("sumTotal", formatCartMoney(summary.total));
   setText("sumTotalMobile", formatCartMoney(summary.total));
+
+  const discountRow = document.getElementById("sumDiscountRow");
+  const promoForm = document.getElementById("cartPromoForm");
+  const promoInput = document.getElementById("cartPromoInput");
+  const promoFeedback = document.getElementById("cartPromoFeedback");
+  const promoApply = document.getElementById("cartPromoApply");
+
+  if (discountRow) {
+    // Keep discount visible whenever promo is applied and cart has items.
+    discountRow.hidden = !(summary.promo && summary.quantity > 0);
+  }
+
+  if (promoForm) {
+    promoForm.classList.toggle("is-applied", !!summary.promo);
+    if (summary.promo) promoForm.classList.remove("is-error");
+  }
+
+  if (promoInput) {
+    if (summary.promo) {
+      promoInput.value = "PROMO10%";
+      promoInput.readOnly = true;
+    } else if (document.activeElement !== promoInput) {
+      promoInput.readOnly = false;
+    }
+  }
+
+  if (promoApply) {
+    promoApply.textContent = summary.promo ? "Applied" : "Apply";
+    promoApply.disabled = !!summary.promo;
+  }
+
+  if (promoFeedback) {
+    if (summary.promo) {
+      promoFeedback.hidden = false;
+      delete promoFeedback.dataset.keepError;
+      promoFeedback.className = "cart-promo-feedback is-success";
+      promoFeedback.textContent = "Promo applied: 10% discount";
+    } else if (!promoFeedback.dataset.keepError) {
+      promoFeedback.hidden = true;
+      promoFeedback.textContent = "";
+      promoFeedback.className = "cart-promo-feedback";
+    }
+  }
+}
+
+function initCartPromo() {
+  const form = document.getElementById("cartPromoForm");
+  const input = document.getElementById("cartPromoInput");
+  const feedback = document.getElementById("cartPromoFeedback");
+  if (!form || !input) return;
+
+  // Drop any old localStorage promo so refresh no longer restores it.
+  try {
+    window.localStorage.removeItem("clean_service_cart_promo_v1");
+  } catch (_) {}
+
+  // Promo lives in memory only — a full page refresh clears it automatically.
+  if (form.dataset.promoInitialized === "true") return;
+
+  const showPromoError = (message) => {
+    form.classList.add("is-error");
+    form.classList.remove("is-applied");
+    if (feedback) {
+      feedback.hidden = false;
+      feedback.dataset.keepError = "true";
+      feedback.className = "cart-promo-feedback is-error";
+      feedback.textContent = message;
+    }
+    if (applyBtn) {
+      applyBtn.textContent = "Apply";
+      applyBtn.disabled = false;
+    }
+  };
+
+  const applyPromo = () => {
+    const code = input.value;
+    if (!normalizeCartText(code)) {
+      showPromoError("Please enter a promo code.");
+      return;
+    }
+
+    if (!isValidCartPromoCode(code)) {
+      showPromoError("Invalid promo code. Try PROMO10%.");
+      return;
+    }
+
+    if (feedback) delete feedback.dataset.keepError;
+    form.classList.remove("is-error");
+    writeCartPromo({
+      code: CART_PROMO_CODE,
+      rate: CART_DISCOUNT_RATE,
+      appliedAt: Date.now(),
+    });
+    if (typeof showAppToast === "function") {
+      showAppToast("Promo applied", "10% discount added to your order.", "success");
+    }
+  };
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (readCartPromo()) return;
+    applyPromo();
+  });
+
+  input.addEventListener("input", () => {
+    form.classList.remove("is-error");
+    if (feedback) {
+      delete feedback.dataset.keepError;
+      if (!readCartPromo()) {
+        feedback.hidden = true;
+        feedback.textContent = "";
+        feedback.className = "cart-promo-feedback";
+      }
+    }
+  });
+
+  form.dataset.promoInitialized = "true";
 }
 
 function renderCheckoutSummary() {
@@ -3830,8 +4012,22 @@ function renderCheckoutSummary() {
 
   if (summaryRows[0]) summaryRows[0].textContent = formatCartMoney(summary.subtotal);
   if (summaryRows[1]) summaryRows[1].textContent = formatCartMoney(summary.serviceFee);
-  if (summaryRows[2]) summaryRows[2].textContent = formatCartDiscount(summary.discount);
-  if (summaryRows[3]) summaryRows[3].textContent = formatCartMoney(summary.transportFee);
+  if (summaryRows[2]) summaryRows[2].textContent = formatCartMoney(summary.transportFee);
+
+  const discountRow = document.getElementById("checkoutDiscountRow");
+  const discountAmount = document.getElementById("checkoutDiscountAmount");
+  if (discountAmount) {
+    discountAmount.textContent = formatCartDiscount(summary.discount);
+  }
+  if (discountRow) {
+    discountRow.hidden = !(summary.promo && summary.quantity > 0);
+  }
+
+  // Legacy fallback if markup still has 4 amount slots in old order.
+  if (!discountRow && summaryRows[3]) {
+    summaryRows[3].textContent = formatCartDiscount(summary.discount);
+  }
+
   if (totalAmount) totalAmount.textContent = formatCartMoney(summary.total);
 }
 
@@ -3904,6 +4100,7 @@ function initCartSystem() {
   if (document.body?.dataset.cartInitialized === "true") {
     initCartButtons();
     initCartPageControls();
+    initCartPromo();
     renderAllCartUIs();
     return;
   }
@@ -3911,6 +4108,7 @@ function initCartSystem() {
   window.addEventListener("storage", renderAllCartUIs);
   initCartButtons();
   initCartPageControls();
+  initCartPromo();
   renderAllCartUIs();
   document.body.dataset.cartInitialized = "true";
 }

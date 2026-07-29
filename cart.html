@@ -245,32 +245,35 @@
               <h2 class="cart-summary-title">Order Summary</h2>
 
               <!-- Promo -->
-              <form class="cart-promo" onsubmit="return false;">
+              <form class="cart-promo" id="cartPromoForm" onsubmit="return false;">
                 <i class="bi bi-tag"></i>
                 <input
+                  id="cartPromoInput"
                   type="text"
                   placeholder="Promo code"
                   aria-label="Promo code"
+                  autocomplete="off"
                 />
-                <button type="submit">Apply</button>
+                <button type="submit" id="cartPromoApply">Apply</button>
               </form>
+              <p class="cart-promo-feedback" id="cartPromoFeedback" hidden></p>
 
               <ul class="cart-summary-rows">
                 <li>
                   <span>Subtotal</span>
-                  <strong id="sumSubtotal">৳ 10,000</strong>
+                  <strong id="sumSubtotal">BDT 0</strong>
                 </li>
                 <li>
                   <span>Service fee</span>
-                  <strong id="sumFee">৳ 300</strong>
-                </li>
-                <li class="is-discount">
-                  <span>Discount (10%)</span>
-                  <strong id="sumDiscount">− ৳ 1,000</strong>
+                  <strong id="sumFee">BDT 0</strong>
                 </li>
                 <li>
                   <span>Transport allowance</span>
-                  <strong id="sumTransport">৳ 200</strong>
+                  <strong id="sumTransport">BDT 0</strong>
+                </li>
+                <li class="is-discount" id="sumDiscountRow" hidden>
+                  <span id="sumDiscountLabel">Discount (10%)</span>
+                  <strong id="sumDiscount">− BDT 0</strong>
                 </li>
               </ul>
 
@@ -328,25 +331,38 @@
     <script src="assets/js/core/components-loader.js"></script>
     <script src="assets/js/core/app.js"></script>
     <script>
-      // ===== Cart logic (quantity, remove, live totals) =====
+      // ===== Cart logic fallback (skipped when app.js cart system is active) =====
       (function () {
         if (window.__cartAppManaged) return;
-        var SERVICE_FEE = 300;
-        var TRANSPORT = 200;
+        var SERVICE_FEE = 100;
+        var TRANSPORT = 0;
         var DISCOUNT_RATE = 0.1;
+        var promoApplied = false;
 
         var itemsWrap = document.getElementById("cartItems");
         var layout = document.getElementById("cartLayout");
         var emptyState = document.getElementById("cartEmpty");
         var mobileBar = document.getElementById("cartMobileBar");
+        var promoForm = document.getElementById("cartPromoForm");
+        var promoInput = document.getElementById("cartPromoInput");
+        var promoFeedback = document.getElementById("cartPromoFeedback");
+        var promoApply = document.getElementById("cartPromoApply");
+        var discountRow = document.getElementById("sumDiscountRow");
         if (!itemsWrap) return;
 
         function money(n) {
-          return "৳ " + Math.round(n).toLocaleString("en-US");
+          return "BDT " + Math.round(n).toLocaleString("en-US");
         }
         function setText(id, txt) {
           var el = document.getElementById(id);
           if (el) el.textContent = txt;
+        }
+        function normalizePromo(value) {
+          return String(value || "")
+            .trim()
+            .toUpperCase()
+            .replace(/\s+/g, "")
+            .replace(/%+$/g, "");
         }
 
         function recompute() {
@@ -372,22 +388,68 @@
             return;
           }
 
-          var discount = subtotal * DISCOUNT_RATE;
+          var discount = promoApplied ? subtotal * DISCOUNT_RATE : 0;
           var total = subtotal + SERVICE_FEE - discount + TRANSPORT;
 
           setText("sumSubtotal", money(subtotal));
           setText("sumFee", money(SERVICE_FEE));
-          setText("sumDiscount", "− " + money(discount));
           setText("sumTransport", money(TRANSPORT));
+          setText("sumDiscount", "− " + money(discount));
           setText("sumTotal", money(total));
           setText("sumTotalMobile", money(total));
+
+          if (discountRow) discountRow.hidden = !promoApplied;
+          if (promoForm) {
+            promoForm.classList.toggle("is-applied", promoApplied);
+            promoForm.classList.remove("is-error");
+          }
+          if (promoApply) {
+            promoApply.textContent = promoApplied ? "Applied" : "Apply";
+            promoApply.disabled = promoApplied;
+          }
+          if (promoInput && promoApplied) {
+            promoInput.value = "PROMO10%";
+            promoInput.readOnly = true;
+          }
+          if (promoFeedback && promoApplied) {
+            promoFeedback.hidden = false;
+            promoFeedback.className = "cart-promo-feedback is-success";
+            promoFeedback.textContent = "Promo applied: 10% discount";
+          }
+        }
+
+        if (promoForm && promoInput) {
+          promoForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+            if (promoApplied) return;
+            var code = normalizePromo(promoInput.value);
+            if (!code) {
+              promoForm.classList.add("is-error");
+              if (promoFeedback) {
+                promoFeedback.hidden = false;
+                promoFeedback.className = "cart-promo-feedback is-error";
+                promoFeedback.textContent = "Please enter a promo code.";
+              }
+              return;
+            }
+            if (code !== "PROMO10") {
+              promoForm.classList.add("is-error");
+              if (promoFeedback) {
+                promoFeedback.hidden = false;
+                promoFeedback.className = "cart-promo-feedback is-error";
+                promoFeedback.textContent = "Invalid promo code. Try PROMO10%.";
+              }
+              return;
+            }
+            promoApplied = true;
+            recompute();
+          });
         }
 
         itemsWrap.addEventListener("click", function (e) {
           var btn = e.target.closest("button");
           if (!btn) return;
 
-          // Quantity
           var stepper = btn.closest(".qty-stepper");
           if (stepper) {
             var qty = Number(stepper.getAttribute("data-qty")) || 1;
@@ -399,7 +461,6 @@
             return;
           }
 
-          // Remove
           if (btn.classList.contains("cart-remove")) {
             var item = btn.closest(".cart-item");
             if (!item) return;

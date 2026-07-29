@@ -1790,6 +1790,11 @@ body.mobile-keyboard-open {
     visibility 0s linear 0.32s;
 }
 
+.app-toast[data-type="success"] {
+  background: #2faa54;
+  box-shadow: 0 12px 28px rgba(47, 170, 84, 0.28);
+}
+
 .app-toast.is-visible {
   opacity: 1;
   visibility: visible;
