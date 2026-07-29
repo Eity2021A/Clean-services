@@ -355,12 +355,15 @@
                   <div class="payment-list" id="payment-list">
                     <div
                       class="payment-option-card active"
+                      data-payment-method="cash"
                       role="radio"
                       aria-checked="true"
                       tabindex="0"
-                      onclick="selectPaymentMethod(this)"
                     >
-                      <div class="payment-option-main">
+                      <div
+                        class="payment-option-main"
+                        onclick="selectPaymentMethod(this.closest('.payment-option-card'))"
+                      >
                         <div class="custom-radio-ring">
                           <div class="custom-radio-dot"></div>
                         </div>
@@ -387,12 +390,15 @@
 
                     <div
                       class="payment-option-card"
+                      data-payment-method="bank"
                       role="radio"
                       aria-checked="false"
                       tabindex="0"
-                      onclick="selectPaymentMethod(this)"
                     >
-                      <div class="payment-option-main">
+                      <div
+                        class="payment-option-main"
+                        onclick="selectPaymentMethod(this.closest('.payment-option-card'))"
+                      >
                         <div class="custom-radio-ring">
                           <div class="custom-radio-dot"></div>
                         </div>
@@ -417,16 +423,125 @@
                         value="bank"
                         class="d-none"
                       />
+
+                      <div class="payment-method-details" id="bankPaymentDetails">
+                        <div class="card-form-wrap">
+                          <div class="card-preview" id="bankCardPreview">
+                            <div class="card-preview-top">
+                              <span class="card-chip">
+                                <svg width="28" height="22" viewBox="0 0 28 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                  <rect width="28" height="22" rx="4" fill="#d4b87a"/>
+                                  <rect x="0" y="7" width="28" height="8" fill="none" stroke="#b8994d" stroke-width="0.5"/>
+                                  <rect x="9" y="0" width="10" height="22" fill="none" stroke="#b8994d" stroke-width="0.5"/>
+                                  <rect x="9" y="7" width="10" height="8" rx="1" fill="#c9a84c" stroke="#b8994d" stroke-width="0.5"/>
+                                </svg>
+                              </span>
+                              <span class="card-network" id="bankCardNetwork">
+                                <i class="bi bi-credit-card-2-front"></i>
+                              </span>
+                            </div>
+                            <p class="card-number-display" id="bankCardNumberDisplay">
+                              •••• &nbsp;•••• &nbsp;•••• &nbsp;••••
+                            </p>
+                            <div class="card-preview-bottom">
+                              <div>
+                                <p class="card-label">Card Holder</p>
+                                <p class="card-value" id="bankCardHolderDisplay">YOUR NAME</p>
+                              </div>
+                              <div class="text-end">
+                                <p class="card-label">Expires</p>
+                                <p class="card-value" id="bankCardExpiryDisplay">MM / YY</p>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="card-fields">
+                            <div class="form-group-custom">
+                              <label for="checkoutCardHolder">Card Holder Name <span class="required-mark">*</span></label>
+                              <input
+                                id="checkoutCardHolder"
+                                name="cardHolder"
+                                type="text"
+                                class="form-control-underline"
+                                placeholder="Name on card"
+                                autocomplete="cc-name"
+                                maxlength="26"
+                              />
+                            </div>
+
+                            <div class="form-group-custom">
+                              <label for="checkoutCardNumber">Card Number <span class="required-mark">*</span></label>
+                              <div class="card-number-wrap">
+                                <input
+                                  id="checkoutCardNumber"
+                                  name="cardNumber"
+                                  type="tel"
+                                  inputmode="numeric"
+                                  class="form-control-underline"
+                                  placeholder="0000 0000 0000 0000"
+                                  autocomplete="cc-number"
+                                  maxlength="19"
+                                />
+                                <span class="card-type-badge" id="checkoutCardTypeBadge" aria-hidden="true"></span>
+                              </div>
+                            </div>
+
+                            <div class="row g-3">
+                              <div class="col-7">
+                                <div class="form-group-custom mb-0">
+                                  <label for="checkoutCardExpiry">Expiry Date <span class="required-mark">*</span></label>
+                                  <input
+                                    id="checkoutCardExpiry"
+                                    name="cardExpiry"
+                                    type="tel"
+                                    inputmode="numeric"
+                                    class="form-control-underline"
+                                    placeholder="MM / YY"
+                                    autocomplete="cc-exp"
+                                    maxlength="7"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col-5">
+                                <div class="form-group-custom mb-0">
+                                  <label for="checkoutCardCvc">
+                                    CVC <span class="required-mark">*</span>
+                                    <button type="button" class="cvc-hint-btn" aria-label="What is CVC?" onclick="toggleCvcHint(this)">
+                                      <i class="bi bi-question-circle"></i>
+                                    </button>
+                                  </label>
+                                  <div class="cvc-wrap">
+                                    <input
+                                      id="checkoutCardCvc"
+                                      name="cardCvc"
+                                      type="tel"
+                                      inputmode="numeric"
+                                      class="form-control-underline"
+                                      placeholder="•••"
+                                      autocomplete="cc-csc"
+                                      maxlength="4"
+                                    />
+                                    <span class="cvc-hint-popup" id="cvcHintPopup" hidden>3-digit code on the back of your card (4-digit for Amex)</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
 
                     <div
                       class="payment-option-card"
+                      data-payment-method="mobile"
                       role="radio"
                       aria-checked="false"
                       tabindex="0"
-                      onclick="selectPaymentMethod(this)"
                     >
-                      <div class="payment-option-main">
+                      <div
+                        class="payment-option-main"
+                        onclick="selectPaymentMethod(this.closest('.payment-option-card'))"
+                      >
                         <div class="custom-radio-ring">
                           <div class="custom-radio-dot"></div>
                         </div>
@@ -453,6 +568,54 @@
                         value="mobile"
                         class="d-none"
                       />
+
+                      <div class="payment-method-details" id="mobilePaymentDetails">
+                        <div class="mobile-wallet-options" role="radiogroup" aria-label="Wallet type">
+                          <label class="mobile-wallet-option">
+                            <input
+                              type="radio"
+                              name="mobileWallet"
+                              value="bkash"
+                              checked
+                            />
+                            <span>bKash</span>
+                          </label>
+                          <label class="mobile-wallet-option">
+                            <input type="radio" name="mobileWallet" value="nagad" />
+                            <span>Nagad</span>
+                          </label>
+                        </div>
+
+                        <div class="form-group-custom">
+                          <label for="checkoutWalletNumber"
+                            >Wallet Number <span class="required-mark">*</span></label
+                          >
+                          <input
+                            id="checkoutWalletNumber"
+                            name="walletNumber"
+                            type="tel"
+                            class="form-control-underline"
+                            placeholder="01XXXXXXXXX"
+                            inputmode="tel"
+                            maxlength="14"
+                            autocomplete="tel"
+                          />
+                        </div>
+
+                        <div class="form-group-custom mb-0">
+                          <label for="checkoutWalletTxnId"
+                            >Transaction ID <span class="required-mark">*</span></label
+                          >
+                          <input
+                            id="checkoutWalletTxnId"
+                            name="walletTxnId"
+                            type="text"
+                            class="form-control-underline"
+                            placeholder="Enter bKash/Nagad TrxID"
+                            autocomplete="off"
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

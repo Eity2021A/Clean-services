@@ -25,6 +25,39 @@
   box-sizing: border-box;
 }
 
+/* Shared form field error text (shown under inputs) */
+.field-error {
+  display: block;
+  margin-top: 6px;
+  margin-bottom: 0;
+  font-size: 12px;
+  line-height: 1.35;
+  color: #dc3545;
+  font-family: var(--font-primary, "Poppins", sans-serif);
+  font-weight: 500;
+}
+
+.field-error[hidden] {
+  display: none !important;
+}
+
+.input-group-custom + .field-error,
+.terms-wrap + .field-error,
+.input-box + .field-error {
+  margin-bottom: 8px;
+}
+
+.form-group-custom > .field-error {
+  margin-top: 4px;
+}
+
+.form-control.is-invalid,
+input.is-invalid,
+textarea.is-invalid,
+select.is-invalid {
+  border-color: #dc3545;
+}
+
 img,
 svg,
 video,

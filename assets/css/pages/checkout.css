@@ -781,9 +781,12 @@ h2 {
     border: 1px solid #BFC8C9;
     border-radius: 16px;
     padding: 1.25rem 1.5rem;
-    cursor: pointer;
+    cursor: default;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 0;
     transition: border-color 0.2s ease-in-out, background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
     background-color: #ffffff;
     min-height: 104px;
@@ -813,6 +816,7 @@ h2 {
     gap: 1rem;
     width: 100%;
     min-width: 0;
+    cursor: pointer;
 }
 
 .payment-option-content {
@@ -874,6 +878,229 @@ h2 {
 
 .payment-option-card.active .payment-option-icon {
     background-color: rgba(28, 170, 184, 0.12);
+}
+
+.payment-method-details {
+    display: none;
+    width: 100%;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #dce6e7;
+    cursor: default;
+}
+
+.payment-option-card.active .payment-method-details {
+    display: block;
+}
+
+.payment-method-details select.form-control-underline {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 1.5rem;
+    background: transparent;
+    cursor: pointer;
+}
+
+/* Card payment form */
+.card-form-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+/* Card visual preview */
+.card-preview {
+    background: linear-gradient(135deg, #1caab8 0%, #0d7a86 60%, #005d66 100%);
+    border-radius: 18px;
+    padding: 1.4rem 1.4rem 1.2rem;
+    color: #fff;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 12px 32px rgba(13, 122, 134, 0.32), 0 2px 8px rgba(0,0,0,0.12);
+    user-select: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-preview::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 80% 20%, rgba(255,255,255,0.12) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+.card-preview-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.card-chip {
+    display: inline-flex;
+}
+
+.card-network {
+    font-size: 16px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1;
+}
+
+.card-network img {
+    max-height: 24px;
+    max-width: 52px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+}
+
+.card-number-display {
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    font-family: 'Courier New', monospace;
+    color: #fff;
+    margin: 0.6rem 0 0.45rem;
+    font-weight: 600;
+}
+
+.card-preview-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.card-label {
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.65);
+    margin: 0 0 2px;
+    font-family: var(--font-primary);
+}
+
+.card-value {
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    font-family: var(--font-primary);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    max-width: 130px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Card input fields */
+.card-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.card-number-wrap {
+    position: relative;
+}
+
+.card-type-badge {
+    position: absolute;
+    right: 0;
+    bottom: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary-color);
+    font-family: var(--font-primary);
+    letter-spacing: 0.02em;
+    pointer-events: none;
+}
+
+.cvc-wrap {
+    position: relative;
+}
+
+.cvc-hint-btn {
+    border: none;
+    background: transparent;
+    color: #9ba8a8;
+    padding: 0 0 0 4px;
+    cursor: pointer;
+    font-size: 13px;
+    vertical-align: middle;
+    line-height: 1;
+}
+
+.cvc-hint-btn:hover {
+    color: var(--primary-color);
+}
+
+.cvc-hint-popup {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    background: #1e2d2d;
+    color: #edf7f8;
+    font-size: 12px;
+    font-family: var(--font-primary);
+    line-height: 1.5;
+    padding: 0.55rem 0.75rem;
+    border-radius: 8px;
+    z-index: 10;
+    pointer-events: none;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+}
+
+.cvc-hint-popup::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 18px;
+    border: 5px solid transparent;
+    border-top-color: #1e2d2d;
+}
+
+.cvc-hint-popup[hidden] {
+    display: none !important;
+}
+
+.mobile-wallet-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.mobile-wallet-option {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0.75rem 0.85rem;
+    border: 1px solid #bfc8c9;
+    border-radius: 12px;
+    background: #ffffff;
+    cursor: pointer;
+    font-family: var(--font-primary);
+    font-size: 14px;
+    font-weight: 600;
+    color: #2f3a3a;
+    transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.mobile-wallet-option input {
+    accent-color: var(--primary-color);
+    margin: 0;
+}
+
+.mobile-wallet-option:has(input:checked) {
+    border-color: var(--primary-color);
+    background: #f2fbfc;
+    color: var(--primary-color);
 }
 
 /* Order Summary Sidebar Layout */
@@ -1146,6 +1373,35 @@ h2 {
         padding: 0.875rem 1rem;
         min-height: 88px;
         box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
+    }
+
+    .payment-method-details {
+        margin-top: 0.85rem;
+        padding-top: 0.85rem;
+    }
+
+    .card-form-wrap {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .card-preview {
+        min-height: 160px;
+        padding: 1.1rem 1.2rem 1rem;
+    }
+
+    .card-number-display {
+        font-size: 12px;
+        letter-spacing: 0.13em;
+    }
+
+    .mobile-wallet-options {
+        gap: 0.6rem;
+    }
+
+    .mobile-wallet-option {
+        padding: 0.65rem 0.7rem;
+        font-size: 13px;
     }
 
     .payment-option-main {

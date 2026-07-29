@@ -1388,6 +1388,64 @@ function initMobileContactOverlay() {
   openBtn.dataset.initialized = "true";
 }
 
+function ensureFieldErrorElement(box) {
+  if (!box) return null;
+
+  const isControl = typeof box.matches === "function" && box.matches("input, textarea, select");
+  const insertInside = !isControl && box.classList.contains("form-group-custom");
+
+  let errorEl = null;
+
+  if (insertInside) {
+    errorEl = box.querySelector(":scope > .field-error");
+  } else if (box.nextElementSibling?.classList?.contains("field-error")) {
+    errorEl = box.nextElementSibling;
+  }
+
+  if (!errorEl) {
+    errorEl = document.createElement("div");
+    errorEl.className = "field-error";
+    errorEl.setAttribute("role", "alert");
+    errorEl.hidden = true;
+
+    if (insertInside) {
+      box.appendChild(errorEl);
+    } else {
+      box.insertAdjacentElement("afterend", errorEl);
+    }
+  }
+
+  return errorEl;
+}
+
+function setFieldError(box, message) {
+  if (!box) return;
+  box.classList.add("is-invalid");
+  const errorEl = ensureFieldErrorElement(box);
+  if (!errorEl) return;
+  errorEl.textContent = message || "This field is required.";
+  errorEl.hidden = false;
+}
+
+function clearFieldError(box) {
+  if (!box) return;
+  box.classList.remove("is-invalid");
+
+  const isControl = typeof box.matches === "function" && box.matches("input, textarea, select");
+  const insertInside = !isControl && box.classList.contains("form-group-custom");
+
+  const errorEl = insertInside
+    ? box.querySelector(":scope > .field-error")
+    : box.nextElementSibling?.classList?.contains("field-error")
+      ? box.nextElementSibling
+      : null;
+
+  if (errorEl) {
+    errorEl.textContent = "";
+    errorEl.hidden = true;
+  }
+}
+
 function initLoginMethodToggle() {
   const tabs = document.querySelectorAll(".tab-btn[data-login-method]");
   const form = document.getElementById("loginForm");
@@ -1401,14 +1459,6 @@ function initLoginMethodToggle() {
   const passwordBox = passwordInput?.closest(".input-box");
   if (!tabs.length || !input || !label || !icon || !inputBox) return;
   if (input.dataset.toggleInitialized === "true") return;
-
-  const clearFieldError = (box) => {
-    if (box) box.classList.remove("is-invalid");
-  };
-
-  const setFieldError = (box) => {
-    if (box) box.classList.add("is-invalid");
-  };
 
   const getActiveMethod = () => {
     const activeTab = document.querySelector(
@@ -1427,18 +1477,21 @@ function initLoginMethodToggle() {
 
     const mainValue = input.value.trim();
     if (!mainValue) {
-      setFieldError(inputBox);
+      setFieldError(
+        inputBox,
+        isEmail ? "Please enter your email." : "Please enter your mobile number.",
+      );
       isValid = false;
     } else if (isEmail) {
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
       if (!emailPattern.test(mainValue)) {
-        setFieldError(inputBox);
+        setFieldError(inputBox, "Please enter a valid email address.");
         isValid = false;
       }
     } else {
       const digitsOnly = mainValue.replace(/[^\d]/g, "");
       if (digitsOnly.length < 10) {
-        setFieldError(inputBox);
+        setFieldError(inputBox, "Please enter a valid mobile number.");
         isValid = false;
       }
     }
@@ -1446,10 +1499,10 @@ function initLoginMethodToggle() {
     if (isEmail) {
       const passwordValue = passwordInput?.value.trim() || "";
       if (!passwordValue) {
-        setFieldError(passwordBox);
+        setFieldError(passwordBox, "Please enter your password.");
         isValid = false;
       } else if (passwordValue.length < 6) {
-        setFieldError(passwordBox);
+        setFieldError(passwordBox, "Password must be at least 6 characters.");
         isValid = false;
       }
     }
@@ -1555,14 +1608,6 @@ function initSignupMethodToggle() {
   if (!tabs.length || !form || !mainInput || !mainLabel || !mainIcon) return;
   if (form.dataset.signupToggleInitialized === "true") return;
 
-  const clearError = (box) => {
-    if (box) box.classList.remove("is-invalid");
-  };
-
-  const setError = (box) => {
-    if (box) box.classList.add("is-invalid");
-  };
-
   const getMethod = () => {
     const active = document.querySelector(
       ".toggle-btn[data-signup-method].active",
@@ -1637,9 +1682,9 @@ function initSignupMethodToggle() {
     updatePasswordToggleIcon(passwordToggleBtn, passwordInput);
     updatePasswordToggleIcon(confirmPasswordToggleBtn, confirmPasswordInput);
 
-    clearError(mainInputBox);
-    clearError(passwordInputBox);
-    clearError(confirmInputBox);
+    clearFieldError(mainInputBox);
+    clearFieldError(passwordInputBox);
+    clearFieldError(confirmInputBox);
   };
 
   const validate = () => {
@@ -1647,24 +1692,27 @@ function initSignupMethodToggle() {
     const isEmail = method === "email";
     let ok = true;
 
-    clearError(mainInputBox);
-    clearError(passwordInputBox);
-    clearError(confirmInputBox);
+    clearFieldError(mainInputBox);
+    clearFieldError(passwordInputBox);
+    clearFieldError(confirmInputBox);
 
     const value = mainInput.value.trim();
     if (!value) {
-      setError(mainInputBox);
+      setFieldError(
+        mainInputBox,
+        isEmail ? "Please enter your email." : "Please enter your mobile number.",
+      );
       ok = false;
     } else if (isEmail) {
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
       if (!emailPattern.test(value)) {
-        setError(mainInputBox);
+        setFieldError(mainInputBox, "Please enter a valid email address.");
         ok = false;
       }
     } else {
       const digitsOnly = value.replace(/[^\d]/g, "");
       if (digitsOnly.length < 10) {
-        setError(mainInputBox);
+        setFieldError(mainInputBox, "Please enter a valid mobile number.");
         ok = false;
       }
     }
@@ -1674,18 +1722,18 @@ function initSignupMethodToggle() {
       const confirm = confirmPasswordInput?.value.trim() || "";
 
       if (!pass) {
-        setError(passwordInputBox);
+        setFieldError(passwordInputBox, "Please enter your password.");
         ok = false;
       } else if (pass.length < 6) {
-        setError(passwordInputBox);
+        setFieldError(passwordInputBox, "Password must be at least 6 characters.");
         ok = false;
       }
 
       if (!confirm) {
-        setError(confirmInputBox);
+        setFieldError(confirmInputBox, "Please confirm your password.");
         ok = false;
       } else if (pass && pass !== confirm) {
-        setError(confirmInputBox);
+        setFieldError(confirmInputBox, "Passwords do not match.");
         ok = false;
       }
     }
@@ -1714,12 +1762,12 @@ function initSignupMethodToggle() {
     });
   });
 
-  mainInput.addEventListener("input", () => clearError(mainInputBox));
+  mainInput.addEventListener("input", () => clearFieldError(mainInputBox));
   if (passwordInput) {
-    passwordInput.addEventListener("input", () => clearError(passwordInputBox));
+    passwordInput.addEventListener("input", () => clearFieldError(passwordInputBox));
   }
   if (confirmPasswordInput) {
-    confirmPasswordInput.addEventListener("input", () => clearError(confirmInputBox));
+    confirmPasswordInput.addEventListener("input", () => clearFieldError(confirmInputBox));
   }
 
   form.addEventListener("submit", (event) => {
@@ -1752,59 +1800,54 @@ function initCustomerDetailsValidation() {
   if (!form || !nameInput || !addressInput || !phoneInput || !termsInput) return;
   if (form.dataset.customerValidationInitialized === "true") return;
 
-  const clearError = (box) => {
-    if (box) box.classList.remove("is-invalid");
-  };
-
-  const setError = (box) => {
-    if (box) box.classList.add("is-invalid");
-  };
-
   const validate = () => {
     let ok = true;
 
-    clearError(nameBox);
-    clearError(addressBox);
-    clearError(phoneBox);
-    clearError(termsWrap);
+    clearFieldError(nameBox);
+    clearFieldError(addressBox);
+    clearFieldError(phoneBox);
+    clearFieldError(termsWrap);
 
     const nameValue = nameInput.value.trim();
     const addressValue = addressInput.value.trim();
     const phoneValue = phoneInput.value.trim();
 
     if (!nameValue) {
-      setError(nameBox);
+      setFieldError(nameBox, "Please enter your full name.");
       ok = false;
     }
 
     if (!addressValue) {
-      setError(addressBox);
+      setFieldError(addressBox, "Please enter your address.");
       ok = false;
     }
 
     if (!phoneValue) {
-      setError(phoneBox);
+      setFieldError(phoneBox, "Please enter your phone number.");
       ok = false;
     } else {
       const digitsOnly = phoneValue.replace(/[^\d]/g, "");
       if (digitsOnly.length < 10) {
-        setError(phoneBox);
+        setFieldError(phoneBox, "Please enter a valid phone number.");
         ok = false;
       }
     }
 
     if (!termsInput.checked) {
-      setError(termsWrap);
+      setFieldError(
+        termsWrap,
+        "Please agree to the Terms of Service and Privacy Policy.",
+      );
       ok = false;
     }
 
     return ok;
   };
 
-  nameInput.addEventListener("input", () => clearError(nameBox));
-  addressInput.addEventListener("input", () => clearError(addressBox));
-  phoneInput.addEventListener("input", () => clearError(phoneBox));
-  termsInput.addEventListener("change", () => clearError(termsWrap));
+  nameInput.addEventListener("input", () => clearFieldError(nameBox));
+  addressInput.addEventListener("input", () => clearFieldError(addressBox));
+  phoneInput.addEventListener("input", () => clearFieldError(phoneBox));
+  termsInput.addEventListener("change", () => clearFieldError(termsWrap));
 
   form.addEventListener("submit", (event) => {
     if (!validate()) {
@@ -1965,21 +2008,25 @@ function initCheckoutValidation() {
       input: nameInput,
       box: nameInput.closest(".form-group-custom"),
       validate: (value) => value.trim().length >= 2,
+      message: "Please enter your full name.",
     },
     {
       input: phoneInput,
       box: phoneInput.closest(".form-group-custom"),
       validate: isValidBangladeshPhone,
+      message: "Please enter a valid Bangladesh mobile number.",
     },
     {
       input: streetInput,
       box: streetInput.closest(".form-group-custom"),
       validate: (value) => value.trim().length >= 10,
+      message: "Please enter a complete street address.",
     },
     {
       input: areaInput,
       box: areaInput.closest(".form-group-custom"),
       validate: (value) => value.trim().length > 0,
+      message: "Please select your area.",
     },
     {
       input: serviceDateInput,
@@ -1989,11 +2036,13 @@ function initCheckoutValidation() {
         const selectedDate = new Date(`${value}T00:00:00`);
         return !Number.isNaN(selectedDate.getTime()) && selectedDate >= today;
       },
+      message: "Please select a service date.",
     },
     {
       input: serviceTimeInput,
       box: serviceTimeInput.closest(".form-group-custom") || document.querySelector(".checkout-schedule-group"),
       validate: (value) => value.trim().length > 0,
+      message: "Please select a service time.",
     },
   ];
 
@@ -2002,6 +2051,7 @@ function initCheckoutValidation() {
       input: emailInput,
       box: emailInput.closest(".form-group-custom"),
       validate: (value) => value.trim() === "" || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value.trim()),
+      message: "Please enter a valid email address.",
     });
   }
 
@@ -2010,6 +2060,7 @@ function initCheckoutValidation() {
       input: sectorBlockInput,
       box: sectorBlockInput.closest(".form-group-custom"),
       validate: (value) => value.trim().length > 0,
+      message: "Please enter sector/block.",
     });
   }
 
@@ -2018,15 +2069,35 @@ function initCheckoutValidation() {
       input: apartmentInput,
       box: apartmentInput.closest(".form-group-custom"),
       validate: (value) => value.trim().length > 0,
+      message: "Please enter apartment details.",
     });
   }
 
-  const clearError = (box) => {
-    if (box) box.classList.remove("is-invalid");
+  const cardHolderInput = document.getElementById("checkoutCardHolder");
+  const cardNumberInput = document.getElementById("checkoutCardNumber");
+  const cardExpiryInput = document.getElementById("checkoutCardExpiry");
+  const cardCvcInput = document.getElementById("checkoutCardCvc");
+  const walletNumberInput = document.getElementById("checkoutWalletNumber");
+  const walletTxnIdInput = document.getElementById("checkoutWalletTxnId");
+
+  const getSelectedPayment = () =>
+    form.querySelector('input[name="payment"]:checked')?.value || "cash";
+
+  const isValidCardNumber = (value) => {
+    const digits = value.replace(/\s/g, "");
+    return /^\d{13,16}$/.test(digits);
   };
 
-  const setError = (box) => {
-    if (box) box.classList.add("is-invalid");
+  const isValidExpiry = (value) => {
+    const cleaned = value.replace(/\s/g, "");
+    const match = cleaned.match(/^(\d{2})\/(\d{2})$/);
+    if (!match) return false;
+    const month = Number(match[1]);
+    const year = 2000 + Number(match[2]);
+    if (month < 1 || month > 12) return false;
+    const now = new Date();
+    const exp = new Date(year, month - 1, 1);
+    return exp >= new Date(now.getFullYear(), now.getMonth(), 1);
   };
 
   phoneInput.setAttribute("inputmode", "numeric");
@@ -2062,20 +2133,69 @@ function initCheckoutValidation() {
     input.focus();
   };
 
+  const validatePaymentFields = () => {
+    const method = getSelectedPayment();
+    let isValid = true;
+    let firstInvalidInput = null;
+
+    const markInvalid = (input, box, message) => {
+      setFieldError(box, message);
+      openSectionForField(input);
+      if (!firstInvalidInput) firstInvalidInput = input;
+      isValid = false;
+    };
+
+    [cardHolderInput, cardNumberInput, cardExpiryInput, cardCvcInput,
+      walletNumberInput, walletTxnIdInput].forEach((input) => {
+      if (input) clearFieldError(input.closest(".form-group-custom"));
+    });
+
+    if (method === "bank") {
+      if (!cardHolderInput?.value.trim()) {
+        markInvalid(cardHolderInput, cardHolderInput.closest(".form-group-custom"), "Please enter the card holder name.");
+      }
+      if (!isValidCardNumber(cardNumberInput?.value || "")) {
+        markInvalid(cardNumberInput, cardNumberInput.closest(".form-group-custom"), "Please enter a valid 13–16 digit card number.");
+      }
+      if (!isValidExpiry(cardExpiryInput?.value || "")) {
+        markInvalid(cardExpiryInput, cardExpiryInput.closest(".form-group-custom"), "Please enter a valid expiry date (MM / YY).");
+      }
+      if (!cardCvcInput?.value.trim() || cardCvcInput.value.length < 3) {
+        markInvalid(cardCvcInput, cardCvcInput.closest(".form-group-custom"), "Please enter the 3 or 4-digit CVC.");
+      }
+    }
+
+    if (method === "mobile") {
+      if (!isValidBangladeshPhone(walletNumberInput?.value || "")) {
+        markInvalid(walletNumberInput, walletNumberInput.closest(".form-group-custom"), "Please enter a valid bKash/Nagad wallet number.");
+      }
+      if ((walletTxnIdInput?.value.trim().length || 0) < 4) {
+        markInvalid(walletTxnIdInput, walletTxnIdInput.closest(".form-group-custom"), "Please enter the transaction ID.");
+      }
+    }
+
+    return { isValid, firstInvalidInput };
+  };
+
   const validate = () => {
     let isValid = true;
     let firstInvalidInput = null;
 
-    fieldConfigs.forEach(({ input, box, validate: validateField }) => {
-      clearError(box);
-
+    fieldConfigs.forEach(({ input, box, validate: validateField, message }) => {
+      clearFieldError(box);
       if (!validateField(input.value)) {
-        setError(box);
+        setFieldError(box, message);
         openSectionForField(input);
         if (!firstInvalidInput) firstInvalidInput = input;
         isValid = false;
       }
     });
+
+    const paymentResult = validatePaymentFields();
+    if (!paymentResult.isValid) {
+      isValid = false;
+      if (!firstInvalidInput) firstInvalidInput = paymentResult.firstInvalidInput;
+    }
 
     if (!isValid && firstInvalidInput) {
       focusField(firstInvalidInput);
@@ -2086,7 +2206,7 @@ function initCheckoutValidation() {
 
   fieldConfigs.forEach(({ input, box }) => {
     const eventName = input.tagName === "SELECT" ? "change" : "input";
-    input.addEventListener(eventName, () => clearError(box));
+    input.addEventListener(eventName, () => clearFieldError(box));
   });
 
   form.addEventListener("submit", (event) => {
@@ -2128,7 +2248,7 @@ function initCheckoutAreaSelect2() {
   });
 
   $areaInput.on("change.select2Validation", () => {
-    areaInput.closest(".form-group-custom")?.classList.remove("is-invalid");
+    clearFieldError(areaInput.closest(".form-group-custom"));
   });
 }
 
@@ -2276,7 +2396,7 @@ function initCheckoutSchedulePicker() {
     syncActiveMonthToValue();
     renderCalendar();
     syncScheduleCopy();
-    scheduleGroup.classList.remove("is-invalid");
+    clearFieldError(serviceDateInput.closest(".form-group-custom"));
     setDateMenuState(false);
   };
 
@@ -2356,7 +2476,7 @@ function initCheckoutSchedulePicker() {
           .querySelectorAll(".checkout-time-option")
           .forEach((option) => option.classList.toggle("is-selected", option.dataset.value === value));
         syncScheduleCopy();
-        scheduleGroup.classList.remove("is-invalid");
+        clearFieldError(serviceTimeInput.closest(".form-group-custom"));
 
         if (serviceTimeInput.value) {
           setTimeMenuState(false);
@@ -2411,7 +2531,8 @@ function initCheckoutSchedulePicker() {
       const formattedTime = formatDisplayTime(serviceTimeInput.value);
       if (formattedDate && formattedTime) {
         summary.textContent = `Scheduled for ${formattedDate} at ${formattedTime}`;
-        scheduleGroup.classList.remove("is-invalid");
+        clearFieldError(serviceDateInput.closest(".form-group-custom"));
+        clearFieldError(serviceTimeInput.closest(".form-group-custom"));
         return;
       }
     }
@@ -2488,24 +2609,69 @@ function initCheckoutSchedulePicker() {
   scheduleGroup.dataset.schedulePickerInitialized = "true";
 }
 
-// Contact form validation (Bootstrap custom validation)
+// Contact form validation with red error text under each field
 
 function initContactFormValidation() {
-  const forms = document.querySelectorAll("form[novalidate]");
+  const forms = document.querySelectorAll(
+    ".desktop-contact-form form[novalidate], form.mobile-form[novalidate]",
+  );
+
+  const messagesByName = {
+    firstName: "Please enter your first name.",
+    lastName: "Please enter your last name.",
+    email: "Please enter your email address.",
+    subject: "Please enter a subject.",
+    message: "Please enter your message.",
+  };
+
+  const getFieldMessage = (field) => {
+    if (field.validity.valueMissing) {
+      return messagesByName[field.name] || "This field is required.";
+    }
+    if (field.type === "email" && field.validity.typeMismatch) {
+      return "Please enter a valid email address.";
+    }
+    return messagesByName[field.name] || "Please fill out this field.";
+  };
+
   forms.forEach((form) => {
     if (form.dataset.validationInit === "true") return;
 
-    form.addEventListener("submit", (event) => {
-      if (!form.checkValidity()) {
-        event.preventDefault();
-        event.stopPropagation();
-      }
-      form.classList.add("was-validated");
+    const fields = Array.from(
+      form.querySelectorAll("input, textarea, select"),
+    ).filter((field) => field.type !== "hidden" && field.type !== "submit" && field.type !== "button" && field.type !== "reset");
+
+    const clearAll = () => {
+      fields.forEach((field) => clearFieldError(field));
+    };
+
+    fields.forEach((field) => {
+      const eventName = field.tagName === "SELECT" ? "change" : "input";
+      field.addEventListener(eventName, () => clearFieldError(field));
     });
 
-    // Clear validation styling when the form is reset (Cancel).
+    form.addEventListener("submit", (event) => {
+      let isValid = true;
+      let firstInvalid = null;
+
+      fields.forEach((field) => {
+        clearFieldError(field);
+        if (!field.checkValidity()) {
+          setFieldError(field, getFieldMessage(field));
+          if (!firstInvalid) firstInvalid = field;
+          isValid = false;
+        }
+      });
+
+      if (!isValid) {
+        event.preventDefault();
+        event.stopPropagation();
+        firstInvalid?.focus();
+      }
+    });
+
     form.addEventListener("reset", () => {
-      form.classList.remove("was-validated");
+      clearAll();
     });
 
     form.dataset.validationInit = "true";
@@ -3754,23 +3920,190 @@ function initBlogSuggestionsDropdown() {
 }
 
 function selectPaymentMethod(element) {
-  // Remove the active class status from all payment option elements
+  if (!element) return;
+
   document.querySelectorAll(".payment-option-card").forEach((card) => {
     card.classList.remove("active");
     card.setAttribute("aria-checked", "false");
-    card.querySelector('input[type="radio"]').checked = false;
+    const radio = card.querySelector('input[type="radio"][name="payment"]');
+    if (radio) radio.checked = false;
   });
 
-  // Assign the active state to the currently clicked item block
   element.classList.add("active");
   element.setAttribute("aria-checked", "true");
-  element.querySelector('input[type="radio"]').checked = true;
+  const selectedRadio = element.querySelector('input[type="radio"][name="payment"]');
+  if (selectedRadio) selectedRadio.checked = true;
 
   updatePaymentDropdownLabel();
+  syncPaymentMethodFields();
 
   if (window.innerWidth <= 576) {
     closePaymentDropdown();
   }
+}
+
+function detectCardType(number) {
+  const n = number.replace(/\s/g, "");
+  if (/^4/.test(n)) return "Visa";
+  if (/^5[1-5]/.test(n) || /^2[2-7]/.test(n)) return "Mastercard";
+  if (/^3[47]/.test(n)) return "Amex";
+  if (/^6(?:011|5)/.test(n)) return "Discover";
+  return "";
+}
+
+function formatCardNumber(value) {
+  const digits = value.replace(/\D/g, "").slice(0, 16);
+  return digits.replace(/(.{4})/g, "$1 ").trim();
+}
+
+function formatCardExpiry(value) {
+  const digits = value.replace(/\D/g, "").slice(0, 4);
+  if (digits.length >= 3) {
+    return `${digits.slice(0, 2)} / ${digits.slice(2)}`;
+  }
+  if (digits.length === 2 && value.slice(-1) !== "/") {
+    return `${digits} / `;
+  }
+  return digits;
+}
+
+function updateCardPreview() {
+  const holderInput = document.getElementById("checkoutCardHolder");
+  const numberInput = document.getElementById("checkoutCardNumber");
+  const expiryInput = document.getElementById("checkoutCardExpiry");
+  const holderDisplay = document.getElementById("bankCardHolderDisplay");
+  const numberDisplay = document.getElementById("bankCardNumberDisplay");
+  const expiryDisplay = document.getElementById("bankCardExpiryDisplay");
+  const networkDisplay = document.getElementById("bankCardNetwork");
+  const typeBadge = document.getElementById("checkoutCardTypeBadge");
+
+  if (holderDisplay && holderInput) {
+    const name = holderInput.value.trim().toUpperCase();
+    holderDisplay.textContent = name || "YOUR NAME";
+  }
+
+  if (numberDisplay && numberInput) {
+    const raw = numberInput.value.replace(/\s/g, "");
+    const masked =
+      raw.length > 0
+        ? (raw + "................").slice(0, 16).replace(/(.{4})/g, "$1 ").trim()
+        : "•••• &nbsp;•••• &nbsp;•••• &nbsp;••••";
+    if (raw.length === 0) {
+      numberDisplay.innerHTML = "•••• &nbsp;•••• &nbsp;•••• &nbsp;••••";
+    } else {
+      numberDisplay.textContent = (raw + "                ").slice(0, 16).replace(/(.{4})/g, "$1 ").trim();
+    }
+
+    const type = detectCardType(raw);
+    if (typeBadge) typeBadge.textContent = type;
+    if (networkDisplay) networkDisplay.textContent = type || "";
+  }
+
+  if (expiryDisplay && expiryInput) {
+    const val = expiryInput.value.replace(/\s/g, "");
+    expiryDisplay.textContent = val || "MM / YY";
+  }
+}
+
+function toggleCvcHint(button) {
+  const popup = document.getElementById("cvcHintPopup");
+  if (!popup) return;
+  popup.hidden = !popup.hidden;
+  button.setAttribute("aria-expanded", popup.hidden ? "false" : "true");
+}
+
+function syncPaymentMethodFields() {
+  const method =
+    document.querySelector('input[name="payment"]:checked')?.value || "cash";
+  const cardHolder = document.getElementById("checkoutCardHolder");
+  const cardNumber = document.getElementById("checkoutCardNumber");
+  const cardExpiry = document.getElementById("checkoutCardExpiry");
+  const cardCvc = document.getElementById("checkoutCardCvc");
+  const walletNumber = document.getElementById("checkoutWalletNumber");
+  const walletTxnId = document.getElementById("checkoutWalletTxnId");
+
+  [cardHolder, cardNumber, cardExpiry, cardCvc].forEach((field) => {
+    if (!field) return;
+    field.disabled = method !== "bank";
+    if (method !== "bank") {
+      clearFieldError(field.closest(".form-group-custom"));
+    }
+  });
+
+  [walletNumber, walletTxnId].forEach((field) => {
+    if (!field) return;
+    field.disabled = method !== "mobile";
+    if (method !== "mobile") {
+      clearFieldError(field.closest(".form-group-custom"));
+    }
+  });
+
+  document.querySelectorAll('input[name="mobileWallet"]').forEach((input) => {
+    input.disabled = method !== "mobile";
+  });
+}
+
+function initCheckoutPaymentDetails() {
+  if (!document.getElementById("payment-list")) return;
+  if (document.body.dataset.checkoutPaymentInitialized === "true") return;
+
+  const cardHolder = document.getElementById("checkoutCardHolder");
+  const cardNumber = document.getElementById("checkoutCardNumber");
+  const cardExpiry = document.getElementById("checkoutCardExpiry");
+  const cardCvc = document.getElementById("checkoutCardCvc");
+  const walletNumber = document.getElementById("checkoutWalletNumber");
+
+  cardHolder?.addEventListener("input", () => {
+    clearFieldError(cardHolder.closest(".form-group-custom"));
+    updateCardPreview();
+  });
+
+  cardNumber?.addEventListener("input", () => {
+    cardNumber.value = formatCardNumber(cardNumber.value);
+    clearFieldError(cardNumber.closest(".form-group-custom"));
+    updateCardPreview();
+  });
+
+  cardExpiry?.addEventListener("input", (event) => {
+    const prev = event.target.dataset.prev || "";
+    const isDeleting = prev.length > cardExpiry.value.length;
+    if (!isDeleting) {
+      cardExpiry.value = formatCardExpiry(cardExpiry.value);
+    }
+    event.target.dataset.prev = cardExpiry.value;
+    clearFieldError(cardExpiry.closest(".form-group-custom"));
+    updateCardPreview();
+  });
+
+  cardCvc?.addEventListener("input", () => {
+    cardCvc.value = cardCvc.value.replace(/\D/g, "").slice(0, 4);
+    clearFieldError(cardCvc.closest(".form-group-custom"));
+  });
+
+  walletNumber?.addEventListener("input", () => {
+    const normalized = walletNumber.value.replace(/[^\d+]/g, "");
+    const startsWithPlus = normalized.startsWith("+");
+    const digits = normalized
+      .replace(/[^\d]/g, "")
+      .slice(0, startsWithPlus ? 13 : 11);
+    walletNumber.value = startsWithPlus ? `+${digits}` : digits;
+    clearFieldError(walletNumber.closest(".form-group-custom"));
+  });
+
+  document.querySelectorAll(".payment-method-details").forEach((panel) => {
+    panel.addEventListener("click", (event) => event.stopPropagation());
+  });
+
+  document.addEventListener("click", (event) => {
+    const popup = document.getElementById("cvcHintPopup");
+    if (!popup || popup.hidden) return;
+    if (!event.target.closest(".cvc-wrap") && !event.target.closest(".cvc-hint-btn")) {
+      popup.hidden = true;
+    }
+  });
+
+  syncPaymentMethodFields();
+  document.body.dataset.checkoutPaymentInitialized = "true";
 }
 
 function updatePaymentDropdownLabel() {
@@ -3847,6 +4180,13 @@ function syncServiceBoxForViewport() {
 document.addEventListener("keydown", (event) => {
   const option = event.target.closest(".payment-option-card");
   if (!option) return;
+  if (event.target.closest(".payment-method-details")) return;
+  if (
+    event.target.matches("input, textarea, select, button, a") &&
+    !event.target.classList.contains("payment-option-card")
+  ) {
+    return;
+  }
 
   if (event.key === "Enter" || event.key === " ") {
     event.preventDefault();
@@ -3906,6 +4246,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initCustomerDetailsValidation();
     initCheckoutSchedulePicker();
     initCheckoutAreaSelect2();
+    initCheckoutPaymentDetails();
     initCheckoutValidation();
     initContactFormValidation();
     initServiceCartDrawer();

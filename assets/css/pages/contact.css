@@ -170,7 +170,14 @@ p {
     background-color: #fafcfc;
 }
 
-/* Keep the valid (green) state neutral; only flag invalid fields */
+/* Keep invalid fields red; valid fields stay neutral */
+.form-control.is-invalid,
+.form-control.is-invalid:focus {
+    border-color: #dc3545;
+    background-image: none;
+    box-shadow: none;
+}
+
 .was-validated .form-control:valid,
 .was-validated .form-control:valid:focus {
     border-color: #a4afae;
