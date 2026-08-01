@@ -745,10 +745,12 @@ body.mobile-keyboard-open .service-top-indicator {
 /* Global centered scroll-to-top button (all pages / all screens) */
 .service-top-indicator {
   position: fixed;
-  left: 50%;
+  left: calc(50vw - 32px);
+  right: auto;
   bottom: 36px;
   width: 64px;
   height: 64px;
+  margin: 0;
   border: 0;
   border-radius: 999px;
   background: transparent;
@@ -758,7 +760,7 @@ body.mobile-keyboard-open .service-top-indicator {
   justify-content: center;
   opacity: 0;
   visibility: hidden;
-  transform: translate(-50%, 16px);
+  transform: translate3d(0, 16px, 0);
   transition:
     opacity 0.24s ease,
     transform 0.24s ease,
@@ -775,12 +777,15 @@ body.mobile-keyboard-open .service-top-indicator {
   justify-content: center;
   gap: 1px;
   position: relative;
-  padding: 6px 10px;
+  width: 100%;
+  padding: 6px 0;
   border-radius: 999px;
 }
 
 .service-top-indicator-icons i {
   display: block;
+  width: 100%;
+  text-align: center;
   font-size: 25px;
   line-height: 0.58;
   font-weight: 700;
@@ -802,12 +807,12 @@ body.mobile-keyboard-open .service-top-indicator {
 .service-top-indicator.is-visible {
   opacity: 1;
   visibility: visible;
-  transform: translate(-50%, 0);
+  transform: translate3d(0, 0, 0);
   pointer-events: auto;
 }
 
 .service-top-indicator:hover {
-  transform: translate(-50%, -2px);
+  transform: translate3d(0, -2px, 0);
 }
 
 .service-top-indicator:focus-visible {
@@ -858,7 +863,18 @@ body.mobile-keyboard-open {
   width: 100%;
   max-width: 100%;
   overflow-x: hidden !important;
+  overscroll-behavior: none;
   overscroll-behavior-x: none;
+}
+
+html.mobile-keyboard-open {
+  /* Prevent dvh / fixed-UI churn while keyboard + password bar are open. */
+  height: 100%;
+}
+
+body.mobile-keyboard-open {
+  position: relative;
+  touch-action: pan-y;
 }
 
 @supports (overflow: clip) {
@@ -866,6 +882,14 @@ body.mobile-keyboard-open {
   body.mobile-keyboard-open {
     overflow-x: clip !important;
   }
+}
+
+/* Keep fixed bottom UI from jumping with keyboard chrome changes. */
+body.mobile-keyboard-open .floating-call-btn,
+body.mobile-keyboard-open .service-top-indicator,
+body.mobile-keyboard-open .mobile-bottom-nav,
+body.mobile-keyboard-open .service-cart-fab {
+  transition: none !important;
 }
 
 @media (max-width: 991.98px) {

@@ -75,10 +75,12 @@ h2 {
 
 .service-top-indicator {
     position: fixed;
-    left: 50%;
+    left: calc(50vw - 32px);
+    right: auto;
     bottom: 36px;
     width: 64px;
     height: 64px;
+    margin: 0;
     border: 0;
     border-radius: 999px;
     background: transparent;
@@ -88,7 +90,7 @@ h2 {
     justify-content: center;
     opacity: 0;
     visibility: hidden;
-    transform: translate(-50%, 16px);
+    transform: translate3d(0, 16px, 0);
     transition:
         opacity 0.24s ease,
         transform 0.24s ease,
@@ -131,12 +133,12 @@ h2 {
 .service-top-indicator.is-visible {
     opacity: 1;
     visibility: visible;
-    transform: translate(-50%, 0);
+    transform: translate3d(0, 0, 0);
     pointer-events: auto;
 }
 
 .service-top-indicator:hover {
-    transform: translate(-50%, -2px);
+    transform: translate3d(0, -2px, 0);
 }
 
 .service-top-indicator:focus-visible {

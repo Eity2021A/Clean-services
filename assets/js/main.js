@@ -1875,7 +1875,20 @@ function initServiceCartDrawer() {
 function initMobileKeyboardViewportState() {
   if (document.body?.dataset.keyboardViewportInitialized === "true") return;
 
+  const viewportMeta = document.querySelector('meta[name="viewport"]');
+  if (
+    viewportMeta &&
+    !/interactive-widget=/i.test(viewportMeta.getAttribute("content") || "")
+  ) {
+    const content = (viewportMeta.getAttribute("content") || "").trim();
+    viewportMeta.setAttribute(
+      "content",
+      `${content}${content ? ", " : ""}interactive-widget=overlays-content`,
+    );
+  }
+
   const mobileViewport = window.matchMedia("(max-width: 991.98px)");
+  const root = document.documentElement;
   const editableSelector = [
     "input:not([type='checkbox']):not([type='radio']):not([type='button']):not([type='submit']):not([type='reset'])",
     "textarea",
@@ -1885,44 +1898,64 @@ function initMobileKeyboardViewportState() {
   ].join(", ");
 
   let hasFocusedEditable = false;
+  let keyboardOpen = false;
+  let rafId = null;
 
   const isEditableTarget = (target) =>
     Boolean(target && target.matches && target.matches(editableSelector));
 
-  const updateKeyboardState = () => {
-    const viewport = window.visualViewport;
-    const viewportHeight = viewport?.height || window.innerHeight;
-    const keyboardHeight = window.innerHeight - viewportHeight;
-    const keyboardLikelyOpen =
-      mobileViewport.matches &&
-      (keyboardHeight > 140 || (hasFocusedEditable && keyboardHeight > 80));
+  const applyKeyboardClass = (isOpen) => {
+    if (keyboardOpen === isOpen) return;
+    keyboardOpen = isOpen;
+    root.classList.toggle("mobile-keyboard-open", isOpen);
+    document.body.classList.toggle("mobile-keyboard-open", isOpen);
+  };
 
-    document.body.classList.toggle("mobile-keyboard-open", keyboardLikelyOpen);
+  const updateKeyboardState = () => {
+    if (!mobileViewport.matches) {
+      applyKeyboardClass(false);
+      return;
+    }
+
+    const viewport = window.visualViewport;
+    const layoutHeight = window.innerHeight || root.clientHeight || 0;
+    const viewportHeight = viewport?.height || layoutHeight;
+    const keyboardHeight = Math.max(0, layoutHeight - viewportHeight);
+    const keyboardLikelyOpen = hasFocusedEditable && keyboardHeight > 120;
+
+    applyKeyboardClass(keyboardLikelyOpen);
+  };
+
+  const scheduleKeyboardUpdate = () => {
+    if (rafId) return;
+    rafId = window.requestAnimationFrame(() => {
+      rafId = null;
+      updateKeyboardState();
+    });
   };
 
   document.addEventListener("focusin", (event) => {
     hasFocusedEditable = isEditableTarget(event.target);
-    updateKeyboardState();
+    scheduleKeyboardUpdate();
   });
 
   document.addEventListener("focusout", () => {
     window.setTimeout(() => {
       hasFocusedEditable = isEditableTarget(document.activeElement);
-      updateKeyboardState();
-    }, 80);
+      scheduleKeyboardUpdate();
+    }, 120);
   });
 
   if (window.visualViewport) {
-    window.visualViewport.addEventListener("resize", updateKeyboardState);
-    window.visualViewport.addEventListener("scroll", updateKeyboardState);
+    window.visualViewport.addEventListener("resize", scheduleKeyboardUpdate);
   }
 
-  window.addEventListener("resize", updateKeyboardState);
+  window.addEventListener("resize", scheduleKeyboardUpdate);
 
   if (typeof mobileViewport.addEventListener === "function") {
-    mobileViewport.addEventListener("change", updateKeyboardState);
+    mobileViewport.addEventListener("change", scheduleKeyboardUpdate);
   } else if (typeof mobileViewport.addListener === "function") {
-    mobileViewport.addListener(updateKeyboardState);
+    mobileViewport.addListener(scheduleKeyboardUpdate);
   }
 
   updateKeyboardState();
