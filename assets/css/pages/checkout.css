@@ -839,6 +839,76 @@ h2 {
     border-radius: 0;
 }
 
+.mobile-wallet-brand-logo[hidden] {
+    display: none !important;
+}
+
+.mobile-wallet-number-card {
+    display: grid;
+    grid-template-columns: 72px 1px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.85rem;
+    width: 100%;
+    margin-top: 0.85rem;
+    padding: 0.85rem 1rem;
+    border-radius: 14px;
+    background: #ffffff;
+}
+
+.mobile-wallet-number-card[hidden] {
+    display: none !important;
+}
+
+.mobile-wallet-number-card.is-bkash {
+    border: 1.5px solid #e2136e;
+}
+
+.mobile-wallet-number-card.is-nagad {
+    border: 1.5px solid #f47a20;
+}
+
+.mobile-wallet-number-logo {
+    width: 72px;
+    height: 36px;
+    object-fit: contain;
+    object-position: left center;
+}
+
+.mobile-wallet-number-divider {
+    width: 1px;
+    height: 34px;
+    background: #d7dee0;
+}
+
+.mobile-wallet-number-label {
+    font-family: var(--font-primary);
+    font-size: 14px;
+    font-weight: 700;
+    color: #163b4a;
+}
+
+.mobile-wallet-number-value {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 132px;
+    padding: 0.55rem 0.9rem;
+    border-radius: 10px;
+    font-family: var(--font-primary);
+    font-size: 16px;
+    font-weight: 700;
+    color: #111827;
+    background: #ffffff;
+}
+
+.mobile-wallet-number-card.is-bkash .mobile-wallet-number-value {
+    border: 1.5px solid #e2136e;
+}
+
+.mobile-wallet-number-card.is-nagad .mobile-wallet-number-value {
+    border: 1.5px solid #f47a20;
+}
+
 .payment-option-icon {
     width: 54px;
     height: 54px;
@@ -915,58 +985,171 @@ h2 {
 }
 
 /* Bank account details panel */
+.bank-transfer-layout {
+    display: grid;
+    grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
+    gap: 1.5rem 2rem;
+    align-items: center;
+}
+
+.city-bank-card {
+    width: 100%;
+    max-width: 340px;
+    margin: 0;
+    padding: 1.2rem 1.25rem 1.15rem;
+    border-radius: 14px;
+    background: #0f0f0f;
+    color: #ffffff;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+    border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    aspect-ratio: 1.7 / 1;
+    min-height: 190px;
+}
+
+.city-bank-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.85rem;
+}
+
+.city-bank-card-chip {
+    width: 38px;
+    height: 28px;
+    border-radius: 5px;
+    background:
+        linear-gradient(135deg, #f6e27a 0%, #d4af37 45%, #b8962e 100%);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+    flex-shrink: 0;
+}
+
+.city-bank-logo {
+    width: 78px;
+    height: 42px;
+    object-fit: contain;
+    object-position: right center;
+    border-radius: 0;
+    background: transparent;
+}
+
+.city-bank-card-number {
+    margin: auto 0 1rem;
+    font-family: var(--font-primary);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    line-height: 1.2;
+    color: #ffffff;
+}
+
+.city-bank-card-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.city-bank-card-meta > div {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.city-bank-card-label {
+    font-family: var(--font-primary);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.city-bank-card-meta strong {
+    font-family: var(--font-primary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #ffffff;
+}
+
 .bank-account-panel {
     width: 100%;
-    border: 1px solid #d7dee0;
-    border-radius: 14px;
-    overflow: hidden;
-    background: #ffffff;
+    border: none;
+    border-radius: 0;
+    overflow: visible;
+    background: transparent;
+    padding-top: 0.15rem;
+    border-top: 1px solid #e6ecee;
 }
 
 .bank-account-row {
     display: grid;
-    grid-template-columns: 28px minmax(0, 1fr) minmax(0, 1.2fr);
-    align-items: center;
-    gap: 0.75rem 1rem;
-    padding: 0.9rem 1rem;
-    border-bottom: 1px solid #e5eaeb;
+    grid-template-columns: 28px minmax(0, 1fr);
+    align-items: flex-start;
+    gap: 0.85rem;
+    padding: 5px 0;
+    border-bottom: none;
+}
+
+.bank-account-row + .bank-account-row {
+    border-top: 1px solid #eef2f3;
 }
 
 .bank-account-row:last-child {
     border-bottom: none;
+    padding-bottom: 0.2rem;
 }
 
 .bank-account-icon {
     width: 22px;
     height: 22px;
+    margin-top: 2px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: #1f2a2a;
+    color: #8a9495;
     font-size: 16px;
+}
+
+.bank-account-copy {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
 }
 
 .bank-account-label {
     font-family: var(--font-primary);
-    font-size: 13px;
-    font-weight: 700;
-    color: #1f2a2a;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
-    position: relative;
-    padding-right: 0.75rem;
+    font-size: 12px;
+    font-weight: 500;
+    color: #8a9495;
+    text-transform: none;
+    letter-spacing: 0;
+    position: static;
+    padding-right: 0;
     margin: 0;
 }
 
 .bank-account-label::after {
-    content: "";
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 1px;
-    height: 18px;
-    background: #d7dee0;
+    display: none;
+}
+
+.bank-account-value {
+    width: 100%;
+    margin: 0;
+    font-family: var(--font-primary);
+    font-size: 14px;
+    font-weight: 700;
+    color: #1f2a2a;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    word-break: break-word;
 }
 
 .bank-account-input {
@@ -1003,40 +1186,57 @@ h2 {
 
 .bank-account-row + .field-error {
     margin: 0;
-    padding: 0 1rem 0.65rem;
-    border-bottom: 1px solid #e5eaeb;
+    padding: 0 0 0.65rem;
+    border-bottom: none;
 }
 
 .bank-account-row:last-child + .field-error {
     border-bottom: none;
 }
 
-@media (max-width: 575.98px) {
-    .bank-account-row {
-        grid-template-columns: 22px minmax(0, 1fr);
-        gap: 0.35rem 0.7rem;
-        padding: 0.8rem 0.85rem;
+@media (max-width: 991.98px) {
+    .bank-transfer-layout {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+        justify-items: stretch;
     }
 
-    .bank-account-label::after {
-        display: none;
+    .city-bank-card {
+        max-width: 360px;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .city-bank-card {
+        max-width: none;
+        min-height: 0;
+        aspect-ratio: auto;
+        padding: 1rem 1rem 1.05rem;
+    }
+
+    .city-bank-logo {
+        width: 68px;
+        height: 38px;
+    }
+
+    .city-bank-card-number {
+        font-size: 16px;
+        letter-spacing: 0.1em;
+    }
+
+    .bank-account-row {
+        grid-template-columns: 22px minmax(0, 1fr);
+        gap: 0.7rem;
+        padding: 0.75rem 0;
     }
 
     .bank-account-value {
-        grid-column: 2;
-        text-align: left;
-        font-size: 12px;
-    }
-
-    .bank-account-input {
-        grid-column: 2;
-        text-align: left;
-        font-size: 12px;
+        font-size: 13px;
     }
 
     .bank-account-label {
-        font-size: 12px;
-        padding-right: 0;
+        font-size: 11px;
     }
 }
 
@@ -1361,6 +1561,35 @@ h2 {
     .mobile-wallet-option {
         padding: 0.65rem 0.7rem;
         font-size: 13px;
+    }
+
+    .mobile-wallet-number-card {
+        grid-template-columns: 58px 1px minmax(0, 1fr);
+        gap: 0.65rem;
+        padding: 0.75rem 0.8rem;
+    }
+
+    .mobile-wallet-number-logo {
+        width: 58px;
+        height: 30px;
+    }
+
+    .mobile-wallet-number-divider {
+        height: 28px;
+    }
+
+    .mobile-wallet-number-label {
+        font-size: 13px;
+    }
+
+    .mobile-wallet-number-value {
+        grid-column: 3;
+        justify-self: start;
+        min-width: 0;
+        width: 100%;
+        margin-top: 0.15rem;
+        font-size: 15px;
+        padding: 0.45rem 0.7rem;
     }
 
     .payment-option-main {

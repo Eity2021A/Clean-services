@@ -425,94 +425,76 @@
                       />
 
                       <div class="payment-method-details" id="bankPaymentDetails">
-                        <div class="bank-account-panel" aria-label="Bank transfer details">
-                          <div class="bank-account-row">
-                            <span class="bank-account-icon" aria-hidden="true">
-                              <i class="bi bi-person"></i>
-                            </span>
-                            <label class="bank-account-label" for="checkoutBankAccountName">Account Name</label>
-                            <input
-                              id="checkoutBankAccountName"
-                              name="bankAccountName"
-                              type="text"
-                              class="bank-account-input"
-                              placeholder="Enter account name"
-                              autocomplete="name"
-                            />
+                        <div class="bank-transfer-layout">
+                          <div class="city-bank-card" aria-label="City Bank account card">
+                            <div class="city-bank-card-top">
+                              <span class="city-bank-card-chip" aria-hidden="true"></span>
+                              <img
+                                src="assets/images/citybank.png"
+                                alt="City Bank"
+                                class="city-bank-logo"
+                              />
+                            </div>
+                            <p class="city-bank-card-number">2304 5153 5600 1</p>
+                            <div class="city-bank-card-meta">
+                              <div>
+                                <span class="city-bank-card-label">Account Holder</span>
+                                <strong>MD. ROBIUL ISLAM</strong>
+                              </div>
+                              <div>
+                                <span class="city-bank-card-label">Branch</span>
+                                <strong>GULSHAN</strong>
+                              </div>
+                            </div>
                           </div>
-                          <div class="bank-account-row">
-                            <span class="bank-account-icon" aria-hidden="true">
-                              <i class="bi bi-wallet2"></i>
-                            </span>
-                            <label class="bank-account-label" for="checkoutBankAccountType">Account Type</label>
-                            <input
-                              id="checkoutBankAccountType"
-                              name="bankAccountType"
-                              type="text"
-                              class="bank-account-input"
-                              placeholder="Enter account type"
-                              autocomplete="off"
-                            />
-                          </div>
-                          <div class="bank-account-row">
-                            <span class="bank-account-icon" aria-hidden="true">
-                              <i class="bi bi-credit-card-2-front"></i>
-                            </span>
-                            <label class="bank-account-label" for="checkoutBankAccountNumber">Account Number</label>
-                            <input
-                              id="checkoutBankAccountNumber"
-                              name="bankAccountNumber"
-                              type="text"
-                              class="bank-account-input"
-                              placeholder="Enter account number"
-                              inputmode="numeric"
-                              autocomplete="off"
-                            />
-                          </div>
-                          <div class="bank-account-row">
-                            <span class="bank-account-icon" aria-hidden="true">
-                              <i class="bi bi-bank"></i>
-                            </span>
-                            <label class="bank-account-label" for="checkoutBankBranch">Branch Name</label>
-                            <input
-                              id="checkoutBankBranch"
-                              name="bankBranch"
-                              type="text"
-                              class="bank-account-input"
-                              placeholder="Enter branch name"
-                              autocomplete="off"
-                            />
-                          </div>
-                          <div class="bank-account-row">
-                            <span class="bank-account-icon" aria-hidden="true">
-                              <i class="bi bi-diagram-3"></i>
-                            </span>
-                            <label class="bank-account-label" for="checkoutBankRouting">Routing Number</label>
-                            <input
-                              id="checkoutBankRouting"
-                              name="bankRouting"
-                              type="text"
-                              class="bank-account-input"
-                              placeholder="Enter routing number"
-                              inputmode="numeric"
-                              autocomplete="off"
-                            />
-                          </div>
-                        </div>
 
-                        <div class="form-group-custom mb-0 mt-3">
-                          <label for="checkoutBankReference"
-                            >Transaction / Reference ID
-                            <span class="required-mark">*</span></label
-                          >
-                          <input
-                            id="checkoutBankReference"
-                            name="bankReference"
-                            type="text"
-                            class="form-control-underline"
-                            placeholder="Enter your transfer reference ID"
-                            autocomplete="off"
-                          />
+                          <div class="bank-account-panel" aria-label="Bank transfer details">
+                            <div class="bank-account-row">
+                              <span class="bank-account-icon" aria-hidden="true">
+                                <i class="bi bi-person"></i>
+                              </span>
+                              <div class="bank-account-copy">
+                                <span class="bank-account-label">Account Name</span>
+                                <strong class="bank-account-value">MD. ROBIUL ISLAM</strong>
+                              </div>
+                            </div>
+                            <div class="bank-account-row">
+                              <span class="bank-account-icon" aria-hidden="true">
+                                <i class="bi bi-wallet2"></i>
+                              </span>
+                              <div class="bank-account-copy">
+                                <span class="bank-account-label">Account Type</span>
+                                <strong class="bank-account-value">HIGH VALUE SAVINGS A/C</strong>
+                              </div>
+                            </div>
+                            <div class="bank-account-row">
+                              <span class="bank-account-icon" aria-hidden="true">
+                                <i class="bi bi-credit-card-2-front"></i>
+                              </span>
+                              <div class="bank-account-copy">
+                                <span class="bank-account-label">Account Number</span>
+                                <strong class="bank-account-value">2304515356001</strong>
+                              </div>
+                            </div>
+                            <div class="bank-account-row">
+                              <span class="bank-account-icon" aria-hidden="true">
+                                <i class="bi bi-bank"></i>
+                              </span>
+                              <div class="bank-account-copy">
+                                <span class="bank-account-label">Branch Name</span>
+                                <strong class="bank-account-value">GULSHAN BRANCH</strong>
+                              </div>
+                            </div>
+                            <div class="bank-account-row">
+                              <span class="bank-account-icon" aria-hidden="true">
+                                <i class="bi bi-diagram-3"></i>
+                              </span>
+                              <div class="bank-account-copy">
+                                <span class="bank-account-label">Routing Number</span>
+                                <strong class="bank-account-value">225261729</strong>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -551,6 +533,7 @@
                             class="mobile-wallet-brand-logo"
                             src="assets/images/bkash.png"
                             alt="bKash"
+                            hidden
                           />
                         </div>
                       </div>
@@ -578,22 +561,36 @@
                           </label>
                         </div>
 
-                        <div class="form-group-custom">
-                          <label for="checkoutWalletNumber"
-                            >Wallet Number <span class="required-mark">*</span></label
-                          >
-                          <input
-                            id="checkoutWalletNumber"
-                            name="walletNumber"
-                            type="tel"
-                            class="form-control-underline"
-                            placeholder="01XXXXXXXXX"
-                            inputmode="tel"
-                            maxlength="14"
-                            autocomplete="tel"
+                        <div
+                          class="mobile-wallet-number-card is-bkash"
+                          data-wallet-display="bkash"
+                          aria-label="bKash number"
+                        >
+                          <img
+                            src="assets/images/bkash.png"
+                            alt="bKash"
+                            class="mobile-wallet-number-logo"
                           />
+                          <span class="mobile-wallet-number-divider" aria-hidden="true"></span>
+                          <span class="mobile-wallet-number-label">bKash Number</span>
+                          <span class="mobile-wallet-number-value">01944605040</span>
                         </div>
 
+                        <div
+                          class="mobile-wallet-number-card is-nagad"
+                          data-wallet-display="nagad"
+                          aria-label="Nagad number"
+                          hidden
+                        >
+                          <img
+                            src="assets/images/nogod.png"
+                            alt="Nagad"
+                            class="mobile-wallet-number-logo"
+                          />
+                          <span class="mobile-wallet-number-divider" aria-hidden="true"></span>
+                          <span class="mobile-wallet-number-label">Nagad Number</span>
+                          <span class="mobile-wallet-number-value">01944605040</span>
+                        </div>
                       </div>
                     </div>
                   </div>

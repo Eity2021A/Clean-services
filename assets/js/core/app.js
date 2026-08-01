@@ -2128,48 +2128,10 @@ function initCheckoutValidation() {
     });
   }
 
-  const bankAccountNameInput = document.getElementById("checkoutBankAccountName");
-  const bankAccountTypeInput = document.getElementById("checkoutBankAccountType");
-  const bankAccountNumberInput = document.getElementById("checkoutBankAccountNumber");
-  const bankBranchInput = document.getElementById("checkoutBankBranch");
-  const bankRoutingInput = document.getElementById("checkoutBankRouting");
-  const bankReferenceInput = document.getElementById("checkoutBankReference");
-  const walletNumberInput = document.getElementById("checkoutWalletNumber");
-  const walletTxnIdInput = document.getElementById("checkoutWalletTxnId");
-
   const getSelectedPayment = () =>
     form.querySelector('input[name="payment"]:checked')?.value || "cash";
 
-  const bankFieldConfigs = [
-    {
-      input: bankAccountNameInput,
-      message: "Please enter the account name.",
-    },
-    {
-      input: bankAccountTypeInput,
-      message: "Please enter the account type.",
-    },
-    {
-      input: bankAccountNumberInput,
-      message: "Please enter the account number.",
-      validate: (value) => value.replace(/\s/g, "").length >= 6,
-    },
-    {
-      input: bankBranchInput,
-      message: "Please enter the branch name.",
-    },
-    {
-      input: bankRoutingInput,
-      message: "Please enter the routing number.",
-      validate: (value) => value.replace(/\s/g, "").length >= 6,
-    },
-    {
-      input: bankReferenceInput,
-      message: "Please enter the bank transfer reference ID.",
-      validate: (value) => value.trim().length >= 4,
-      boxSelector: ".form-group-custom",
-    },
-  ];
+  const bankFieldConfigs = [];
 
   phoneInput.setAttribute("inputmode", "numeric");
   phoneInput.setAttribute("autocomplete", "tel-national");
@@ -2223,9 +2185,6 @@ function initCheckoutValidation() {
         : input.closest(".bank-account-row") || input.closest(".form-group-custom");
       clearFieldError(box);
     });
-    [walletNumberInput, walletTxnIdInput].forEach((input) => {
-      if (input) clearFieldError(input.closest(".form-group-custom"));
-    });
 
     if (method === "bank") {
       bankFieldConfigs.forEach(({ input, message, validate: validateField, boxSelector }) => {
@@ -2240,15 +2199,6 @@ function initCheckoutValidation() {
           markInvalid(input, box, message);
         }
       });
-    }
-
-    if (method === "mobile") {
-      if (!isValidBangladeshPhone(walletNumberInput?.value || "")) {
-        markInvalid(walletNumberInput, walletNumberInput.closest(".form-group-custom"), "Please enter a valid bKash/Nagad wallet number.");
-      }
-      if ((walletTxnIdInput?.value.trim().length || 0) < 4) {
-        markInvalid(walletTxnIdInput, walletTxnIdInput.closest(".form-group-custom"), "Please enter the transaction ID.");
-      }
     }
 
     return { isValid, firstInvalidInput };
@@ -4279,52 +4229,36 @@ function selectPaymentMethod(element) {
 
 function updateMobileWalletBrandLogo() {
   const logo = document.getElementById("mobileWalletBrandLogo");
+  const method =
+    document.querySelector('input[name="payment"]:checked')?.value || "cash";
   const selected =
     document.querySelector('input[name="mobileWallet"]:checked')?.value ||
     "bkash";
 
-  if (!logo) return;
-
-  if (selected === "nagad") {
-    logo.src = "assets/images/nogod.png";
-    logo.alt = "Nagad";
-  } else {
-    logo.src = "assets/images/bkash.png";
-    logo.alt = "bKash";
+  if (logo) {
+    if (method !== "mobile") {
+      logo.hidden = true;
+    } else {
+      logo.hidden = false;
+      if (selected === "nagad") {
+        logo.src = "assets/images/nogod.png";
+        logo.alt = "Nagad";
+      } else {
+        logo.src = "assets/images/bkash.png";
+        logo.alt = "bKash";
+      }
+    }
   }
+
+  document.querySelectorAll("[data-wallet-display]").forEach((card) => {
+    const isActive = method === "mobile" && card.dataset.walletDisplay === selected;
+    card.hidden = !isActive;
+  });
 }
 
 function syncPaymentMethodFields() {
   const method =
     document.querySelector('input[name="payment"]:checked')?.value || "cash";
-  const bankFields = [
-    document.getElementById("checkoutBankAccountName"),
-    document.getElementById("checkoutBankAccountType"),
-    document.getElementById("checkoutBankAccountNumber"),
-    document.getElementById("checkoutBankBranch"),
-    document.getElementById("checkoutBankRouting"),
-    document.getElementById("checkoutBankReference"),
-  ];
-  const walletNumber = document.getElementById("checkoutWalletNumber");
-  const walletTxnId = document.getElementById("checkoutWalletTxnId");
-
-  bankFields.forEach((field) => {
-    if (!field) return;
-    field.disabled = method !== "bank";
-    if (method !== "bank") {
-      clearFieldError(
-        field.closest(".bank-account-row") || field.closest(".form-group-custom"),
-      );
-    }
-  });
-
-  [walletNumber, walletTxnId].forEach((field) => {
-    if (!field) return;
-    field.disabled = method !== "mobile";
-    if (method !== "mobile") {
-      clearFieldError(field.closest(".form-group-custom"));
-    }
-  });
 
   document.querySelectorAll('input[name="mobileWallet"]').forEach((input) => {
     input.disabled = method !== "mobile";
@@ -4336,35 +4270,6 @@ function syncPaymentMethodFields() {
 function initCheckoutPaymentDetails() {
   if (!document.getElementById("payment-list")) return;
   if (document.body.dataset.checkoutPaymentInitialized === "true") return;
-
-  const bankFields = [
-    document.getElementById("checkoutBankAccountName"),
-    document.getElementById("checkoutBankAccountType"),
-    document.getElementById("checkoutBankAccountNumber"),
-    document.getElementById("checkoutBankBranch"),
-    document.getElementById("checkoutBankRouting"),
-    document.getElementById("checkoutBankReference"),
-  ];
-  const walletNumber = document.getElementById("checkoutWalletNumber");
-
-  bankFields.forEach((field) => {
-    if (!field) return;
-    field.addEventListener("input", () => {
-      clearFieldError(
-        field.closest(".bank-account-row") || field.closest(".form-group-custom"),
-      );
-    });
-  });
-
-  walletNumber?.addEventListener("input", () => {
-    const normalized = walletNumber.value.replace(/[^\d+]/g, "");
-    const startsWithPlus = normalized.startsWith("+");
-    const digits = normalized
-      .replace(/[^\d]/g, "")
-      .slice(0, startsWithPlus ? 13 : 11);
-    walletNumber.value = startsWithPlus ? `+${digits}` : digits;
-    clearFieldError(walletNumber.closest(".form-group-custom"));
-  });
 
   document.querySelectorAll('input[name="mobileWallet"]').forEach((input) => {
     input.addEventListener("change", updateMobileWalletBrandLogo);
