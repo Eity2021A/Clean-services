@@ -742,6 +742,117 @@ body.mobile-keyboard-open .service-top-indicator {
   display: none !important;
 }
 
+/* Global centered scroll-to-top button (all pages / all screens) */
+.service-top-indicator {
+  position: fixed;
+  left: 50%;
+  bottom: 36px;
+  width: 64px;
+  height: 64px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #fff;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 16px);
+  transition:
+    opacity 0.24s ease,
+    transform 0.24s ease,
+    visibility 0.24s ease;
+  z-index: 1460;
+  pointer-events: none;
+  cursor: pointer;
+}
+
+.service-top-indicator-icons {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  position: relative;
+  padding: 6px 10px;
+  border-radius: 999px;
+}
+
+.service-top-indicator-icons i {
+  display: block;
+  font-size: 25px;
+  line-height: 0.58;
+  font-weight: 700;
+  color: var(--primary-color);
+  text-shadow:
+    0 0 10px rgba(255, 255, 255, 0.5),
+    0 0 18px rgba(28, 170, 184, 0.32);
+}
+
+.service-top-indicator-icons i:first-child {
+  animation: service-top-indicator-chevron-primary 1.3s ease-in-out infinite;
+}
+
+.service-top-indicator-icons i:last-child {
+  color: rgba(28, 170, 184, 0.62);
+  animation: service-top-indicator-chevron-secondary 1.3s ease-in-out infinite;
+}
+
+.service-top-indicator.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+  pointer-events: auto;
+}
+
+.service-top-indicator:hover {
+  transform: translate(-50%, -2px);
+}
+
+.service-top-indicator:focus-visible {
+  outline: 3px solid rgba(28, 170, 184, 0.24);
+  outline-offset: 3px;
+}
+
+@keyframes service-top-indicator-chevron-primary {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.9;
+  }
+
+  45% {
+    transform: translateY(-6px);
+    opacity: 1;
+  }
+}
+
+@keyframes service-top-indicator-chevron-secondary {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.28;
+  }
+
+  45% {
+    transform: translateY(-4px);
+    opacity: 0.62;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .service-top-indicator {
+    bottom: 96px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .service-top-indicator {
+    bottom: 78px;
+  }
+}
+
 html.mobile-keyboard-open,
 body.mobile-keyboard-open {
   width: 100%;

@@ -150,19 +150,45 @@ h2 {
 }
 
 .admin-contact-title {
-  margin: 0 0 24px;
-  font-size: 22px;
+  margin: 0 0 10px;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #002b2f;
+  font-family: var(--primary-font);
+}
+.phone_contact {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 18px;
   font-weight: 700;
   line-height: 1.3;
   color: #002b2f;
   font-family: var(--primary-font);
 }
 
+.phone_contact i {
+  font-size: 16px;
+  color: var(--primary-color);
+}
+
+.phone_contact a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.phone_contact a:hover {
+  color: var(--primary-color);
+}
 .admin-contact-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   justify-content: center;
+  margin-top: 18px;
 }
 
 .admin-contact-actions .btn {
@@ -1083,14 +1109,14 @@ body.service-cart-open {
 .service-top-indicator {
   position: fixed;
   left: 50%;
-  bottom: 136px;
+  bottom: 36px;
   width: 64px;
   height: 64px;
   border: 0;
   border-radius: 999px;
   background: transparent;
   color: #fff;
-  display: none;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
@@ -1500,9 +1526,6 @@ body.service-cart-open {
 }
 
 @media (max-width: 992px) {
-  .service-top-indicator {
-    display: inline-flex;
-  }
   .service-video-feature {
     aspect-ratio: 16 / 6;
   }

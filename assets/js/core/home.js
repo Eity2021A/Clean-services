@@ -1366,11 +1366,64 @@ function initPageLoader() {
   tryHide();
 }
 
+function ensureServiceTopIndicator() {
+  let indicator = document.getElementById("serviceTopIndicator");
+  if (indicator) return indicator;
+
+  indicator = document.createElement("button");
+  indicator.type = "button";
+  indicator.className = "service-top-indicator";
+  indicator.id = "serviceTopIndicator";
+  indicator.setAttribute("aria-label", "Back to top");
+  indicator.setAttribute("aria-hidden", "true");
+  indicator.title = "Back to top";
+  indicator.innerHTML = `
+    <span class="service-top-indicator-icons" aria-hidden="true">
+      <i class="bi bi-chevron-up"></i>
+      <i class="bi bi-chevron-up"></i>
+    </span>
+  `;
+  document.body.appendChild(indicator);
+  return indicator;
+}
+
+function initServiceTopIndicator() {
+  const indicator = ensureServiceTopIndicator();
+  if (!indicator || indicator.dataset.initialized === "true") return;
+
+  let rafId = null;
+
+  const updateVisibility = () => {
+    const shouldShow = window.scrollY >= 280;
+    indicator.classList.toggle("is-visible", shouldShow);
+    indicator.setAttribute("aria-hidden", shouldShow ? "false" : "true");
+  };
+
+  const scheduleUpdate = () => {
+    if (rafId) return;
+    rafId = window.requestAnimationFrame(() => {
+      rafId = null;
+      updateVisibility();
+    });
+  };
+
+  indicator.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  window.addEventListener("scroll", scheduleUpdate, { passive: true });
+  window.addEventListener("resize", scheduleUpdate);
+
+  updateVisibility();
+  indicator.dataset.initialized = "true";
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   initPageLoader();
   initReadingProgress();
   optimizeMediaResources();
   initScrollReveal();
+  initServiceTopIndicator();
   scheduleBootstrapBundle();
   window.addEventListener("storage", renderAllCartUIs);
 

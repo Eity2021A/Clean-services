@@ -76,14 +76,14 @@ h2 {
 .service-top-indicator {
     position: fixed;
     left: 50%;
-    bottom: 136px;
+    bottom: 36px;
     width: 64px;
     height: 64px;
     border: 0;
     border-radius: 999px;
     background: transparent;
     color: #fff;
-    display: none;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
@@ -167,12 +167,6 @@ h2 {
     45% {
         transform: translateY(-4px);
         opacity: 0.62;
-    }
-}
-
-@media (max-width: 991.98px) {
-    .service-top-indicator {
-        display: inline-flex;
     }
 }
 

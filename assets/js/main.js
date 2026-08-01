@@ -1929,23 +1929,35 @@ function initMobileKeyboardViewportState() {
   document.body.dataset.keyboardViewportInitialized = "true";
 }
 
+function ensureServiceTopIndicator() {
+  let indicator = document.getElementById("serviceTopIndicator");
+  if (indicator) return indicator;
+
+  indicator = document.createElement("button");
+  indicator.type = "button";
+  indicator.className = "service-top-indicator";
+  indicator.id = "serviceTopIndicator";
+  indicator.setAttribute("aria-label", "Back to top");
+  indicator.setAttribute("aria-hidden", "true");
+  indicator.title = "Back to top";
+  indicator.innerHTML = `
+    <span class="service-top-indicator-icons" aria-hidden="true">
+      <i class="bi bi-chevron-up"></i>
+      <i class="bi bi-chevron-up"></i>
+    </span>
+  `;
+  document.body.appendChild(indicator);
+  return indicator;
+}
+
 function initServiceTopIndicator() {
-  const indicator = document.getElementById("serviceTopIndicator");
+  const indicator = ensureServiceTopIndicator();
   if (!indicator || indicator.dataset.initialized === "true") return;
 
-  const mobileViewport = window.matchMedia("(max-width: 991.98px)");
   let rafId = null;
 
   const updateVisibility = () => {
-    if (!mobileViewport.matches) {
-      indicator.classList.remove("is-visible");
-      indicator.setAttribute("aria-hidden", "true");
-      return;
-    }
-
-    const scrollBottom = window.scrollY + window.innerHeight;
-    const pageBottom = document.documentElement.scrollHeight;
-    const shouldShow = scrollBottom >= pageBottom - 420;
+    const shouldShow = window.scrollY >= 280;
 
     indicator.classList.toggle("is-visible", shouldShow);
     indicator.setAttribute("aria-hidden", shouldShow ? "false" : "true");
@@ -1965,12 +1977,6 @@ function initServiceTopIndicator() {
 
   window.addEventListener("scroll", scheduleUpdate, { passive: true });
   window.addEventListener("resize", scheduleUpdate);
-
-  if (typeof mobileViewport.addEventListener === "function") {
-    mobileViewport.addEventListener("change", scheduleUpdate);
-  } else if (typeof mobileViewport.addListener === "function") {
-    mobileViewport.addListener(scheduleUpdate);
-  }
 
   updateVisibility();
   indicator.dataset.initialized = "true";
